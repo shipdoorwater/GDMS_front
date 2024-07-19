@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/mainFragment">
+
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.example.gdms_front.navigation_frag.MainFragment"
+        android:label="fragment_main"
+        tools:layout="@layout/fragment_main" >
+        <action
+            android:id="@+id/action_mainFragment_to_mapFragment"
+            app:destination="@id/mapFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_payFragment"
+            app:destination="@id/payFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_profitFragment"
+            app:destination="@id/profitFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_allMenuFragment"
+            app:destination="@id/allMenuFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/mapFragment"
+        android:name="com.example.gdms_front.navigation_frag.MapFragment"
+        android:label="fragment_map"
+        tools:layout="@layout/fragment_map" >
+        <action
+            android:id="@+id/action_mapFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+        <action
+            android:id="@+id/action_mapFragment_to_payFragment"
+            app:destination="@id/payFragment" />
+        <action
+            android:id="@+id/action_mapFragment_to_profitFragment"
+            app:destination="@id/profitFragment" />
+        <action
+            android:id="@+id/action_mapFragment_to_allMenuFragment"
+            app:destination="@id/allMenuFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/allMenuFragment"
+        android:name="com.example.gdms_front.navigation_frag.AllMenuFragment"
+        android:label="fragment_all_menu"
+        tools:layout="@layout/fragment_all_menu" >
+        <action
+            android:id="@+id/action_allMenuFragment_to_payFragment"
+            app:destination="@id/payFragment" />
+        <action
+            android:id="@+id/action_allMenuFragment_to_mapFragment"
+            app:destination="@id/mapFragment" />
+        <action
+            android:id="@+id/action_allMenuFragment_to_profitFragment"
+            app:destination="@id/profitFragment" />
+        <action
+            android:id="@+id/action_allMenuFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/payFragment"
+        android:name="com.example.gdms_front.navigation_frag.PayFragment"
+        android:label="fragment_pay"
+        tools:layout="@layout/fragment_pay" >
+        <action
+            android:id="@+id/action_payFragment_to_mapFragment"
+            app:destination="@id/mapFragment" />
+        <action
+            android:id="@+id/action_payFragment_to_allMenuFragment"
+            app:destination="@id/allMenuFragment" />
+        <action
+            android:id="@+id/action_payFragment_to_profitFragment"
+            app:destination="@id/profitFragment" />
+        <action
+            android:id="@+id/action_payFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/profitFragment"
+        android:name="com.example.gdms_front.navigation_frag.ProfitFragment"
+        android:label="fragment_profit"
+        tools:layout="@layout/fragment_profit" >
+        <action
+            android:id="@+id/action_profitFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+        <action
+            android:id="@+id/action_profitFragment_to_mapFragment"
+            app:destination="@id/mapFragment" />
+        <action
+            android:id="@+id/action_profitFragment_to_allMenuFragment"
+            app:destination="@id/allMenuFragment" />
+        <action
+            android:id="@+id/action_profitFragment_to_payFragment"
+            app:destination="@id/payFragment" />
+    </fragment>
+</navigation>
