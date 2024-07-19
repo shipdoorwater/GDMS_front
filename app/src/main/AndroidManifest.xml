@@ -12,6 +12,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GDMS_FRONT"
         tools:targetApi="31">
+
+        <meta-data
+            android:name="com.naver.maps.map.CLIENT_ID"
+            android:value="np3eee44wk"/>
+
         <activity
             android:name=".SplashActivity"
             android:exported="true">
