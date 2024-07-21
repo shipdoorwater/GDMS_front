@@ -8,14 +8,21 @@ import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.example.gdms_front.R
+import com.naver.maps.map.NaverMap
+import com.naver.maps.map.OnMapReadyCallback
+import com.naver.maps.map.util.FusedLocationSource
 
 class MapFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
 
+    private lateinit var locationSource: FusedLocationSource
+    private lateinit var naverMap: NaverMap
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
     }
 
     override fun onCreateView(
@@ -44,5 +51,4 @@ class MapFragment : Fragment() {
 
         return view
     }
-
 }
