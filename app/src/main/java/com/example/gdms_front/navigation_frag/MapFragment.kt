@@ -63,12 +63,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         // 위치 권한 요청
         requestLocationPermission()
 
-
-        // 마커 객체 생성
-        val marker = Marker()
-        marker.position = LatLng(37.5670135, 126.9783740)
-        marker.map = naverMap
-
         return view
     }
 
@@ -82,6 +76,13 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         // UI 설정
         val uiSettings: UiSettings = naverMap.uiSettings
         uiSettings.isLocationButtonEnabled = true
+
+        // 마커 설정
+        Marker().apply {
+            position = LatLng(37.4946, 127.0276056)
+            map = naverMap
+        }
+
     }
 
     // 사용자 위치 정보를 사용하기 위해 필요한 위치 권한을 요청하는 기능
