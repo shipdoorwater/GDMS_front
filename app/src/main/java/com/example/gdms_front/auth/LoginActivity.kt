@@ -5,14 +5,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.gdms_front.MainActivity
-import com.example.gdms_front.R
 import com.example.gdms_front.databinding.ActivityLoginBinding
+import com.example.gdms_front.model.LoginRequest
+import com.example.gdms_front.network.RetrofitClient
 import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -32,14 +30,14 @@ class LoginActivity : AppCompatActivity() {
         Log.d("LoginActivity", "onCreate")
 
 
-        val retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.0.73:8080/") // 실제 API 기본 URL로 변경
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
+//        val retrofit = Retrofit.Builder()
+//            .baseUrl("http://192.168.0.73:8080/") // 실제 API 기본 URL로 변경
+//            .addConverterFactory(GsonConverterFactory.create())
+//            .build()
 
-        Log.d("LoginActivity", "retrofit: $retrofit")
+       // Log.d("LoginActivity", "retrofit: $retrofit")
 
-        val authService = retrofit.create(AuthService::class.java)
+        //val authService = retrofit.create(AuthService::class.java)
 
         binding.loginBtn.setOnClickListener {
             val userId = binding.userId.text.toString()
@@ -49,7 +47,7 @@ class LoginActivity : AppCompatActivity() {
 
             lifecycleScope.launch {
                 try {
-                    val response = authService.login(LoginRequest(userId, userPw))
+                    val response = RetrofitClient.apiService.login(LoginRequest(userId, userPw))
                     if (response.isSuccessful) {
                         val loginResponse = response.body()
                         // 로그인 성공 처리 (토큰 저장, MainActivity로 이동 등)
@@ -64,6 +62,7 @@ class LoginActivity : AppCompatActivity() {
                     } else {
                         // 로그인 실패 처리 (오류 메시지 표시 등)
                         Toast.makeText(this@LoginActivity, "로그인 실패", Toast.LENGTH_SHORT).show()
+                        Log.d("LoginActivity", "Login failed: ${response.message()}")
                     }
                 } catch (e: Exception) {
                     // 네트워크 오류 처리
@@ -71,6 +70,11 @@ class LoginActivity : AppCompatActivity() {
                     Log.e("LoginActivity", "Login failed", e)
                 }
             }
+        }
+
+        binding.joinBtn.setOnClickListener{
+            val intent = Intent(this, JoinActivity1::class.java)
+            startActivity(intent)
         }
 
 
