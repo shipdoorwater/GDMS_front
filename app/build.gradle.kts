@@ -33,6 +33,12 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
+    dataBinding{
+        enable = true
+    }
+
+
 }
 
 dependencies {
@@ -51,4 +57,8 @@ dependencies {
     implementation("com.google.android.gms:play-services-location:21.0.1")
     // 네이버 지도 SDK
     implementation("com.naver.maps:map-sdk:3.18.0")
+    
+    //레트로핏
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 }
