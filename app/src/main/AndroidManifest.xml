@@ -27,7 +27,7 @@
             android:name=".auth.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".auth.JoinActivity"
+            android:name=".auth.JoinActivity1"
             android:exported="false" />
         <activity
             android:name=".auth.IntroActivity"
