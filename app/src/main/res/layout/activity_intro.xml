@@ -7,4 +7,11 @@
     android:layout_height="match_parent"
     tools:context=".auth.IntroActivity">
 
+
+    <TextView
+        android:text="로그인 여부를\n확인하는 화면입니다"
+        android:textSize="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
