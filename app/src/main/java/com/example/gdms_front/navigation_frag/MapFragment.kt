@@ -10,11 +10,13 @@ import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.example.gdms_front.R
+import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.MapFragment
 import com.naver.maps.map.LocationTrackingMode
 import com.naver.maps.map.NaverMap
 import com.naver.maps.map.OnMapReadyCallback
 import com.naver.maps.map.UiSettings
+import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.util.FusedLocationSource
 
 class MapFragment : Fragment(), OnMapReadyCallback {
@@ -60,6 +62,12 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
         // 위치 권한 요청
         requestLocationPermission()
+
+
+        // 마커 객체 생성
+        val marker = Marker()
+        marker.position = LatLng(37.5670135, 126.9783740)
+        marker.map = naverMap
 
         return view
     }
