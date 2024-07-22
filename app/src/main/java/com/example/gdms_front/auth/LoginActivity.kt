@@ -24,7 +24,7 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater) // 초기화
         setContentView(binding.root)
 
-
+        //
        // setContentView(R.layout.activity_login)
 
         Log.d("LoginActivity", "onCreate")
