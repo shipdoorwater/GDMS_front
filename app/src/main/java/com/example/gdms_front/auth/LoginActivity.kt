@@ -50,18 +50,27 @@ class LoginActivity : AppCompatActivity() {
                     val response = RetrofitClient.apiService.login(LoginRequest(userId, userPw))
                     if (response.isSuccessful) {
                         val loginResponse = response.body()
-                        // 로그인 성공 처리 (토큰 저장, MainActivity로 이동 등)
+                        Log.d("LoginActivity", "Login successful: ${response.body()}")
+                        Log.d("LoginActivity", "token: ${loginResponse?.message}")
+                        Log.d("LoginActivity", "userId: $userId")
+
+                        // 로그인 성공 처리 (토큰 저장, MainActivity로 이동 등) // 회원가입 시 저장해줄껀지 고민되네
                         val sharedPreferences = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
                         val editor = sharedPreferences.edit()
-                        editor.putString("token", loginResponse?.token)
+                        editor.putString("token", loginResponse?.message)  // 여기에 Login successful 이라는 내용의 토큰이 저장됨, 토큰값 안주면 아이디를 넣을까 차라리
                         editor.apply()
+
+                        Log.d("LoginActivity", editor.toString())
 
                         val intent = Intent(this@LoginActivity, MainActivity::class.java)
                         startActivity(intent)
                         finish()
+
                     } else {
                         // 로그인 실패 처리 (오류 메시지 표시 등)
                         Toast.makeText(this@LoginActivity, "로그인 실패", Toast.LENGTH_SHORT).show()
+                        Log.d("LoginActivity", "Login failed: ${response.errorBody()?.string()}")
+                        Log.d("LoginActivity", "Login failed: ${response.code()}")
                         Log.d("LoginActivity", "Login failed: ${response.message()}")
                     }
                 } catch (e: Exception) {
