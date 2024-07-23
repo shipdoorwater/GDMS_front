@@ -22,7 +22,7 @@ class SplashActivity : AppCompatActivity() {
         val images = arrayOf(
             R.drawable.background1,
             R.drawable.background2,
-            R.drawable.background3
+         //   R.drawable.background3
             // 필요한 만큼 추가
         )
 
