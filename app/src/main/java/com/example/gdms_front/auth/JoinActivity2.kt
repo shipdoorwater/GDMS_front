@@ -27,8 +27,13 @@ class JoinActivity2 : AppCompatActivity() {
         binding = ActivityJoin2Binding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.backButton.setOnClickListener{
+            val intent = Intent(this, JoinActivity1::class.java)
+            startActivity(intent) }
 
-        // 첫 번째 페이지에서 전달된 데이터를 가져옵니다.
+
+
+            // 첫 번째 페이지에서 전달된 데이터를 가져옵니다.
         val userName = intent.getStringExtra("userName").toString()
         val userId = intent.getStringExtra("userId").toString()
         val userPw = intent.getStringExtra("userPw").toString()
