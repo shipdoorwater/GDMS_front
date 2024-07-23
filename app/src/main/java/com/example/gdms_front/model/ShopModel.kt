@@ -9,7 +9,6 @@ data class ShopModel (
     @SerializedName("storeCode") val storeCode: String,
     @SerializedName("storeLatitude") val storeLatitude: Double?,
     @SerializedName("storeLongitude") val storeLongitude: Double?,
-    @SerializedName("storeRadius") val storeRadius: Double?,
     @SerializedName("shopScore") val shopScore: String,
     @SerializedName("shopReviewNum") val shopReviewNum: Int
 )
