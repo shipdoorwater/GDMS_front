@@ -9,16 +9,22 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="300dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:cardCornerRadius="20dp"
         android:layout_margin="10dp">
 
-        <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/map_fragment"
-            android:name="com.naver.maps.map.MapFragment"
+<!--        <androidx.fragment.app.FragmentContainerView-->
+<!--            android:id="@+id/map_fragment"-->
+<!--            android:name="com.naver.maps.map.MapFragment"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            />-->
+
+        <FrameLayout
+            android:id="@+id/child_fragment_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             />
