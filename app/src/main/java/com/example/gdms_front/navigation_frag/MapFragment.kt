@@ -1,17 +1,25 @@
 package com.example.gdms_front.navigation_frag
 
 import android.Manifest
+import android.content.pm.PackageManager
+import android.location.Location
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.gdms_front.R
+import com.example.gdms_front.adapter.RecommendedShopAdapter
 import com.example.gdms_front.model.ShopModel
 import com.example.gdms_front.network.RetrofitClient
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.CameraUpdate
 import com.naver.maps.map.MapFragment
@@ -30,34 +38,16 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     private lateinit var locationSource: FusedLocationSource
 //    private var naverMap: NaverMap? = null
     private lateinit var naverMap: NaverMap
-
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var shopAdapter: RecommendedShopAdapter
+    private var shopList = mutableListOf<ShopModel>()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         locationSource = FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE)
-
-        // api 호출
-        val api = RetrofitClient.mapApiService
-        val latitude: Double = 37.4946287
-        val longitude: Double = 127.0276197
-
-        api.getNearbyShops(latitude, longitude).enqueue(object : Callback<List<ShopModel>> {
-            override fun onResponse(call: Call<List<ShopModel>>, response: Response<List<ShopModel>>) {
-                if (response.isSuccessful) {
-                    val shops = response.body()
-                    // 응답 데이터를 사용하여 작업 수행
-                    Log.d("MapApiService", "Shops: $shops")
-                } else {
-                    Log.e("MapApiService", "Response Error: ${response.code()}")
-                }
-            }
-
-            override fun onFailure(call: Call<List<ShopModel>>, t: Throwable) {
-                Log.e("MainActivity", "API Call Failed: ${t.message}")
-            }
-        })
-
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
     }
 
     override fun onCreateView(
@@ -68,6 +58,15 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
         val view  = inflater.inflate(R.layout.fragment_map, container, false)
 
+
+        //RecyclerView 설정
+        recyclerView = view.findViewById(R.id.recommendedShopRV)
+        recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        shopAdapter = RecommendedShopAdapter(shopList)
+        recyclerView.adapter = shopAdapter
+
+
+        // 네비게이션 이동
         view.findViewById<ConstraintLayout>(R.id.nav_allMenu).setOnClickListener {
             it.findNavController().navigate((R.id.action_mapFragment_to_allMenuFragment))
         }
@@ -91,10 +90,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             }
         mapFragment.getMapAsync(this)
 
-
-
-
-
         return view
     }
 
@@ -104,10 +99,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         // 위치 소스 설정
         naverMap.locationSource = locationSource
         naverMap.locationTrackingMode = LocationTrackingMode.Follow
-//        // 초기 위치 설정
-//        val initialPosition = LatLng(37.4946, 127.0276056)
-//        val cameraUpdate = CameraUpdate.scrollTo(initialPosition)
-//        naverMap.moveCamera(cameraUpdate)
 
         // UI 설정
         val uiSettings: UiSettings = naverMap.uiSettings
@@ -150,6 +141,15 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             } else {
                 Log.d("locationCheck", "권한허용됨")
                 naverMap?.locationTrackingMode = LocationTrackingMode.Follow
+
+                // 위치 권한 허용 시 현재 위치 가져오기
+                if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                    fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
+                        location?.let {
+                            callApiWithLocation(it.latitude, it.longitude)
+                        }
+                    }
+                }
             }
             return
         }
@@ -157,6 +157,28 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
+    // api req/res 함수
+    private fun callApiWithLocation(latitude: Double, longitude: Double) {
+        val api = RetrofitClient.mapApiService
+        api.getNearbyShops(latitude, longitude).enqueue(object : Callback<List<ShopModel>> {
+            override fun onResponse(call: Call<List<ShopModel>>, response: Response<List<ShopModel>>) {
+                if (response.isSuccessful) {
+                    val shops = response.body()
+                    if (shops != null){
+                        shopAdapter.updateData(shops)
+                    }
 
+                    // 응답 데이터를 사용하여 작업 수행
+                    Log.d("MapApiService", "Shops: $shops")
+                } else {
+                    Log.e("MapApiService", "Response Error: ${response.code()}")
+                }
+            }
+
+            override fun onFailure(call: Call<List<ShopModel>>, t: Throwable) {
+                Log.e("MainActivity", "API Call Failed: ${t.message}")
+            }
+        })
+    }
 
 }
