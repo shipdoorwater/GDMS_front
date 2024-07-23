@@ -7,14 +7,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.example.gdms_front.R
+import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.MapFragment
 import com.naver.maps.map.LocationTrackingMode
 import com.naver.maps.map.NaverMap
 import com.naver.maps.map.OnMapReadyCallback
 import com.naver.maps.map.UiSettings
+import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.util.FusedLocationSource
 
 class MapFragment : Fragment(), OnMapReadyCallback {
@@ -35,19 +38,19 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
         val view  = inflater.inflate(R.layout.fragment_map, container, false)
 
-        view.findViewById<ImageView>(R.id.nav_allMenu_img).setOnClickListener {
+        view.findViewById<ConstraintLayout>(R.id.nav_allMenu).setOnClickListener {
             it.findNavController().navigate((R.id.action_mapFragment_to_allMenuFragment))
         }
 
-        view.findViewById<ImageView>(R.id.nav_profit_img).setOnClickListener {
+        view.findViewById<ConstraintLayout>(R.id.nav_profit).setOnClickListener {
             it.findNavController().navigate((R.id.action_mapFragment_to_profitFragment))
         }
 
-        view.findViewById<ImageView>(R.id.nav_pay_img).setOnClickListener {
+        view.findViewById<ConstraintLayout>(R.id.nav_pay).setOnClickListener {
             it.findNavController().navigate((R.id.action_mapFragment_to_payFragment))
         }
 
-        view.findViewById<ImageView>(R.id.nav_main_img).setOnClickListener {
+        view.findViewById<ConstraintLayout>(R.id.nav_main).setOnClickListener {
             it.findNavController().navigate((R.id.action_mapFragment_to_mainFragment))
         }
 
@@ -74,6 +77,13 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         // UI 설정
         val uiSettings: UiSettings = naverMap.uiSettings
         uiSettings.isLocationButtonEnabled = true
+
+        // 마커 설정
+        Marker().apply {
+            position = LatLng(37.4946, 127.0276056)
+            map = naverMap
+        }
+
     }
 
     // 사용자 위치 정보를 사용하기 위해 필요한 위치 권한을 요청하는 기능
