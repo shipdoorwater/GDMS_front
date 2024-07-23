@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.example.gdms_front.R
@@ -23,19 +24,19 @@ class ProfitFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_profit, container, false)
 
-        view.findViewById<ImageView>(R.id.nav_allMenu_img).setOnClickListener {
+        view.findViewById<ConstraintLayout>(R.id.nav_allMenu).setOnClickListener {
             it.findNavController().navigate((R.id.action_profitFragment_to_allMenuFragment))
         }
 
-        view.findViewById<ImageView>(R.id.nav_pay_img).setOnClickListener {
+        view.findViewById<ConstraintLayout>(R.id.nav_pay).setOnClickListener {
             it.findNavController().navigate((R.id.action_profitFragment_to_payFragment))
         }
 
-        view.findViewById<ImageView>(R.id.nav_recommend_img).setOnClickListener {
+        view.findViewById<ConstraintLayout>(R.id.nav_map).setOnClickListener {
             it.findNavController().navigate((R.id.action_profitFragment_to_mapFragment))
         }
 
-        view.findViewById<ImageView>(R.id.nav_main_img).setOnClickListener {
+        view.findViewById<ConstraintLayout>(R.id.nav_main).setOnClickListener {
             it.findNavController().navigate((R.id.action_profitFragment_to_mainFragment))
         }
 
