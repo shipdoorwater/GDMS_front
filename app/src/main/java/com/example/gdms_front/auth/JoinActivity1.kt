@@ -18,6 +18,8 @@ class JoinActivity1 : AppCompatActivity() {
         setContentView(binding.root)
 
 
+
+
         binding.nextBtn.setOnClickListener {
             val userId = binding.joinUserId.text.toString()
             val userPw = binding.joinUserPw.text.toString()
@@ -34,14 +36,13 @@ class JoinActivity1 : AppCompatActivity() {
             intent.putExtra("userId", userId)
             intent.putExtra("userPw", userPw)
             startActivity(intent)
+        }
 
 
-//        var isGotoJoin = true
-//        if (pw1 != pw2) {
-//            isGotoJoin = false
-//        }
-//        if (isGotoJoin == true) {
-//    }
+        binding.backButton.setOnClickListener{
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+
         }
     }
 

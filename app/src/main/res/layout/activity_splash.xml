@@ -5,12 +5,23 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SplashActivity">
+    tools:context=".SplashActivity"
+    >
+
 
     <ImageView
-        android:src="@drawable/gdms_logo"
+        android:id="@+id/backgroundImageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:alpha="0.8"/>
+
+    <ImageView
+        android:src="@drawable/gdms_logo_noback"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
