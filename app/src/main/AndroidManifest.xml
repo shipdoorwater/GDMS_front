@@ -18,6 +18,9 @@
         android:theme="@style/Theme.GDMS_FRONT"
         tools:targetApi="31">
         <activity
+            android:name=".auth.JoinSucActivity"
+            android:exported="false" />
+        <activity
             android:name=".auth.JoinActivity2"
             android:exported="false" />
         <activity

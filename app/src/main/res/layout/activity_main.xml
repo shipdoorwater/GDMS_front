@@ -24,6 +24,7 @@
             android:layout_height="1dp"
             android:background="#999999"/>
 
+
     </LinearLayout>
 
 
@@ -36,4 +37,7 @@
         app:defaultNavHost="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:navGraph="@navigation/navigation" />
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

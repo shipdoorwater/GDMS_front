@@ -70,7 +70,7 @@ class JoinActivity2 : AppCompatActivity() {
                     if (response.isSuccessful) {
                         // 회원가입 성공 처리
                         Toast.makeText(this@JoinActivity2, "success", Toast.LENGTH_SHORT).show()
-                        val intent = Intent(this@JoinActivity2, MainActivity::class.java)
+                        val intent = Intent(this@JoinActivity2, JoinSucActivity::class.java)
                         startActivity(intent)
                         finish()
                     } else {
