@@ -2,10 +2,12 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/black"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SplashActivity">
+    tools:context=".SplashActivity"
+    >
+
 
     <ImageView
         android:id="@+id/backgroundImageView"
@@ -14,31 +16,12 @@
         android:scaleType="centerCrop"
         android:alpha="0.8"/>
 
-    <LinearLayout
+    <ImageView
+        android:src="@drawable/gdms_logo_noback"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/black"
-        android:orientation="vertical"
-        android:gravity="center"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        android:layout_height="match_parent"/>
 
-        <ImageView
-            android:layout_width="150dp"
-            android:layout_height="50dp"
-            android:background="@color/black"
-            android:src="@drawable/gdms_logo"
-            android:scaleType="centerCrop"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="구독한 미식가"
-            android:textStyle="bold"
-            android:textColor="@color/white"
-            android:textSize="40sp" />
-    </LinearLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
