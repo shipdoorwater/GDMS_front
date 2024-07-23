@@ -13,6 +13,7 @@ import com.example.gdms_front.R
 import com.example.gdms_front.model.ShopModel
 import com.example.gdms_front.network.RetrofitClient
 import com.naver.maps.geometry.LatLng
+import com.naver.maps.map.CameraUpdate
 import com.naver.maps.map.MapFragment
 import com.naver.maps.map.LocationTrackingMode
 import com.naver.maps.map.NaverMap
@@ -103,6 +104,10 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         // 위치 소스 설정
         naverMap.locationSource = locationSource
         naverMap.locationTrackingMode = LocationTrackingMode.Follow
+//        // 초기 위치 설정
+//        val initialPosition = LatLng(37.4946, 127.0276056)
+//        val cameraUpdate = CameraUpdate.scrollTo(initialPosition)
+//        naverMap.moveCamera(cameraUpdate)
 
         // UI 설정
         val uiSettings: UiSettings = naverMap.uiSettings
