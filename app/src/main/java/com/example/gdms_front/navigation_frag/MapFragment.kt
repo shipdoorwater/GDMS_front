@@ -54,7 +54,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             it.findNavController().navigate((R.id.action_mapFragment_to_mainFragment))
         }
 
-        // NaverMap Fragment 설정
+        // NaverMap Fragment 설정 : 수동초기화 코드로, xml파일에서 초기화했으므로 사용 x
         val mapFragment = childFragmentManager.findFragmentById(R.id.map_fragment) as MapFragment?
             ?: MapFragment.newInstance().also {
                 childFragmentManager.beginTransaction().add(R.id.map_fragment, it).commit()
@@ -82,6 +82,8 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         Marker().apply {
             position = LatLng(37.4946, 127.0276056)
             map = naverMap
+            width = 50
+            height = 50
         }
 
     }
