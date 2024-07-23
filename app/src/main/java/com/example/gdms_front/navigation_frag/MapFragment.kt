@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.example.gdms_front.R
 import com.naver.maps.geometry.LatLng
+import com.naver.maps.map.CameraUpdate
 import com.naver.maps.map.MapFragment
 import com.naver.maps.map.LocationTrackingMode
 import com.naver.maps.map.NaverMap
@@ -28,6 +29,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         locationSource = FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE)
+        Log.d("locationCheck", locationSource.toString())
     }
 
     override fun onCreateView(
@@ -73,6 +75,10 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         // 위치 소스 설정
         naverMap.locationSource = locationSource
         naverMap.locationTrackingMode = LocationTrackingMode.Follow
+//        // 초기 위치 설정
+//        val initialPosition = LatLng(37.4946, 127.0276056)
+//        val cameraUpdate = CameraUpdate.scrollTo(initialPosition)
+//        naverMap.moveCamera(cameraUpdate)
 
         // UI 설정
         val uiSettings: UiSettings = naverMap.uiSettings

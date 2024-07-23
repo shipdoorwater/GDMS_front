@@ -26,5 +26,8 @@ class JoinSucActivity : AppCompatActivity() {
             startActivity(intent)
             finish() // 현재 Activity 종료
         }, 3000) // 3000 밀리초 (3초) 후 실행
+
+        //
+        //
     }
 }
