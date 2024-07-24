@@ -208,4 +208,16 @@
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteY="350dp" />
 
+    <Button
+        android:id="@+id/newsBtn"
+        android:layout_width="139dp"
+        android:layout_height="81dp"
+        android:gravity="center"
+        android:text="뉴스보기"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/logoutBtn"
+        tools:ignore="MissingConstraints" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
