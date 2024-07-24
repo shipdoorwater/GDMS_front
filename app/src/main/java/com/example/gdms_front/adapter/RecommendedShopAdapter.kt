@@ -3,10 +3,12 @@ package com.example.gdms_front.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.view.menu.MenuView.ItemView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.bumptech.glide.Glide
 import com.example.gdms_front.R
 import com.example.gdms_front.model.ShopModel
 import org.w3c.dom.Text
@@ -53,12 +55,17 @@ class RecommendedShopAdapter(private val shopList: MutableList<ShopModel>): Recy
             val shopInfo = itemView.findViewById<TextView>(R.id.shopInfo)
             val shopScore = itemView.findViewById<TextView>(R.id.shopScore)
             val shopReviewCount = itemView.findViewById<TextView>(R.id.shopReviewCount)
+            val shopPhoto = itemView.findViewById<ImageView>(R.id.shopPhoto)
 
             shopName.text = item.shopName.toString()
             shopInfo.text = item.shopDescript.toString()
             shopScore.text = item.shopScore.toString()
-            shopReviewCount.text = item.shopDescript.toString()
+            shopReviewCount.text = item.shopReviewNum.toString()
 
+            // 가게 이미지 로드
+            Glide.with(itemView.context)
+                .load(item.webImgUrl)
+                .into(shopPhoto)
         }
 
     }
