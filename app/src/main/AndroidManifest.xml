@@ -5,6 +5,9 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-feature android:name="android.hardware.camera.any" />
 
     <application
         android:allowBackup="true"
@@ -17,6 +20,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GDMS_FRONT"
         tools:targetApi="31">
+        <activity
+            android:name=".news.NewsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".qr_pay.QrPayActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:screenOrientation="portrait"
+            android:exported="false" />
         <activity
             android:name=".auth.JoinSucActivity"
             android:exported="false" />
@@ -52,6 +63,14 @@
         <activity
             android:name=".MainActivity"
             android:exported="true" />
+
+
+        <activity
+            android:name=".navigation_frag.PayFragment"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:screenOrientation="portrait" />
+
+
     </application>
 
 </manifest>
