@@ -1,6 +1,7 @@
 package com.example.gdms_front.navigation_frag
 
 import android.Manifest
+import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
@@ -8,14 +9,18 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.gdms_front.R
 import com.example.gdms_front.adapter.RecommendedShopAdapter
+import com.example.gdms_front.model.GetPointRequest
+import com.example.gdms_front.model.GetPointResponse
 import com.example.gdms_front.model.ShopModel
 import com.example.gdms_front.network.RetrofitClient
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -29,19 +34,26 @@ import com.naver.maps.map.OnMapReadyCallback
 import com.naver.maps.map.UiSettings
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.util.FusedLocationSource
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class MapFragment : Fragment(), OnMapReadyCallback {
 
+    // 위치 설정을 위해 필요한 변수들
     private lateinit var locationSource: FusedLocationSource
-//    private var naverMap: NaverMap? = null
     private lateinit var naverMap: NaverMap
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+
+    // RecyclerView 표시를 위해 필요한 변수들
     private lateinit var recyclerView: RecyclerView
     private lateinit var shopAdapter: RecommendedShopAdapter
     private var shopList = mutableListOf<ShopModel>()
+
+    // 마커 클릭 이벤트를 위해 필요한 변수들
+    private var marekrList = mutableListOf<Marker>()
+    private var currentLocation: Location? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,7 +69,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         // Inflate the layout for this fragment
 
         val view  = inflater.inflate(R.layout.fragment_map, container, false)
-
 
         //RecyclerView 설정
         recyclerView = view.findViewById(R.id.recommendedShopRV)
@@ -104,15 +115,20 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         val uiSettings: UiSettings = naverMap.uiSettings
         uiSettings.isLocationButtonEnabled = true
 
-        // 마커 설정
-        Marker().apply {
-            position = LatLng(37.4946, 127.0276056)
-            map = naverMap
-            width = 50
-            height = 50
+        // 위치권한 요청
+        requestLocationPermission()
+
+        // 현재 위치 가져오기 및 API 호출
+        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
+                location?.let {
+                    currentLocation = it
+                    callApiWithLocation(it.latitude, it.longitude)
+                    moveCameraToLocation(it.latitude, it.longitude)
+                }
+            }
         }
 
-        requestLocationPermission()
     }
 
     // 사용자 위치 정보를 사용하기 위해 필요한 위치 권한을 요청하는 기능
@@ -141,15 +157,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             } else {
                 Log.d("locationCheck", "권한허용됨")
                 naverMap?.locationTrackingMode = LocationTrackingMode.Follow
-
-                // 위치 권한 허용 시 현재 위치 가져오기
-                if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                    fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
-                        location?.let {
-                            callApiWithLocation(it.latitude, it.longitude)
-                        }
-                    }
-                }
             }
             return
         }
@@ -166,9 +173,8 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                     val shops = response.body()
                     if (shops != null){
                         shopAdapter.updateData(shops)
+                        addMarkers(shops)
                     }
-
-                    // 응답 데이터를 사용하여 작업 수행
                     Log.d("MapApiService", "Shops: $shops")
                 } else {
                     Log.e("MapApiService", "Response Error: ${response.code()}")
@@ -179,6 +185,122 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                 Log.e("MainActivity", "API Call Failed: ${t.message}")
             }
         })
+    }
+
+
+    // 카메라 이동 및 줌 확대 설정
+    private fun moveCameraToLocation(latitude: Double, longitude: Double) {
+        val cameraUpdate = CameraUpdate.scrollAndZoomTo(LatLng(latitude, longitude), 15.5)
+        naverMap.moveCamera(cameraUpdate)
+    }
+
+
+    // 받은 데이터 기준으로 맵에 마커 찍기
+    private fun addMarkers(shops: List<ShopModel>) {
+        shops.forEach { shop ->
+            val latitude = shop.storeLatitude
+            val longitude = shop.storeLongitude
+            if (latitude != null && longitude != null) {
+                Marker().apply {
+                    position = LatLng(latitude, longitude)
+                    map = naverMap
+                    width = 70
+                    height = 100
+                    tag = shop
+                    setOnClickListener {
+                        Log.d("MarkerAPITest", "Marker clicked: ${shop.bizNo}")
+                        handleMarkerClick(this)
+                        true
+                    }
+                }
+                Log.d("MarkerTest", "Marker added for shop: ${shop.shopName}")
+            } else {
+                Log.d("MarkerTest", "Invalid location for shop: ${shop.shopName}")
+            }
+        }
+    }
+
+
+    private fun handleMarkerClick(marker: Marker) {
+        currentLocation?.let {
+            val markerLocation = Location("").apply {
+                latitude = marker.position.latitude
+                longitude = marker.position.longitude
+            }
+            val distance = it.distanceTo(markerLocation)
+
+            if (distance <= 50) {
+                // 50미터 이내인 경우 모달 창을 띄우고 API 요청
+                Log.d("MarkerTest", "50미터 이내")
+                showModalAndRequestApi(marker.tag as ShopModel)
+            } else {
+                // 50미터 이상인 경우 RecyclerView의 해당 아이템으로 이동
+                moveToShopItem(marker.tag as ShopModel)
+            }
+        }
+    }
+
+    private fun showModalAndRequestApi(shop: ShopModel) {
+        val sharedPreference = activity?.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+        val userId = sharedPreference?.getString("token", null)
+
+        // API 요청 보내기 (구현 필요)
+        if (userId != null) {
+
+
+            val api = RetrofitClient.mapApiService
+            lifecycleScope.launch {
+                try {
+                    val request = GetPointRequest(userId, shop.bizNo)
+                    val response = api.getPointByVisit(request)
+                    if (response.isSuccessful) {
+
+                    } else {
+                        Log.d("MarkerAPITest", "실패: " + response.toString())
+                        Log.e("MarkerAPITest", "Response Error: ${response.code()}, message: ${response.message()}")
+                    }
+                } catch (e: Exception) {
+                    Log.e("MarkerAPITest", "API Call Failed: ${e.message}")
+                }
+            }
+        } else {
+            Log.d("MarkerAPITest", "UserId not found")
+        }
+
+//            val api = RetrofitClient.mapApiService
+//            api.getPointByVisit(userId, shop.bizNo).enqueue(object : Callback<GetPointResponse> {
+//
+//
+//                override fun onResponse(call: Call<GetPointResponse>, response: Response<GetPointResponse>) {
+//
+//                    Log.d("MarkerAPITest", "userId : $userId")
+//                    Log.d("MarkerAPITest", "bizNo : ${shop.bizNo}")
+//
+//                    if (response.isSuccessful) {
+//                        Log.d("MarkerAPITest", "성공: " + response.toString())
+//                        Log.d("MarkerAPITest", "모달창 구현")
+//                        // 모달 창에 데이터 표시 (구현 필요)
+//                    } else {
+//                        Log.d("MarkerAPITest", "실패: " + response.toString())
+//                        Log.e("MarkerAPITest", "Response Error: ${response.code()}")
+//                    }
+//                }
+//
+//                override fun onFailure(call: Call<GetPointResponse>, t: Throwable) {
+//                    Log.e("MarkerAPITest", "API Call Failed: ${t.message}")
+//                }
+//            })
+//
+//        } else {
+//            Log.d("MarkerAPITest", "UserId not fount")
+//        }
+    }
+
+    private fun moveToShopItem(shop: ShopModel) {
+        val position = shopList.indexOfFirst { it.bizNo == shop.bizNo }
+        if (position != -1) {
+            recyclerView.smoothScrollToPosition(position)
+        }
     }
 
 }
