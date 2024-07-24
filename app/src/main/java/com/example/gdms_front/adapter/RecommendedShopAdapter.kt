@@ -1,5 +1,7 @@
 package com.example.gdms_front.adapter
 
+import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.bumptech.glide.Glide
 import com.example.gdms_front.R
+import com.example.gdms_front.WebViewActivity
 import com.example.gdms_front.model.ShopModel
 import org.w3c.dom.Text
 
@@ -66,6 +69,14 @@ class RecommendedShopAdapter(private val shopList: MutableList<ShopModel>): Recy
             Glide.with(itemView.context)
                 .load(item.webImgUrl)
                 .into(shopPhoto)
+
+            shopName.setOnClickListener {
+                val context = itemView.context
+                val intent = Intent(context, WebViewActivity::class.java)
+                intent.putExtra("naverMapUrl", item.naverMapUrl)
+                Log.d("WebViewTest", "setOnClickListner URL :" + item.naverMapUrl)
+                context.startActivity(intent)
+            }
         }
 
     }
