@@ -105,12 +105,12 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         uiSettings.isLocationButtonEnabled = true
 
         // 마커 설정
-        Marker().apply {
-            position = LatLng(37.4946, 127.0276056)
-            map = naverMap
-            width = 50
-            height = 50
-        }
+//        Marker().apply {
+//            position = LatLng(37.4946, 127.0276056)
+//            map = naverMap
+//            width = 50
+//            height = 50
+//        }
 
         requestLocationPermission()
     }
@@ -147,6 +147,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                     fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
                         location?.let {
                             callApiWithLocation(it.latitude, it.longitude)
+                            moveCameraToLocation(it.latitude, it.longitude)
                         }
                     }
                 }
@@ -166,9 +167,8 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                     val shops = response.body()
                     if (shops != null){
                         shopAdapter.updateData(shops)
+                        addMarkers(shops)
                     }
-
-                    // 응답 데이터를 사용하여 작업 수행
                     Log.d("MapApiService", "Shops: $shops")
                 } else {
                     Log.e("MapApiService", "Response Error: ${response.code()}")
@@ -179,6 +179,30 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                 Log.e("MainActivity", "API Call Failed: ${t.message}")
             }
         })
+    }
+
+
+    // 카메라 이동 및 줌 확대 설정
+    private fun moveCameraToLocation(latitude: Double, longitude: Double) {
+        val cameraUpdate = CameraUpdate.scrollAndZoomTo(LatLng(latitude, longitude), 15.5)
+        naverMap.moveCamera(cameraUpdate)
+    }
+
+
+    // 받은 데이터 기준으로 맵에 마커 찍기
+    private fun addMarkers(shops: List<ShopModel>) {
+        shops.forEach { shop ->
+            val latitude = shop.storeLatitude
+            val longitude = shop.storeLongitude
+            if (latitude != null && longitude != null) {
+                Marker().apply {
+                    position = LatLng(latitude, longitude)
+                    map = naverMap
+                    width = 50
+                    height = 70
+                }
+            }
+        }
     }
 
 }
