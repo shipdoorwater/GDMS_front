@@ -23,6 +23,12 @@
         <activity
             android:name=".news.WebViewActivity2"
             android:exported="false" />
+      <activity
+            android:name=".point.WithdrawPointActivity"
+            android:exported="false" />
+        <activity
+            android:name=".point.PointMainActivity"
+            android:exported="false" />
         <activity
             android:name=".AllMenuActivity"
             android:exported="false" />
