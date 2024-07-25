@@ -7,6 +7,7 @@ import com.example.gdms_front.model.LoginResponse
 import com.example.gdms_front.model.NewsArticle
 import com.example.gdms_front.model.PayRequest
 import com.example.gdms_front.model.PayResponse
+import com.example.gdms_front.model.Subscription
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
@@ -31,6 +32,9 @@ interface ApiService {
 
     @GET("/api/news/category/{categoryId}")
     fun getNewsByCategory(@Path("categoryId") categoryId: Int): Call<List<NewsArticle>>
+
+    @GET("/api/subscriptions/current/{userId}")
+    fun getCurrentSubscriptions(@Path("userId") userId: String): Call<List<Subscription>>
 
     
     
