@@ -4,11 +4,15 @@ import com.example.gdms_front.model.JoinRequest
 import com.example.gdms_front.model.JoinResponse
 import com.example.gdms_front.model.LoginRequest
 import com.example.gdms_front.model.LoginResponse
+import com.example.gdms_front.model.NewsArticle
 import com.example.gdms_front.model.PayRequest
 import com.example.gdms_front.model.PayResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
+import retrofit2.Call
+import retrofit2.http.GET
+import retrofit2.http.Path
 
 interface ApiService {
     
@@ -21,6 +25,12 @@ interface ApiService {
 
     @POST("/api/map/pay") // 결제
     suspend fun pay(@Body payRequest: PayRequest): Response<PayResponse>
+
+    @GET("/api/news")
+    fun getAllNews(): Call<List<NewsArticle>>
+
+    @GET("/api/news/category/{categoryId}")
+    fun getNewsByCategory(@Path("categoryId") categoryId: Int): Call<List<NewsArticle>>
 
     
     

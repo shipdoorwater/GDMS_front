@@ -21,6 +21,9 @@
         android:theme="@style/Theme.GDMS_FRONT"
         tools:targetApi="31">
         <activity
+            android:name=".news.WebViewActivity2"
+            android:exported="false" />
+      <activity
             android:name=".point.WithdrawPointActivity"
             android:exported="false" />
         <activity
