@@ -71,7 +71,6 @@ class MainFragment : Fragment() {
         newsBtn.setOnClickListener {
             val intent = Intent(context, NewsActivity::class.java)
             startActivity(intent)
-            activity?.finish()
         }
 
 
