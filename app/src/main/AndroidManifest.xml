@@ -29,6 +29,9 @@
         <activity
             android:name=".profit.TierExpActivity"
             android:exported="false" />
+       <activity
+            android:name=".point.PointHistoryActivity"
+            android:exported="false" />
         <activity
             android:name=".news.WebViewActivity2"
             android:exported="false" />

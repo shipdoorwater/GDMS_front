@@ -37,4 +37,14 @@ object RetrofitClient {
 
         retrofit.create(MapApiService::class.java)
     }
+
+    val payApiService: PayApiService by lazy {
+        val retrofit = Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        retrofit.create(PayApiService::class.java)
+    }
+
 }
