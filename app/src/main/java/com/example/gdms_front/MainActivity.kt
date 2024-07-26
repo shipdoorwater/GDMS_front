@@ -14,8 +14,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
-
         findViewById<ImageView>(R.id.myPageBtn).setOnClickListener {
             val intent = Intent(this, MyPageActivity::class.java)
             startActivity(intent)
