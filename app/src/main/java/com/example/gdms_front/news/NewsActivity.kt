@@ -3,6 +3,7 @@ package com.example.gdms_front.news
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -64,6 +65,10 @@ class NewsActivity : AppCompatActivity(), OnNewsClickListener {
         findViewById<Button>(R.id.btn_it).setOnClickListener {
             newsViewModel.fetchNewsByCategory(105) }
 
+        findViewById<ImageView>(R.id.backButton1).setOnClickListener {
+            finish()
+        }
+
 
     }
 
@@ -73,4 +78,5 @@ class NewsActivity : AppCompatActivity(), OnNewsClickListener {
         }
         startActivity(intent)
     }
+
 }
