@@ -21,6 +21,15 @@
         android:theme="@style/Theme.GDMS_FRONT"
         tools:targetApi="31">
         <activity
+            android:name=".profit.ServicePackDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".profit.SubActivity1"
+            android:exported="false" />
+        <activity
+            android:name=".profit.TierExpActivity"
+            android:exported="false" />
+       <activity
             android:name=".point.PointHistoryActivity"
             android:exported="false" />
         <activity
