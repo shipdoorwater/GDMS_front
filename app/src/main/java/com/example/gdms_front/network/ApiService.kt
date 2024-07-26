@@ -7,6 +7,7 @@ import com.example.gdms_front.model.LoginResponse
 import com.example.gdms_front.model.NewsArticle
 import com.example.gdms_front.model.PayRequest
 import com.example.gdms_front.model.PayResponse
+import com.example.gdms_front.model.ServicePack
 import com.example.gdms_front.model.Subscription
 import retrofit2.Response
 import retrofit2.http.Body
@@ -35,6 +36,9 @@ interface ApiService {
 
     @GET("/api/subscriptions/current/{userId}")
     fun getCurrentSubscriptions(@Path("userId") userId: String): Call<List<Subscription>>
+
+    @GET("/api/servicePacks")
+    fun getServicePacks() : Call<List<ServicePack>>
 
     
     

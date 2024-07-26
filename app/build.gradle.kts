@@ -81,5 +81,8 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
     implementation("androidx.recyclerview:recyclerview:1.2.1")
     implementation("com.squareup.picasso:picasso:2.71828")
+    
+    //손가락으로 페이지 넘기는거 해보게
+    implementation("androidx.viewpager2:viewpager2:1.1.0")
 
 }

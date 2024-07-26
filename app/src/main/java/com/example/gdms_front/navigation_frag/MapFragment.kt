@@ -33,6 +33,7 @@ import com.naver.maps.map.NaverMap
 import com.naver.maps.map.OnMapReadyCallback
 import com.naver.maps.map.UiSettings
 import com.naver.maps.map.overlay.Marker
+import com.naver.maps.map.overlay.OverlayImage
 import com.naver.maps.map.util.FusedLocationSource
 import kotlinx.coroutines.launch
 import retrofit2.Call
@@ -207,6 +208,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                     width = 70
                     height = 100
                     tag = shop
+                    icon = OverlayImage.fromResource(R.drawable.coin_icon) //아이콘 모양
                     setOnClickListener {
                         Log.d("MarkerAPITest", "Marker clicked: ${shop.bizNo}")
                         handleMarkerClick(this)
