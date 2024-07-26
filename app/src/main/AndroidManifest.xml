@@ -21,6 +21,9 @@
         android:theme="@style/Theme.GDMS_FRONT"
         tools:targetApi="31">
         <activity
+            android:name=".myPage.ModifyInfoActivity"
+            android:exported="false" />
+        <activity
             android:name=".profit.ServicePackDetailActivity"
             android:exported="false" />
         <activity

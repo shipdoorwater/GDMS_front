@@ -1,6 +1,7 @@
 package com.example.gdms_front.network
 
 import com.example.gdms_front.model.MyPointResponse
+import com.example.gdms_front.model.PointDetailResponse
 import com.example.gdms_front.model.WithdrawRequest
 import com.example.gdms_front.model.WithdrawResponse
 import retrofit2.Call
@@ -15,4 +16,7 @@ interface PayApiService {
 
     @POST("/api/withdrawPoints")
     fun withdrawPoints(@Body request: WithdrawRequest): Call<WithdrawResponse>
+
+    @GET("/api/pointDetails/{userId}")
+    fun getPointDetails(@Path("userId") userId: String): Call<List<PointDetailResponse>>
 }
