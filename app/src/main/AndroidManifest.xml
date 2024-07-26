@@ -24,6 +24,15 @@
             android:name=".myPage.ModifyInfoActivity"
             android:exported="false" />
         <activity
+            android:name=".profit.ServicePackDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".profit.SubActivity1"
+            android:exported="false" />
+        <activity
+            android:name=".profit.TierExpActivity"
+            android:exported="false" />
+       <activity
             android:name=".point.PointHistoryActivity"
             android:exported="false" />
         <activity
