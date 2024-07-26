@@ -6,6 +6,7 @@ import android.icu.text.DecimalFormat
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -42,9 +43,15 @@ class PointMainActivity : AppCompatActivity() {
         }
 
         // 뒤로 가기 버튼
-
+        findViewById<ImageView>(R.id.backBtn).setOnClickListener {
+            finish()
+        }
 
         // 포인트 버튼
+        myPointText.setOnClickListener {
+            val intent = Intent(this, PointHistoryActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun getMyPoint(userId: String) {
