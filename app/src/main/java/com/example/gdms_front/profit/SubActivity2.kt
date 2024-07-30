@@ -1,5 +1,6 @@
 package com.example.gdms_front.profit
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -8,10 +9,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
+import com.example.gdms_front.MainActivity
 import com.example.gdms_front.R
 import com.example.gdms_front.databinding.ActivityQrPayBinding
 import com.example.gdms_front.databinding.ActivitySub2Binding
 import com.example.gdms_front.model.SubscribeRequest
+import com.example.gdms_front.navigation_frag.ProfitFragment
 import com.example.gdms_front.network.ApiService
 import com.example.gdms_front.network.RetrofitClient
 import kotlinx.coroutines.launch
@@ -60,6 +63,13 @@ class SubActivity2 : AppCompatActivity() {
 
                         Log.d("구독결제", "구독결제 successful: ${response.body()}")
                         Toast.makeText(this@SubActivity2, "구독신청 성공", Toast.LENGTH_SHORT).show()
+
+                        val intent = Intent(this@SubActivity2,MainActivity::class.java)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                        intent.putExtra("FragmentToLoad", "ProfitFragment")
+                        startActivity(intent)
+                        finish()
+
                     } else {
                         // 로그인 실패 처리 (오류 메시지 표시 등)
                         Toast.makeText(this@SubActivity2, "구독신청 실패", Toast.LENGTH_SHORT).show()
@@ -74,6 +84,8 @@ class SubActivity2 : AppCompatActivity() {
                 }
             }
         }
+
+
 
 
     }
