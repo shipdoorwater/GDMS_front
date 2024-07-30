@@ -55,4 +55,13 @@ object RetrofitClient {
 
         retrofit.create(MyPageApiService::class.java)
     }
+
+    val noticeApiService: NoticeApiService by lazy {
+        val retrofit = Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        retrofit.create(NoticeApiService::class.java)
+    }
 }
