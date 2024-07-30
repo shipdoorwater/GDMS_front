@@ -11,6 +11,8 @@ import com.example.gdms_front.model.ServicePack
 import com.example.gdms_front.model.SubscribeRequest
 import com.example.gdms_front.model.SubscribeResponse
 import com.example.gdms_front.model.Subscription
+import com.example.gdms_front.model.cancelSubRequest
+import com.example.gdms_front.model.cancelSubResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
@@ -45,6 +47,7 @@ interface ApiService {
     @POST("/api/subscribe")
     suspend fun subscribe(@Body subscribeRequest: SubscribeRequest): Response<SubscribeResponse>
 
-    
-    
+    @POST("/api/cancelSubscription")
+    suspend fun cancelSubscription(@Body cancelSubRequest: cancelSubRequest): Response<cancelSubResponse>
 }
+    
