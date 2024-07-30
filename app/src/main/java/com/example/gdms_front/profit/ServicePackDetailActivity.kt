@@ -22,6 +22,7 @@ class ServicePackDetailActivity : AppCompatActivity() {
         val fragmentIndex = intent.getIntExtra("FRAGMENT_INDEX", 0)
         val packId = intent.getIntExtra("packId", -1)
 
+        //구독상태에서 올때랑 안올 때 구분
         if (packId == -1) {
             viewPager.setCurrentItem(fragmentIndex-1, false)
         } else {

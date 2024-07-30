@@ -120,6 +120,23 @@ class ProfitFragment : Fragment() {
             startActivity(intent)
         }
 
+        // tier2 안내 화면(구독중)
+        view.findViewById<LinearLayout>(R.id.letsGoTier2).setOnClickListener {
+            val intent =
+                Intent(this@ProfitFragment.requireContext(), TierExpActivity::class.java)
+            intent.putExtra("FRAGMENT_INDEX", 1)
+            startActivity(intent)
+        }
+
+        // tier1 안내 화면(구독중)
+        view.findViewById<LinearLayout>(R.id.letsGoTier1).setOnClickListener {
+            val intent =
+                Intent(this@ProfitFragment.requireContext(), TierExpActivity::class.java)
+            intent.putExtra("FRAGMENT_INDEX", 0)
+            startActivity(intent)
+        }
+
+
 
         // 네비게이션 바
         view.findViewById<ConstraintLayout>(R.id.nav_allMenu).setOnClickListener {

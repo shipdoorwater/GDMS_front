@@ -154,6 +154,13 @@
                     android:padding="16dp"
                     android:layout_marginTop="16dp">
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="현재 구독 중"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recyclerView"
                         android:layout_width="match_parent"
@@ -163,9 +170,9 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="3 Tier"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
+                        android:text="추가 구독 가능"
+                        android:textSize="16sp"
+                        android:layout_marginTop="8dp" />
 
                     <!--구독 가능한 리사이클러 뷰 추가-->
                     <androidx.recyclerview.widget.RecyclerView
@@ -175,29 +182,12 @@
                         android:orientation="horizontal"
                         android:layout_marginTop="8dp"/>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Subscribing Now"
-                        android:textSize="16sp"
-                        android:layout_marginTop="8dp" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="화려한 Pack\n- 맞춤형 100% 정기 배송 서비스\n- 개인 맞춤형 쿠폰팩\n- ELS, 주식자문"
-                        android:textSize="16sp"
-                        android:layout_marginTop="8dp" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="전통적 Pack\n- 전통 맛집 추천\n- KB굿잡 우대 혜택\n- 개인 맞춤형 쿠폰팩"
-                        android:textSize="16sp"
-                        android:layout_marginTop="8dp" />
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/letsGoTier2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
@@ -221,6 +211,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/letsGoTier1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
