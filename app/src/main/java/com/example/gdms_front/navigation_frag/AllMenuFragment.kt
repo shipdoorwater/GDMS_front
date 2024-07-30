@@ -11,7 +11,10 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.navigation.findNavController
 import com.example.gdms_front.R
+import com.example.gdms_front.board.EventPageActivity
+import com.example.gdms_front.board.NoticePageActivity
 import com.example.gdms_front.point.PointMainActivity
+import org.w3c.dom.Text
 
 class AllMenuFragment : Fragment() {
 
@@ -54,6 +57,17 @@ class AllMenuFragment : Fragment() {
             startActivity(intent)
         }
 
+        // 공지사항 텍스트 클릭 시
+        view.findViewById<TextView>(R.id.noticeBtn).setOnClickListener {
+            val intent = Intent(activity, NoticePageActivity::class.java)
+            startActivity(intent)
+        }
+
+        // 이벤트 텍스트 클릭 시
+        view.findViewById<TextView>(R.id.eventBtn).setOnClickListener {
+            val intent = Intent(activity, EventPageActivity::class.java)
+            startActivity(intent)
+        }
 
         return view
     }

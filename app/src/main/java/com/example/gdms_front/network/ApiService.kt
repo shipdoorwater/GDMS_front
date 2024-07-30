@@ -8,6 +8,8 @@ import com.example.gdms_front.model.NewsArticle
 import com.example.gdms_front.model.PayRequest
 import com.example.gdms_front.model.PayResponse
 import com.example.gdms_front.model.ServicePack
+import com.example.gdms_front.model.SubscribeRequest
+import com.example.gdms_front.model.SubscribeResponse
 import com.example.gdms_front.model.Subscription
 import retrofit2.Response
 import retrofit2.http.Body
@@ -39,6 +41,9 @@ interface ApiService {
 
     @GET("/api/servicePacks")
     fun getServicePacks() : Call<List<ServicePack>>
+
+    @POST("/api/subscribe")
+    suspend fun subscribe(@Body subscribeRequest: SubscribeRequest): Response<SubscribeResponse>
 
     
     
