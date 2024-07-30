@@ -20,8 +20,19 @@ class ServicePackDetailActivity : AppCompatActivity() {
 
         // Intent에서 전달된 데이터 처리
         val fragmentIndex = intent.getIntExtra("FRAGMENT_INDEX", 0)
-        viewPager.setCurrentItem(fragmentIndex, false)
+        val packId = intent.getIntExtra("packId", -1)
+
+        if (packId == -1) {
+            viewPager.setCurrentItem(fragmentIndex-1, false)
+        } else {
+            viewPager.setCurrentItem(packId-1, false)
+        }
+
+        intent.removeExtra("FRAGMENT_INDEX")
+        intent.removeExtra("packId")
+
     }
+
     }
 
 
