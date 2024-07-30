@@ -19,7 +19,7 @@
         android:orientation="vertical">
 
 
-        <!--&lt;!&ndash;구독 정보가 없을 때 레이아웃 시작&ndash;&gt;-->
+        <!--구독 정보가 없을 때 레이아웃 시작-->
             <LinearLayout
                 android:id="@+id/truePage"
                 android:layout_width="match_parent"
@@ -166,6 +166,14 @@
                         android:text="3 Tier"
                         android:textSize="18sp"
                         android:textStyle="bold" />
+
+                    <!--구독 가능한 리사이클러 뷰 추가-->
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/availableSubscriptionsRecyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="8dp"/>
 
                     <TextView
                         android:layout_width="wrap_content"

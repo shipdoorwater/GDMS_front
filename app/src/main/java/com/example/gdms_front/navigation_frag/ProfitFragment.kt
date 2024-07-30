@@ -21,6 +21,8 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.example.gdms_front.R
 import com.example.gdms_front.adapter.SubNowAdapter
+import com.example.gdms_front.adapter.SubscriptionAdapter
+import com.example.gdms_front.model.ServicePack
 import com.example.gdms_front.model.Subscription
 import com.example.gdms_front.model.cancelSubRequest
 import com.example.gdms_front.network.RetrofitClient
@@ -72,9 +74,16 @@ class ProfitFragment : Fragment() {
         //API를 통해 구독상태를 확인
         //userId?.let{checkSubscriptionStatus(it)}
 
+//        userId?.let {
+//            checkSubscriptionStatus(it) { subscriptions ->
+//                adapter.updateSubscriptions(subscriptions)
+//            }
+//        }
+
         userId?.let {
-            checkSubscriptionStatus(it) { subscriptions ->
+            checkSubscriptionStatus(it) {subscriptions ->
                 adapter.updateSubscriptions(subscriptions)
+                loadAvailableSubscriptions(subscriptions)
             }
         }
 
@@ -198,6 +207,39 @@ class ProfitFragment : Fragment() {
             }
         }
     }
+
+    private fun loadAvailableSubscriptions(currentSubscriptions: List<Subscription>) {
+        // 전체 구독 가능한 아이템 가져오기
+        val call = RetrofitClient.apiService.getServicePacks()
+        call.enqueue(object : Callback<List<ServicePack>> {
+            override fun onResponse(
+                call: Call<List<ServicePack>>,
+                response: retrofit2.Response<List<ServicePack>>
+            ) {
+                if (response.isSuccessful) {
+                    val allServicePacks = response.body() ?: emptyList()
+                    // 현재 구독 중인 packId를 제외
+                    val availableServicePacks = allServicePacks.filter { servicePack ->
+                        currentSubscriptions.none { current -> current.packId == servicePack.packId }
+                    }
+                    // 가로 RecyclerView에 데이터 설정
+                    setupHorizontalRecyclerView(availableServicePacks)
+                }
+            }
+
+            override fun onFailure(call: Call<List<ServicePack>>, t: Throwable) {
+                // 실패 처리
+            }
+        })
+    }
+
+    private fun setupHorizontalRecyclerView(availableServicePacks: List<ServicePack>) {
+        val horizontalRecyclerView: RecyclerView = view?.findViewById(R.id.availableSubscriptionsRecyclerView) ?: return
+        val horizontalAdapter = SubscriptionAdapter(requireContext(), availableServicePacks)
+        horizontalRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        horizontalRecyclerView.adapter = horizontalAdapter
+    }
+
 
 
 }

@@ -36,7 +36,7 @@ class SubNowAdapter(
             }
 
 
-            //subStatus에 따라 취소 버튼의 가시성을 설정
+            //subStatus에 따라 취소 버튼의 보이나 안보이나
             cancelButton.visibility=if(subscription.subStatus) View.VISIBLE else View.GONE
 
             cancelButton.setOnClickListener {
