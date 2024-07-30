@@ -3,6 +3,7 @@ package com.example.gdms_front.profit
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -35,6 +36,12 @@ class SubActivity1 : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         loadSubscriptionPacks()
+
+        val tier2SubBtn = findViewById<Button>(R.id.tier2SubBtn)
+        tier2SubBtn.setOnClickListener {
+            val intent = Intent(this, ServicePackDetailActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun loadSubscriptionPacks() {
