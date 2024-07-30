@@ -1,4 +1,10 @@
 package com.example.gdms_front.model
 
-class NoticeResponse {
-}
+data class NoticeResponse (
+    val boardId: Int,
+    val subId: Int,
+    val boardDate: String,
+    val title: String,
+    val content: String,
+    val deleteYn: Boolean
+)

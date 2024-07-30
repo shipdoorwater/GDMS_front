@@ -30,42 +30,100 @@ class QrPayActivity : AppCompatActivity() {
 
         val sharedPref = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
         val userId = sharedPref.getString("token", null)
-        val bizNo = intent.getStringExtra("QR_CODE_VALUE")
+        //val bizNo = intent.getStringExtra("QR_CODE_VALUE")
 
-        binding.buttonPay.setOnClickListener {
-            val amountStr = binding.editTextAmount.text.toString()
-            val payment = amountStr.toIntOrNull()
+        val qrCodeValue = intent.getStringExtra("QR_CODE_VALUE")
 
-            Log.d("QrPayActivity123", "userId: $userId, bizNo: $bizNo, payment: $payment")
+        
+        //QR코드는 qr-code-generator.com 에서
+        //shopName : 버거킹 강남대로
+        //bizNo : 000000000
+        //adrs : 서울시 영등포구 여의도동
+        // 이 양식으로 줄바꾸기 지켜서 작성해야 함
 
-            if (userId != null && bizNo != null && payment != null) {
-                val payRequest = PayRequest(userId, bizNo, payment)
+        if (qrCodeValue != null) {
+            val qrData = parseQrCode(qrCodeValue)
+            val shopName = qrData["shopName"]
+            val bizNo = qrData["bizNo"]
+            val adrs = qrData["adrs"]
 
-                lifecycleScope.launch {
-                    try {
-                        val response = RetrofitClient.apiService.pay(payRequest)
-                        Log.d("QrPayActivity123", "Request: $payRequest")
-                        Log.d("QrPayActivity123", "Response: ${response.code()}")
-                        if (response.isSuccessful) {
-                            Toast.makeText(this@QrPayActivity, "Payment success", Toast.LENGTH_SHORT).show()
-                            val intent = Intent(this@QrPayActivity, MainActivity::class.java)
-                            startActivity(intent)
-                            finish()
-                        } else {
-                            Toast.makeText(this@QrPayActivity, "Payment failed", Toast.LENGTH_SHORT).show()
-                            Log.e("QrPayActivity123", "Payment failed: ${response.errorBody()?.string()}")
+            Log.d("QrPayActivity123", "shopName: $shopName, bizNo: $bizNo, adrs: $adrs")
+
+            binding.textViewShopName.text = "상호 : $shopName"
+            binding.textViewBizNo.text = "사업자 번호: $bizNo"
+            binding.textViewAdrs.text = "주소: $adrs"
+
+            
+
+
+            binding.buttonPay.setOnClickListener {
+                val amountStr = binding.editTextAmount.text.toString()
+                val payment = amountStr.toIntOrNull()
+
+                Log.d("QrPayActivity123", "userId: $userId, bizNo: $bizNo, payment: $payment")
+
+                if (userId != null && bizNo != null && payment != null) {
+                    val payRequest = PayRequest(userId, bizNo, payment)
+
+                    lifecycleScope.launch {
+                        try {
+                            val response = RetrofitClient.apiService.pay(payRequest)
+                            Log.d("QrPayActivity123", "Request: $payRequest")
+                            Log.d("QrPayActivity123", "Response: ${response.code()}")
+                            if (response.isSuccessful) {
+                                Toast.makeText(
+                                    this@QrPayActivity,
+                                    "Payment success",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                val intent = Intent(this@QrPayActivity, MainActivity::class.java)
+                                startActivity(intent)
+                                finish()
+                            } else {
+                                Toast.makeText(
+                                    this@QrPayActivity,
+                                    "Payment failed",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                Log.e(
+                                    "QrPayActivity123",
+                                    "Payment failed: ${response.errorBody()?.string()}"
+                                )
+                            }
+                        } catch (e: Exception) {
+                            Toast.makeText(
+                                this@QrPayActivity,
+                                "Network error occurred",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            Log.e("QrPayActivity123", "Payment failed", e)
                         }
-                    } catch (e: Exception) {
-                        Toast.makeText(this@QrPayActivity, "Network error occurred", Toast.LENGTH_SHORT).show()
-                        Log.e("QrPayActivity123", "Payment failed", e)
                     }
-                }
-            } else {
-                Toast.makeText(this@QrPayActivity, "Invalid input", Toast.LENGTH_SHORT).show()
-                if (payment == null) {
-                    binding.editTextAmount.error = "Invalid amount"
+                } else {
+                    Toast.makeText(this@QrPayActivity, "Invalid input", Toast.LENGTH_SHORT).show()
+                    if (payment == null) {
+                        binding.editTextAmount.error = "Invalid amount"
+                    }
                 }
             }
         }
     }
+
+    private fun parseQrCode(qrCodeValue: String): Map<String, String> {
+        val qrDataMap = mutableMapOf<String, String>()
+        val lines = qrCodeValue.split("\n")
+
+        for (line in lines) {
+            val parts = line.split(" : ")
+            if (parts.size == 2) {
+                val key = parts[0].trim()
+                val value = parts[1].trim()
+                qrDataMap[key] = value
+            }
+        }
+
+        return qrDataMap
+    }
+
+
 }

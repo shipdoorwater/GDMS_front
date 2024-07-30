@@ -6,10 +6,9 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
-    <uses-feature android:name="android.hardware.camera" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-feature android:name="android.hardware.camera.any" />
 
     <application
         android:allowBackup="true"
@@ -30,15 +29,10 @@
             android:exported="false" />
         <activity
             android:name=".board.EventPageActivity"
-            android:exported="false" /> <!-- <provider -->
-        <!-- android:name="androidx.core.content.FileProvider" -->
-        <!-- android:authorities="${applicationId}.provider" -->
-        <!-- android:exported="false" -->
-        <!-- android:grantUriPermissions="true"> -->
-        <!-- <meta-data -->
-        <!-- android:name="android.support.FILE_PROVIDER_PATHS" -->
-        <!-- android:resource="@xml/file_paths" /> -->
-        <!-- </provider> -->
+            android:exported="false" />
+        <activity
+            android:name=".profit.SubActivity2"
+            android:exported="false" />
         <activity
             android:name=".myPage.ModifyInfoActivity"
             android:exported="false" />
@@ -51,7 +45,7 @@
         <activity
             android:name=".profit.TierExpActivity"
             android:exported="false" />
-        <activity
+       <activity
             android:name=".point.PointHistoryActivity"
             android:exported="false" />
         <activity

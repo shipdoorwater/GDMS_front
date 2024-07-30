@@ -1,4 +1,5 @@
 package com.example.gdms_front.model
 
-class NoticeRequest {
-}
+data class NoticeRequest (
+    val subId:Int
+)
