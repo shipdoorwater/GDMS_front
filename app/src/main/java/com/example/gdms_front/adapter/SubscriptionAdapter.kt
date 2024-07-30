@@ -35,6 +35,7 @@ class SubscriptionAdapter (
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val servicePack = servicePacks[position]
+        val packId = servicePack.packId
         holder.packName.text = servicePack.packName
         holder.packBrief.text = servicePack.packBrief  // 여기에 아이템별 표시하고 싶은 아이템 추가해
 
@@ -49,6 +50,7 @@ class SubscriptionAdapter (
             //onItemClick(servicePack)
             val intent = Intent(context, ServicePackDetailActivity::class.java)
             intent.putExtra("FRAGMENT_INDEX", position) // 인덱스 전달
+            intent.putExtra("packId", packId)
             context.startActivity(intent)
         }
     }
