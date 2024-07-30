@@ -28,12 +28,12 @@ import java.util.Locale
 
 class ProfitFragment : Fragment() {
 
-   // private lateinit var viewPager: ViewPager2
+    // private lateinit var viewPager: ViewPager2
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d("ProfitFragment", "onCreate: ")
+        Log.d("구독프래그먼트", "onCreate: ")
     }
 
     override fun onCreateView(
@@ -49,6 +49,11 @@ class ProfitFragment : Fragment() {
         val truePage: LinearLayout? = view.findViewById(R.id.truePage)
         val falsePage: LinearLayout? = view.findViewById(R.id.falsePage)
 
+        // 아이디 가져오기
+        val sharedPreference = activity?.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+        val userId = sharedPreference?.getString("token", null)
+
+
         // 예제 조건
         val isBenefitAvailable = true // true면 구독 안함 / false 면 구독 중
 
@@ -56,24 +61,27 @@ class ProfitFragment : Fragment() {
         truePage?.visibility = if (isBenefitAvailable) View.VISIBLE else View.GONE
         falsePage?.visibility = if (isBenefitAvailable) View.GONE else View.VISIBLE
 
-        
+        // isBenefitAvailable 이 true 인 경우
         // tier1 안내 화면
         view.findViewById<LinearLayout>(R.id.tier1).setOnClickListener {
-            val intent = Intent(this@ProfitFragment.requireContext(), TierExpActivity::class.java)
+            val intent =
+                Intent(this@ProfitFragment.requireContext(), TierExpActivity::class.java)
             intent.putExtra("FRAGMENT_INDEX", 0) // 1번 FRAG는 0부터 시작
             startActivity(intent)
         }
 
         // tier2 안내 화면
         view.findViewById<LinearLayout>(R.id.tier2).setOnClickListener {
-            val intent = Intent(this@ProfitFragment.requireContext(), TierExpActivity::class.java)
+            val intent =
+                Intent(this@ProfitFragment.requireContext(), TierExpActivity::class.java)
             intent.putExtra("FRAGMENT_INDEX", 1)
             startActivity(intent)
         }
 
         // tier3 안내 화면
         view.findViewById<LinearLayout>(R.id.tier3).setOnClickListener {
-            val intent = Intent(this@ProfitFragment.requireContext(), TierExpActivity::class.java)
+            val intent =
+                Intent(this@ProfitFragment.requireContext(), TierExpActivity::class.java)
             intent.putExtra("FRAGMENT_INDEX", 2)
             startActivity(intent)
         }
@@ -94,23 +102,8 @@ class ProfitFragment : Fragment() {
             it.findNavController().navigate((R.id.action_profitFragment_to_mainFragment))
         }
 
-//        viewPager = view.findViewById(R.id.tierViewPager)
-//        viewPager.adapter = TierExplainAdapter(requireActivity())
-//
-//        view.findViewById<LinearLayout>(R.id.tier3).setOnClickListener {
-//            viewPager.currentItem = 2
-//        }
-//
-//        view.findViewById<LinearLayout>(R.id.tier2).setOnClickListener {
-//            viewPager.currentItem = 1
-//        }
-//
-//        view.findViewById<LinearLayout>(R.id.tier1).setOnClickListener {
-//            viewPager.currentItem = 0
-//        }
-
         return view
     }
-
-
 }
+
+

@@ -10,37 +10,39 @@
         android:id="@+id/textViewStoreInfo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="가게가 맞는지 확인해주세요!"
+        android:text="결제정보고 맞는지 확인해주세요!"
         android:textSize="18sp" />
 
     <TextView
-        android:id="@+id/textViewShopName"
+        android:id="@+id/userId"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
-        android:text="Shop Name: "
+        android:text="userId: "
         android:textSize="16sp" />
 
     <TextView
-        android:id="@+id/textViewBizNo"
+        android:id="@+id/packName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Business No: "
+        android:text="packName : "
         android:textSize="16sp" />
 
     <TextView
-        android:id="@+id/textViewAdrs"
+        android:id="@+id/packBrief"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Address: "
+        android:text="packBrief: "
         android:textSize="16sp" />
 
-    <EditText
-        android:layout_marginTop="50dp"
-        android:id="@+id/editTextAmount"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/amountPaid"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="Enter amount" />
+        android:text="amountPaid: "
+        android:textSize="16sp" />
+
+
 
     <Button
         android:id="@+id/buttonPay"
@@ -50,3 +52,15 @@
 </LinearLayout>
 
 </layout>
+
+
+    <!--<?xml version="1.0" encoding="utf-8"?>
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".profit.SubActivity2">
+
+    </androidx.constraintlayout.widget.ConstraintLayout>-->
