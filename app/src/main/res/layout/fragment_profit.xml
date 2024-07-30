@@ -7,6 +7,17 @@
             android:layout_height="match_parent"
             tools:context=".navigation_frag.ProfitFragment">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/linearLayout">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
 
         <!--&lt;!&ndash;구독 정보가 없을 때 레이아웃 시작&ndash;&gt;-->
             <LinearLayout
@@ -14,7 +25,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:visibility="gone">
+                android:visibility="gone"
+                android:layout_marginBottom="80dp">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -122,7 +134,8 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:visibility="gone"
-                android:padding="16dp">
+                android:padding="16dp"
+                android:layout_marginBottom="80dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -140,6 +153,12 @@
                     android:background="#FFEB3B"
                     android:padding="16dp"
                     android:layout_marginTop="16dp">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -218,6 +237,9 @@
 
             </LinearLayout>
             <!--구독 정보가 있을 때 레이아웃 종료-->
+
+    </LinearLayout>
+    </ScrollView>
 
 
             <LinearLayout
