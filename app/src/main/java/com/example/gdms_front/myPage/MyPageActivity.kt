@@ -70,6 +70,10 @@ class MyPageActivity : AppCompatActivity() {
             getMemberInfo(userId)
         }
 
+        // 권한 부여
+        requestPermissionsIfNecessary()
+
+
         // 뒤로 가기
         findViewById<ImageView>(R.id.backBtn).setOnClickListener {
             finish()
@@ -224,10 +228,22 @@ class MyPageActivity : AppCompatActivity() {
 
 
     private fun takePhoto() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ||
-            ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE), 100)
+
+        val cameraPermission = ContextCompat.checkSelfPermission(this@MyPageActivity, Manifest.permission.CAMERA)
+        val writePermission = ContextCompat.checkSelfPermission(this@MyPageActivity, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        val readPermission = ContextCompat.checkSelfPermission(this@MyPageActivity, Manifest.permission.READ_EXTERNAL_STORAGE)
+
+
+        if (cameraPermission != PackageManager.PERMISSION_GRANTED ||
+                writePermission != PackageManager.PERMISSION_GRANTED ||
+                readPermission != PackageManager.PERMISSION_GRANTED) {
+            Log.d("CameraBtnTest", "권한 없음: 카메라 권한 = $cameraPermission, 저장소 쓰기 권한 = $writePermission, 저장소 읽기 권한 = $readPermission")
+            ActivityCompat.requestPermissions(this, arrayOf(
+                Manifest.permission.CAMERA,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.READ_EXTERNAL_STORAGE), 100)
         } else {
+            Log.d("CameraBtnTest", "권한 있음")
             val photoFile: File? = try {
                 createImageFile()
             } catch (ex: IOException) {
@@ -238,6 +254,7 @@ class MyPageActivity : AppCompatActivity() {
                 cameraLauncher.launch(photoURI)
             }
         }
+
     }
 
     @Throws(IOException::class)
@@ -300,4 +317,39 @@ class MyPageActivity : AppCompatActivity() {
     }
 
 
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == 100) {
+            var allPermissionsGranted = true
+            for (result in grantResults) {
+                if (result != PackageManager.PERMISSION_GRANTED) {
+                    allPermissionsGranted = false
+                    break
+                }
+            }
+
+            if (allPermissionsGranted) {
+                takePhoto()
+            } else {
+                Toast.makeText(this, "Camera and Storage permissions are required", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun requestPermissionsIfNecessary() {
+        val permissionsNeeded = mutableListOf<String>()
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            permissionsNeeded.add(Manifest.permission.CAMERA)
+        }
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            permissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        }
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            permissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE)
+        }
+
+        if (permissionsNeeded.isNotEmpty()) {
+            ActivityCompat.requestPermissions(this, permissionsNeeded.toTypedArray(), 100)
+        }
+    }
 }

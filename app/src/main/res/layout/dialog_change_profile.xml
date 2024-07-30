@@ -39,6 +39,7 @@
         android:src="@drawable/img_empty_profile"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:scaleType="fitXY"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout13"
         app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize" />
 
