@@ -76,9 +76,17 @@ class QrPayActivity : AppCompatActivity() {
                                     "Payment success",
                                     Toast.LENGTH_SHORT
                                 ).show()
-                                val intent = Intent(this@QrPayActivity, MainActivity::class.java)
+
+                                // 나가서 메인 엑티비티로 가는데 그 다음 프레그먼트 어디로 갈지 정해줌
+                                val intent = Intent(this@QrPayActivity,MainActivity::class.java)
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                                intent.putExtra("FragmentToLoad", "PayFragment")
                                 startActivity(intent)
                                 finish()
+
+//                                val intent = Intent(this@QrPayActivity, MainActivity::class.java)
+//                                startActivity(intent)
+//                                finish()
                             } else {
                                 Toast.makeText(
                                     this@QrPayActivity,

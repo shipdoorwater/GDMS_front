@@ -151,6 +151,7 @@
                 android:src="@drawable/img_material_symbol_black_900_24x24" />
 
             <TextView
+                android:id="@+id/accountBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
@@ -173,6 +174,7 @@
                 android:src="@drawable/img_material_symbol_black_900_24x24" />
 
             <TextView
+                android:id="@+id/newsBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"

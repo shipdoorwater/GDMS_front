@@ -11,8 +11,10 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.navigation.findNavController
 import com.example.gdms_front.R
+import com.example.gdms_front.account.AccountActivity
 import com.example.gdms_front.board.EventPageActivity
 import com.example.gdms_front.board.NoticePageActivity
+import com.example.gdms_front.news.NewsActivity
 import com.example.gdms_front.point.PointMainActivity
 import org.w3c.dom.Text
 
@@ -68,6 +70,19 @@ class AllMenuFragment : Fragment() {
             val intent = Intent(activity, EventPageActivity::class.java)
             startActivity(intent)
         }
+
+        // 뉴스 텍스트 클릭 시
+        view.findViewById<TextView>(R.id.newsBtn).setOnClickListener {
+            val intent = Intent(activity, NewsActivity::class.java)
+            startActivity(intent)
+        }
+
+        // 뉴스 텍스트 클릭 시
+        view.findViewById<TextView>(R.id.accountBtn).setOnClickListener {
+            val intent = Intent(activity, AccountActivity::class.java)
+            startActivity(intent)
+        }
+
 
         return view
     }
