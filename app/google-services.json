@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1087133762723",
+    "project_id": "gdms-afb47",
+    "storage_bucket": "gdms-afb47.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1087133762723:android:03044ef8a4a891507a6b16",
+        "android_client_info": {
+          "package_name": "com.example.gdms_front"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD-u7f-Uv8sXtbZXqjFwL25MVKthB5MBaw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
