@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
 import com.example.gdms_front.MainActivity
 import com.example.gdms_front.R
 import com.example.gdms_front.databinding.ActivityQrPayBinding
@@ -63,7 +64,9 @@ class SubActivity2 : AppCompatActivity() {
 
                         Log.d("구독결제", "구독결제 successful: ${response.body()}")
                         Toast.makeText(this@SubActivity2, "구독신청 성공", Toast.LENGTH_SHORT).show()
-
+                        
+                        
+                        // 나가서 메인 엑티비티로 가는데 그 다음 프레그먼트 어디로 갈지 정해줌(일단 기능 보류)
                         val intent = Intent(this@SubActivity2,MainActivity::class.java)
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                         intent.putExtra("FragmentToLoad", "ProfitFragment")

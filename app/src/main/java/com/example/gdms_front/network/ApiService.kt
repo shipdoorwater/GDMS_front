@@ -5,6 +5,8 @@ import com.example.gdms_front.model.JoinResponse
 import com.example.gdms_front.model.LoginRequest
 import com.example.gdms_front.model.LoginResponse
 import com.example.gdms_front.model.NewsArticle
+import com.example.gdms_front.model.PayHistory
+import com.example.gdms_front.model.PayHistoryResponse
 import com.example.gdms_front.model.PayRequest
 import com.example.gdms_front.model.PayResponse
 import com.example.gdms_front.model.ServicePack
@@ -19,6 +21,7 @@ import retrofit2.http.POST
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface ApiService {
     
@@ -49,5 +52,13 @@ interface ApiService {
 
     @POST("/api/cancelSubscription")
     suspend fun cancelSubscription(@Body cancelSubRequest: cancelSubRequest): Response<cancelSubResponse>
+
+    @GET("/api/payHistory/dateRange/{userId}")
+    fun getPayHistory(
+        @Path("userId") userId: String,
+        @Query("startDate") startDate: String,
+        @Query("endDate") endDate: String
+    ): Call<PayHistoryResponse>
+
 }
-    
+
