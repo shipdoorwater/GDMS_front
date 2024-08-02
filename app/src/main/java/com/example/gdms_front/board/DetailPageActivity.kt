@@ -2,6 +2,7 @@ package com.example.gdms_front.board
 
 import android.os.Bundle
 import android.util.Log
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -46,6 +47,11 @@ class DetailPageActivity : AppCompatActivity() {
         } else {
             Toast.makeText(this, "Invalid notice details", Toast.LENGTH_SHORT).show()
         }
+
+        findViewById<ImageView>(R.id.backBtn).setOnClickListener {
+            finish()
+        }
+
     }
 
     private fun fetchNoticeDetail(subId: String, boardId: Int) {
