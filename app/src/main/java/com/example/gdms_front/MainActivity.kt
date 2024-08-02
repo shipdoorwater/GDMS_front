@@ -16,7 +16,6 @@ import com.example.gdms_front.myPage.MyPageActivity
 import java.util.concurrent.TimeUnit
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
-import com.example.gdms_front.myPage.MyPageActivity
 import com.example.gdms_front.navigation_frag.PayFragment
 import com.example.gdms_front.navigation_frag.ProfitFragment
 
@@ -38,5 +37,9 @@ class MainActivity : AppCompatActivity() {
             ExistingPeriodicWorkPolicy.REPLACE,
             workRequest
         )
+
+        findViewById<ImageView>(R.id.alarmBtn).setOnClickListener {
+            findNavController(R.id.fragmentContainerView).navigate(R.id.notificationFragment)
+        }
     }
 }
