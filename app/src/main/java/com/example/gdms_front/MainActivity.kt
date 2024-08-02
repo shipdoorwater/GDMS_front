@@ -37,5 +37,9 @@ class MainActivity : AppCompatActivity() {
             ExistingPeriodicWorkPolicy.REPLACE,
             workRequest
         )
+
+        findViewById<ImageView>(R.id.alarmBtn).setOnClickListener {
+            findNavController(R.id.fragmentContainerView).navigate(R.id.notificationFragment)
+        }
     }
 }
