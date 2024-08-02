@@ -21,6 +21,13 @@ import com.example.gdms_front.databinding.ActivityAccountBinding
 import com.example.gdms_front.model.PayHistory
 import com.example.gdms_front.model.PayHistoryResponse
 import com.example.gdms_front.network.RetrofitClient
+import com.github.mikephil.charting.charts.PieChart
+import com.github.mikephil.charting.data.PieData
+import com.github.mikephil.charting.data.PieDataSet
+import com.github.mikephil.charting.data.PieEntry
+import com.github.mikephil.charting.formatter.IValueFormatter
+import com.github.mikephil.charting.formatter.ValueFormatter
+import com.github.mikephil.charting.utils.ColorTemplate
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.DayViewDecorator
 import com.prolificinteractive.materialcalendarview.DayViewFacade
@@ -46,6 +53,9 @@ class AccountActivity : AppCompatActivity() {
     private var payHistoryMap: Map<CalendarDay, List<PayHistory>> = emptyMap()
     private lateinit var payHistoryAdapter: PayHistoryAdapter
 
+    // PieChart 객체
+    private lateinit var pieChart: PieChart
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,6 +66,10 @@ class AccountActivity : AppCompatActivity() {
         // 제목과 더보기 버튼을 항상 보이도록 설정
         binding.tvTitle.visibility = View.VISIBLE
         binding.btnMore.visibility = View.VISIBLE
+
+        // PieChart 초기화
+        pieChart = binding.pieChart
+        setupPieChart()
 
         // 데코레이터 초기화 및 뷰 설정
         fetchPayHistory()
@@ -71,7 +85,8 @@ class AccountActivity : AppCompatActivity() {
         todayDecorator = CalendarDecorators.todayDecorator(this)
         sundayDecorator = CalendarDecorators.sundayDecorator()
         saturdayDecorator = CalendarDecorators.saturdayDecorator()
-        selectedMonthDecorator = CalendarDecorators.selectedMonthDecorator(this, CalendarDay.today().month)
+        selectedMonthDecorator =
+            CalendarDecorators.selectedMonthDecorator(this, CalendarDay.today().month)
     }
 
     /**
@@ -91,6 +106,7 @@ class AccountActivity : AppCompatActivity() {
             // 월 변경 리스너 설정
             setOnMonthChangedListener { widget, date ->
                 updateMonthDecorators(widget, date)
+                updatePieChart(date)
             }
 
             // 날짜 선택 리스너 설정
@@ -107,7 +123,7 @@ class AccountActivity : AppCompatActivity() {
             setOnRangeSelectedListener { widget, dates -> }
         }
         recyclerView.layoutManager = LinearLayoutManager(this@AccountActivity)
-        payHistoryAdapter = PayHistoryAdapter(emptyList(),false)
+        payHistoryAdapter = PayHistoryAdapter(emptyList(), false)
         recyclerView.adapter = payHistoryAdapter
 
         btnMore.setOnClickListener {
@@ -160,16 +176,21 @@ class AccountActivity : AppCompatActivity() {
         val call = apiService.getPayHistory(userId, startDate, endDate)
 
         call.enqueue(object : Callback<PayHistoryResponse> {
-            override fun onResponse(call: Call<PayHistoryResponse>, response: Response<PayHistoryResponse>) {
+            override fun onResponse(
+                call: Call<PayHistoryResponse>,
+                response: Response<PayHistoryResponse>
+            ) {
                 if (response.isSuccessful) {
                     val payHistoryList = response.body()?.message
                     if (payHistoryList != null) {
                         payHistoryMap = convertPayHistoryListToMap(payHistoryList)
                         addPayHistoryDecorators(payHistoryMap)
+                        updatePieChart(CalendarDay.today())
                     }
                     Log.d("달력", "Response: $payHistoryList")
                 } else {
-                    Toast.makeText(this@AccountActivity, "데이터를 불러오는데 실패했습니다.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@AccountActivity, "데이터를 불러오는데 실패했습니다.", Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
 
@@ -243,8 +264,15 @@ class AccountActivity : AppCompatActivity() {
 
                             // 지출 금액 합산 및 포맷팅
                             val totalAmount = histories.sumBy { it.amount }
-                            val formattedAmount = NumberFormat.getNumberInstance(Locale.getDefault()).format(totalAmount)
-                            canvas.drawText("₩$formattedAmount", xPos.toFloat(), yPos.toFloat(), paint)
+                            val formattedAmount =
+                                NumberFormat.getNumberInstance(Locale.getDefault())
+                                    .format(totalAmount)
+                            canvas.drawText(
+                                "₩$formattedAmount",
+                                xPos.toFloat(),
+                                yPos.toFloat(),
+                                paint
+                            )
 
                             // 기존 색상과 텍스트 크기 복원
                             paint.color = oldColor
@@ -260,7 +288,7 @@ class AccountActivity : AppCompatActivity() {
 
     private fun displayPayHistoryDetails(date: CalendarDay) {
         val payHistories = payHistoryMap[date] ?: emptyList()
-        payHistoryAdapter.updateData(payHistories,false)
+        payHistoryAdapter.updateData(payHistories, false)
         binding.tvTitle.visibility = View.VISIBLE
         binding.recyclerView.visibility = View.VISIBLE
         binding.btnMore.visibility = View.VISIBLE
@@ -269,5 +297,75 @@ class AccountActivity : AppCompatActivity() {
     private fun displayAllPayHistories() {
         val allPayHistories = payHistoryMap.values.flatten().sortedByDescending { it.payDate }
         payHistoryAdapter.updateData(allPayHistories, true)
+    }
+
+    /**
+     * PieChart 설정 함수
+     */
+    private fun setupPieChart() {
+        pieChart.apply {
+            description.isEnabled = false
+            isRotationEnabled = false
+            setUsePercentValues(false)
+            setDrawEntryLabels(false)
+            setHoleColor(Color.WHITE)
+            setTransparentCircleColor(Color.WHITE)
+            setTransparentCircleAlpha(110)
+            holeRadius = 58f
+            transparentCircleRadius = 61f
+            setDrawCenterText(true)
+            centerText = "지출 카테고리"
+            setCenterTextSize(18f)
+            legend.isEnabled = true
+        }
+    }
+
+    /**
+     * PieChart 데이터를 업데이트하는 함수
+     */
+    private fun updatePieChart(date: CalendarDay) {
+        val selectedMonth = date.month
+        val selectedYear = date.year
+
+        val categoryTotals = mutableMapOf<String, Int>()
+        var totalAmount = 0
+
+        payHistoryMap.filterKeys { it.year == selectedYear && it.month == selectedMonth }
+            .values.flatten()
+            .forEach { payHistory ->
+                val amount = payHistory.amount
+                categoryTotals[payHistory.storeCode.toString()] = categoryTotals.getOrDefault(payHistory.storeCode.toString(), 0) + amount
+                totalAmount += amount
+            }
+
+        // 디버깅 출력을 추가하여 값을 확인합니다.
+        categoryTotals.forEach { (category, total) ->
+            Log.d("Category Total", "Category: $category, Total: $total")
+        }
+
+        val entries = categoryTotals.map { (category, total) ->
+            val percentage = total.toFloat() / totalAmount * 100
+            PieEntry(total.toFloat(), "$category: ${String.format("%.1f", percentage)}%")
+        }
+
+        val dataSet = PieDataSet(entries, "카테고리별 지출")
+
+        dataSet.colors = ColorTemplate.MATERIAL_COLORS.toList()
+        dataSet.valueTextSize = 25f // 텍스트 크기를 조정했습니다.
+        dataSet.valueTextColor = Color.BLACK
+
+        // ValueFormatter를 사용하여 Total 값을 표시합니다.
+        val formatter = NumberFormat.getCurrencyInstance(Locale.getDefault())
+        dataSet.valueFormatter = object : ValueFormatter() {
+            override fun getFormattedValue(value: Float): String {
+                return formatter.format(value.toDouble())
+            }
+        }
+
+        val data = PieData(dataSet)
+        pieChart.data = data
+        pieChart.setUsePercentValues(false) // 퍼센트 값 대신 실제 값을 사용합니다.
+        pieChart.setDrawEntryLabels(true) // 엔트리 레이블을 표시합니다.
+        pieChart.invalidate() // Refresh the chart
     }
 }
