@@ -12,11 +12,13 @@ import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.example.gdms_front.R
 import com.example.gdms_front.auth.LoginActivity
 import com.example.gdms_front.news.NewsActivity
 import com.example.gdms_front.qr_pay.QrPayActivity
 import com.google.zxing.integration.android.IntentIntegrator
+import kotlin.let as let1
 
 class MainFragment : Fragment() {
 
@@ -76,18 +78,4 @@ class MainFragment : Fragment() {
 
         return view
     }
-/*
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
-        if (result != null) {
-            if (result.contents != null) {
-                // QR Code successfully scanned
-                val qrData = result.contents
-                val intent = Intent(activity, QrPayActivity::class.java)
-                intent.putExtra("QR_DATA", qrData)
-                startActivity(intent)
-            }
-        }
-    }*/
 }

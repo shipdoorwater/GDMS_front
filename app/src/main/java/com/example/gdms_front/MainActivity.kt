@@ -8,7 +8,10 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import com.example.gdms_front.myPage.MyPageActivity
+import com.example.gdms_front.navigation_frag.PayFragment
 import com.example.gdms_front.navigation_frag.ProfitFragment
 
 class MainActivity : AppCompatActivity() {
@@ -19,18 +22,6 @@ class MainActivity : AppCompatActivity() {
         findViewById<ImageView>(R.id.myPageBtn).setOnClickListener {
             val intent = Intent(this, MyPageActivity::class.java)
             startActivity(intent)
-        }
-        
-        
-        // 다른 엑티비티에서 나와서 지울 때
-        val fragmentToLoad = intent.getStringExtra("FragmentToLoad")
-        Log.d("FragmentToLoad", "FragmentToLoad: $fragmentToLoad")
-
-        if (fragmentToLoad=="ProfitFragment") {
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.fragmentContainerView, ProfitFragment())
-            .commit()
-            intent.removeExtra("FragmentToLoad")
         }
     }
 }
