@@ -9,6 +9,16 @@
     android:layout_height="match_parent"
     tools:context=".account.AccountActivity">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
+
     <com.prolificinteractive.materialcalendarview.MaterialCalendarView
         android:id="@+id/calendar_view"
         android:layout_width="match_parent"
@@ -27,6 +37,43 @@
         app:mcv_weekDayTextAppearance="@style/CalenderViewWeekCustomText"
         />
 
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="16dp">
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="수입지출 상세내용"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:paddingTop="16dp"
+            android:visibility="gone" />
+
+            <Button
+                android:id="@+id/btnMore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="더보기"
+                android:visibility="gone"
+                android:layout_gravity="end"
+                android:paddingTop="16dp" />
+
+            </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+
+    </LinearLayout>
+
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
