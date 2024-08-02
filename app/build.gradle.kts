@@ -106,7 +106,11 @@ dependencies {
     implementation("com.google.firebase:firebase-auth-ktx")
 
     implementation("androidx.work:work-runtime-ktx:2.7.1")
-    
+
+    //달력
     implementation ("com.github.prolificinteractive:material-calendarview:2.0.1")
+
+    //차트 라이브러리 추가
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
 }
 
