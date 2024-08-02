@@ -98,6 +98,7 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:4.9.2")
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.2")
 
+
     // 파이어베이스
     implementation(platform("com.google.firebase:firebase-bom:33.1.2"))
     implementation("com.google.firebase:firebase-analytics")
@@ -105,6 +106,7 @@ dependencies {
     implementation("com.google.firebase:firebase-auth-ktx")
 
     implementation("androidx.work:work-runtime-ktx:2.7.1")
-
-
+    
+    implementation ("com.github.prolificinteractive:material-calendarview:2.0.1")
 }
+
