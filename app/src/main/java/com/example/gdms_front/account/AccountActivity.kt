@@ -1,23 +1,33 @@
 package com.example.gdms_front.account
 
-import ExpenseDecorator
+import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.icu.text.NumberFormat
 import android.icu.text.SimpleDateFormat
 import android.icu.util.Calendar
 import android.os.Bundle
 import android.text.style.LineBackgroundSpan
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.ParseException
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.gdms_front.R
+import com.example.gdms_front.adapter.PayHistoryAdapter
 import com.example.gdms_front.databinding.ActivityAccountBinding
-import com.example.gdms_front.model.ExpenseData
 import com.example.gdms_front.model.PayHistory
 import com.example.gdms_front.model.PayHistoryResponse
 import com.example.gdms_front.network.RetrofitClient
+import com.github.mikephil.charting.charts.PieChart
+import com.github.mikephil.charting.data.PieData
+import com.github.mikephil.charting.data.PieDataSet
+import com.github.mikephil.charting.data.PieEntry
+import com.github.mikephil.charting.formatter.IValueFormatter
+import com.github.mikephil.charting.formatter.ValueFormatter
+import com.github.mikephil.charting.utils.ColorTemplate
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.DayViewDecorator
 import com.prolificinteractive.materialcalendarview.DayViewFacade
@@ -39,17 +49,32 @@ class AccountActivity : AppCompatActivity() {
     private lateinit var sundayDecorator: DayViewDecorator
     private lateinit var saturdayDecorator: DayViewDecorator
 
+    // 지출 내역 데이터를 저장할 전역 변수
+    private var payHistoryMap: Map<CalendarDay, List<PayHistory>> = emptyMap()
+    private lateinit var payHistoryAdapter: PayHistoryAdapter
+
+    // PieChart 객체
+    private lateinit var pieChart: PieChart
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // View Binding 초기화 및 레이아웃 설정
         binding = ActivityAccountBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // 제목과 더보기 버튼을 항상 보이도록 설정
+        binding.tvTitle.visibility = View.VISIBLE
+        binding.btnMore.visibility = View.VISIBLE
+
+        // PieChart 초기화
+        pieChart = binding.pieChart
+        setupPieChart()
+
         // 데코레이터 초기화 및 뷰 설정
         fetchPayHistory()
         initDecorators()
         initView()
-
     }
 
     /**
@@ -60,10 +85,8 @@ class AccountActivity : AppCompatActivity() {
         todayDecorator = CalendarDecorators.todayDecorator(this)
         sundayDecorator = CalendarDecorators.sundayDecorator()
         saturdayDecorator = CalendarDecorators.saturdayDecorator()
-        selectedMonthDecorator = CalendarDecorators.selectedMonthDecorator(
-            this,
-            CalendarDay.today().month
-        )
+        selectedMonthDecorator =
+            CalendarDecorators.selectedMonthDecorator(this, CalendarDay.today().month)
     }
 
     /**
@@ -71,6 +94,7 @@ class AccountActivity : AppCompatActivity() {
      */
     private fun initView() = with(binding) {
         with(calendarView) {
+
             // 데코레이터 추가
             addDecorators(
                 todayDecorator,
@@ -82,6 +106,14 @@ class AccountActivity : AppCompatActivity() {
             // 월 변경 리스너 설정
             setOnMonthChangedListener { widget, date ->
                 updateMonthDecorators(widget, date)
+                updatePieChart(date)
+            }
+
+            // 날짜 선택 리스너 설정
+            setOnDateChangedListener { widget, date, selected ->
+                if (selected) {
+                    displayPayHistoryDetails(date)
+                }
             }
 
             // 헤더 텍스트 스타일 설정
@@ -90,6 +122,16 @@ class AccountActivity : AppCompatActivity() {
             // 범위 선택 리스너 설정 (현재는 빈 구현)
             setOnRangeSelectedListener { widget, dates -> }
         }
+        recyclerView.layoutManager = LinearLayoutManager(this@AccountActivity)
+        payHistoryAdapter = PayHistoryAdapter(emptyList(), false)
+        recyclerView.adapter = payHistoryAdapter
+
+        btnMore.setOnClickListener {
+            // "더보기" 버튼 클릭 시 모든 지출 내역을 보여주는 코드 작성
+            displayAllPayHistories()
+        }
+
+
     }
 
     /**
@@ -112,34 +154,43 @@ class AccountActivity : AppCompatActivity() {
             selectedMonthDecorator
         )
 
-        // 새로운 월의 첫 날 선택
-        val clickedDay = CalendarDay.from(date.year, date.month, 1)
-        widget.setDateSelected(clickedDay, true)
+        // 지출 내역 데코레이터 추가
+        addPayHistoryDecorators(payHistoryMap)
+
+        // 새로운 월의 첫 날 선택 (구려서 꺼놓음)
+        // val clickedDay = CalendarDay.from(date.year, date.month, 1)
+        // widget.setDateSelected(clickedDay, true)
     }
 
     private fun fetchPayHistory() {
-        val userId = "testtest" // 실제 사용자 ID로 변경해야 합니다
-        val currentDate = Calendar.getInstance()
-        val dateFormat = SimpleDateFormat("yyyyMMdd", Locale.getDefault())
+
+
+        val sharedPref = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+        val userId = sharedPref.getString("token", null).toString()
         val endDate = "29991231"//dateFormat.format(currentDate.time)
-        //currentDate.add(Calendar.MONTH, -1) // 1달 전
         val startDate = "19880621" //dateFormat.format(currentDate.time)
 
         Log.d("달력에서 받는 값", "startDate: $startDate, endDate: $endDate")
 
-        val apiService = RetrofitClient.apiService // RetrofitClient는 별도로 구현해야 합니다
+        val apiService = RetrofitClient.apiService
         val call = apiService.getPayHistory(userId, startDate, endDate)
 
         call.enqueue(object : Callback<PayHistoryResponse> {
-            override fun onResponse(call: Call<PayHistoryResponse>, response: Response<PayHistoryResponse>) {
+            override fun onResponse(
+                call: Call<PayHistoryResponse>,
+                response: Response<PayHistoryResponse>
+            ) {
                 if (response.isSuccessful) {
                     val payHistoryList = response.body()?.message
                     if (payHistoryList != null) {
-                        addPayHistoryDecorators(payHistoryList)
+                        payHistoryMap = convertPayHistoryListToMap(payHistoryList)
+                        addPayHistoryDecorators(payHistoryMap)
+                        updatePieChart(CalendarDay.today())
                     }
                     Log.d("달력", "Response: $payHistoryList")
                 } else {
-                    Toast.makeText(this@AccountActivity, "데이터를 불러오는데 실패했습니다.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@AccountActivity, "데이터를 불러오는데 실패했습니다.", Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
 
@@ -149,9 +200,14 @@ class AccountActivity : AppCompatActivity() {
         })
     }
 
-    private fun addPayHistoryDecorators(payHistoryList: List<PayHistory>) {
+    /**
+     * 지출 내역 리스트를 Map으로 변환하는 함수
+     * @param payHistoryList 지출 내역 리스트
+     * @return CalendarDay를 키로 하고 PayHistory 리스트를 값으로 하는 Map
+     */
+    private fun convertPayHistoryListToMap(payHistoryList: List<PayHistory>): Map<CalendarDay, List<PayHistory>> {
         val dateFormat = SimpleDateFormat("yyyyMMdd", Locale.getDefault())
-        val payHistoryMap = payHistoryList.groupBy { payHistory ->
+        return payHistoryList.groupBy { payHistory ->
             try {
                 val date = dateFormat.parse(payHistory.payDate)
                 val calendar = Calendar.getInstance()
@@ -165,7 +221,13 @@ class AccountActivity : AppCompatActivity() {
                 null
             }
         }.filterKeys { it != null } as Map<CalendarDay, List<PayHistory>>
+    }
 
+    /**
+     * 지출 내역 데코레이터를 추가하는 함수
+     * @param payHistoryMap 지출 내역 데이터가 담긴 Map
+     */
+    private fun addPayHistoryDecorators(payHistoryMap: Map<CalendarDay, List<PayHistory>>) {
         payHistoryMap.forEach { (day, histories) ->
             val decorator = object : DayViewDecorator {
                 override fun shouldDecorate(d: CalendarDay): Boolean {
@@ -187,19 +249,32 @@ class AccountActivity : AppCompatActivity() {
                             end: Int,
                             lnum: Int
                         ) {
+                            // 기존 색상과 텍스트 크기를 저장
                             val oldColor = paint.color
                             val oldTextSize = paint.textSize
 
-                            paint.color = Color.BLACK
+                            // 색상과 텍스트 크기 설정
+                            paint.color = Color.RED
                             paint.textSize = 30f
                             paint.textAlign = Paint.Align.CENTER
 
+                            // 텍스트 위치 계산
                             val xPos = (left + right) / 2
                             val yPos = bottom + 40
 
+                            // 지출 금액 합산 및 포맷팅
                             val totalAmount = histories.sumBy { it.amount }
-                            canvas.drawText("₩$totalAmount", xPos.toFloat(), yPos.toFloat(), paint)
+                            val formattedAmount =
+                                NumberFormat.getNumberInstance(Locale.getDefault())
+                                    .format(totalAmount)
+                            canvas.drawText(
+                                "₩$formattedAmount",
+                                xPos.toFloat(),
+                                yPos.toFloat(),
+                                paint
+                            )
 
+                            // 기존 색상과 텍스트 크기 복원
                             paint.color = oldColor
                             paint.textSize = oldTextSize
                         }
@@ -209,5 +284,88 @@ class AccountActivity : AppCompatActivity() {
             binding.calendarView.addDecorator(decorator)
         }
         binding.calendarView.invalidateDecorators()
+    }
+
+    private fun displayPayHistoryDetails(date: CalendarDay) {
+        val payHistories = payHistoryMap[date] ?: emptyList()
+        payHistoryAdapter.updateData(payHistories, false)
+        binding.tvTitle.visibility = View.VISIBLE
+        binding.recyclerView.visibility = View.VISIBLE
+        binding.btnMore.visibility = View.VISIBLE
+    }
+
+    private fun displayAllPayHistories() {
+        val allPayHistories = payHistoryMap.values.flatten().sortedByDescending { it.payDate }
+        payHistoryAdapter.updateData(allPayHistories, true)
+    }
+
+    /**
+     * PieChart 설정 함수
+     */
+    private fun setupPieChart() {
+        pieChart.apply {
+            description.isEnabled = false
+            isRotationEnabled = false
+            setUsePercentValues(false)
+            setDrawEntryLabels(false)
+            setHoleColor(Color.WHITE)
+            setTransparentCircleColor(Color.WHITE)
+            setTransparentCircleAlpha(110)
+            holeRadius = 58f
+            transparentCircleRadius = 61f
+            setDrawCenterText(true)
+            centerText = "지출 카테고리"
+            setCenterTextSize(18f)
+            legend.isEnabled = true
+        }
+    }
+
+    /**
+     * PieChart 데이터를 업데이트하는 함수
+     */
+    private fun updatePieChart(date: CalendarDay) {
+        val selectedMonth = date.month
+        val selectedYear = date.year
+
+        val categoryTotals = mutableMapOf<String, Int>()
+        var totalAmount = 0
+
+        payHistoryMap.filterKeys { it.year == selectedYear && it.month == selectedMonth }
+            .values.flatten()
+            .forEach { payHistory ->
+                val amount = payHistory.amount
+                categoryTotals[payHistory.storeCode.toString()] = categoryTotals.getOrDefault(payHistory.storeCode.toString(), 0) + amount
+                totalAmount += amount
+            }
+
+        // 디버깅 출력을 추가하여 값을 확인합니다.
+        categoryTotals.forEach { (category, total) ->
+            Log.d("Category Total", "Category: $category, Total: $total")
+        }
+
+        val entries = categoryTotals.map { (category, total) ->
+            val percentage = total.toFloat() / totalAmount * 100
+            PieEntry(total.toFloat(), "$category: ${String.format("%.1f", percentage)}%")
+        }
+
+        val dataSet = PieDataSet(entries, "카테고리별 지출")
+
+        dataSet.colors = ColorTemplate.MATERIAL_COLORS.toList()
+        dataSet.valueTextSize = 25f // 텍스트 크기를 조정했습니다.
+        dataSet.valueTextColor = Color.BLACK
+
+        // ValueFormatter를 사용하여 Total 값을 표시합니다.
+        val formatter = NumberFormat.getCurrencyInstance(Locale.getDefault())
+        dataSet.valueFormatter = object : ValueFormatter() {
+            override fun getFormattedValue(value: Float): String {
+                return formatter.format(value.toDouble())
+            }
+        }
+
+        val data = PieData(dataSet)
+        pieChart.data = data
+        pieChart.setUsePercentValues(false) // 퍼센트 값 대신 실제 값을 사용합니다.
+        pieChart.setDrawEntryLabels(true) // 엔트리 레이블을 표시합니다.
+        pieChart.invalidate() // Refresh the chart
     }
 }
