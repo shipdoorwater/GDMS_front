@@ -1,6 +1,6 @@
 package com.example.gdms_front.model
 
-data class PayHistory (
+data class PayHistory(
     val payId: Int,
     val userId: String,
     val amount: Int,

@@ -1,6 +1,7 @@
 package com.example.gdms_front.account
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
@@ -16,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.ParseException
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.gdms_front.R
+import com.example.gdms_front.adapter.CategoryAdapter
 import com.example.gdms_front.adapter.PayHistoryAdapter
 import com.example.gdms_front.databinding.ActivityAccountBinding
 import com.example.gdms_front.model.PayHistory
@@ -52,10 +54,13 @@ class AccountActivity : AppCompatActivity() {
     // 지출 내역 데이터를 저장할 전역 변수
     private var payHistoryMap: Map<CalendarDay, List<PayHistory>> = emptyMap()
     private lateinit var payHistoryAdapter: PayHistoryAdapter
+    private lateinit var categoryAdapter: CategoryAdapter
 
     // PieChart 객체
     private lateinit var pieChart: PieChart
 
+    // 현재 선택된 월
+    private var selectedMonth: CalendarDay = CalendarDay.today()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -105,8 +110,10 @@ class AccountActivity : AppCompatActivity() {
 
             // 월 변경 리스너 설정
             setOnMonthChangedListener { widget, date ->
+                selectedMonth = date
                 updateMonthDecorators(widget, date)
                 updatePieChart(date)
+                updateCategoryList(date)
             }
 
             // 날짜 선택 리스너 설정
@@ -131,7 +138,11 @@ class AccountActivity : AppCompatActivity() {
             displayAllPayHistories()
         }
 
-
+        categoryRecyclerView.layoutManager = LinearLayoutManager(this@AccountActivity)
+        categoryAdapter = CategoryAdapter(emptyList(), emptyMap()) { category ->
+            displayCategoryDetails(category)
+        }
+        categoryRecyclerView.adapter = categoryAdapter
     }
 
     /**
@@ -163,12 +174,10 @@ class AccountActivity : AppCompatActivity() {
     }
 
     private fun fetchPayHistory() {
-
-
         val sharedPref = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
         val userId = sharedPref.getString("token", null).toString()
-        val endDate = "29991231"//dateFormat.format(currentDate.time)
-        val startDate = "19880621" //dateFormat.format(currentDate.time)
+        val endDate = "29991231"
+        val startDate = "19880621"
 
         Log.d("달력에서 받는 값", "startDate: $startDate, endDate: $endDate")
 
@@ -186,6 +195,7 @@ class AccountActivity : AppCompatActivity() {
                         payHistoryMap = convertPayHistoryListToMap(payHistoryList)
                         addPayHistoryDecorators(payHistoryMap)
                         updatePieChart(CalendarDay.today())
+                        updateCategoryList(CalendarDay.today())
                     }
                     Log.d("달력", "Response: $payHistoryList")
                 } else {
@@ -299,9 +309,14 @@ class AccountActivity : AppCompatActivity() {
         payHistoryAdapter.updateData(allPayHistories, true)
     }
 
-    /**
-     * PieChart 설정 함수
-     */
+    private fun displayCategoryDetails(category: String) {
+        val intent = Intent(this, CategoryDetailActivity::class.java)
+        intent.putExtra("storeCode", getStoreCode(category))
+        intent.putExtra("selectedMonth", selectedMonth.year * 100 + selectedMonth.month) // YYYYMM 형식으로 전달
+        intent.putExtra("category", category) // 카테고리 이름 전달
+        startActivity(intent)
+    }
+
     private fun setupPieChart() {
         pieChart.apply {
             description.isEnabled = false
@@ -320,9 +335,6 @@ class AccountActivity : AppCompatActivity() {
         }
     }
 
-    /**
-     * PieChart 데이터를 업데이트하는 함수
-     */
     private fun updatePieChart(date: CalendarDay) {
         val selectedMonth = date.month
         val selectedYear = date.year
@@ -343,9 +355,10 @@ class AccountActivity : AppCompatActivity() {
             Log.d("Category Total", "Category: $category, Total: $total")
         }
 
-        val entries = categoryTotals.map { (category, total) ->
+        val entries = categoryTotals.map { (storeCode, total) ->
+            val categoryName = getCategoryName(storeCode)
             val percentage = total.toFloat() / totalAmount * 100
-            PieEntry(total.toFloat(), "$category: ${String.format("%.1f", percentage)}%")
+            PieEntry(total.toFloat(), "$categoryName: ${String.format("%.1f", percentage)}%")
         }
 
         val dataSet = PieDataSet(entries, "카테고리별 지출")
@@ -367,5 +380,70 @@ class AccountActivity : AppCompatActivity() {
         pieChart.setUsePercentValues(false) // 퍼센트 값 대신 실제 값을 사용합니다.
         pieChart.setDrawEntryLabels(true) // 엔트리 레이블을 표시합니다.
         pieChart.invalidate() // Refresh the chart
+    }
+
+    private fun getCategoryName(storeCode: String): String {
+        return when (storeCode) {
+            "1" -> "음식점"
+            "2" -> "금융상품"
+            "3" -> "면세점/해외승인"
+            "4" -> "편의점"
+            "5" -> "베이커리"
+            "6" -> "서점"
+            "7" -> "택시,주유"
+            "8" -> "인강"
+            "9" -> "술집"
+            "10" -> "꽃집"
+            else -> "기타"
+        }
+    }
+
+    private fun getStoreCode(category: String): String {
+        return when (category) {
+            "음식점" -> "1"
+            "금융상품" -> "2"
+            "면세점/해외승인" -> "3"
+            "편의점" -> "4"
+            "베이커리" -> "5"
+            "서점" -> "6"
+            "택시,주유" -> "7"
+            "인강" -> "8"
+            "술집" -> "9"
+            "꽃집" -> "10"
+            else -> "0"
+        }
+    }
+
+    private fun updateCategoryList(date: CalendarDay) {
+        val selectedMonth = date.month
+        val selectedYear = date.year
+
+        val categoryTotals = mutableMapOf<String, Int>()
+
+        payHistoryMap.filterKeys { it.year == selectedYear && it.month == selectedMonth }
+            .values.flatten()
+            .forEach { payHistory ->
+                val amount = payHistory.amount
+                categoryTotals[payHistory.storeCode.toString()] = categoryTotals.getOrDefault(payHistory.storeCode.toString(), 0) + amount
+            }
+
+        val categories = categoryTotals.map { (storeCode, total) ->
+            val categoryName = getCategoryName(storeCode)
+            categoryName to total
+        }
+
+        categoryAdapter = CategoryAdapter(categories, payHistoryMap) { category ->
+            displayCategoryDetails(category)
+        }
+        binding.categoryRecyclerView.adapter = categoryAdapter
+
+        // 데이터가 있을 때만 RecyclerView와 TextView를 보이도록 설정
+        if (categories.isNotEmpty()) {
+            binding.categoryRecyclerView.visibility = View.VISIBLE
+            binding.tvCategoryTitle.visibility = View.VISIBLE
+        } else {
+            binding.categoryRecyclerView.visibility = View.GONE
+            binding.tvCategoryTitle.visibility = View.GONE
+        }
     }
 }
