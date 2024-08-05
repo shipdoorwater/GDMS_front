@@ -5,5 +5,7 @@
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 
-    <style name="Theme.GDMS_FRONT" parent="Base.Theme.GDMS_FRONT" />
+    <style name="Theme.GDMS_FRONT" parent="Base.Theme.GDMS_FRONT" >
+        <item name="android:fontFamily">@font/bmhannapro</item> <!--글자체 일괄적용 부분-->
+    </style>
 </resources>
