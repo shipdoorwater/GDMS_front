@@ -8,13 +8,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import com.example.gdms_front.R
 
 class PackNo0Fragment : Fragment() {
 
-    private lateinit var button: Button
+    private lateinit var button: ImageButton
     private var userId: String? = null
     private val packId = 1
     private val amountPaid = 4900

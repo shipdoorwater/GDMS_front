@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="100dp"
+    android:height="100dp"
+    android:viewportWidth="100"
+    android:viewportHeight="100">
+
+    <!-- 십자선 -->
+<!--    <path-->
+<!--        android:strokeColor="#FFFFFF"-->
+<!--        android:strokeWidth="2"-->
+<!--        android:strokeAlpha="0.8"-->
+<!--        android:pathData="M50,20 L50,80 M20,50 L80,50"-->
+<!--        android:pathEffect="dashPathEffect([4,4], 0)"/>-->
+
+    <!-- 모서리 표시 -->
+    <path
+        android:strokeColor="#0ABAB5"
+        android:strokeWidth="2"
+        android:strokeAlpha="0.8"
+        android:pathData="M20,30 L20,20 L30,20 M70,20 L80,20 L80,30 M80,70 L80,80 L70,80 M30,80 L20,80 L20,70" />
+
+    <!-- 중앙 점 (선택사항) -->
+    <path
+        android:fillColor="#0ABAB5"
+        android:fillAlpha="0.8"
+        android:pathData="M49,49 h2 v2 h-2 z" />
+
+</vector>
