@@ -28,7 +28,14 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import android.Manifest
 import android.annotation.SuppressLint
+import android.util.Log
+import android.view.Surface
+import android.view.TextureView
+import android.widget.Button
+import android.widget.ImageView
+import androidx.camera.core.Camera
 import androidx.camera.view.PreviewView
+import com.bumptech.glide.Glide
 
 /**
  * A simple [Fragment] subclass.
@@ -41,6 +48,14 @@ class PayFragment : Fragment() {
     private lateinit var cameraProvider: ProcessCameraProvider
     private lateinit var imageAnalyzer: ImageAnalysis
     private var isQrCodeDetected = false
+    //배경 뿌옇게 보이기 추가
+    private lateinit var textureView: TextureView
+
+    private var camera: Camera? = null // 카메라 객체 추가
+    private var isFlashOn = false // 플래시 상태 변수 추가
+
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,6 +69,8 @@ class PayFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_pay, container, false)
+        //배경 뿌옇게 보이기 추가
+        textureView = view.findViewById(R.id.textureView)
 
         view.findViewById<ConstraintLayout>(R.id.nav_allMenu).setOnClickListener {
             it.findNavController().navigate((R.id.action_payFragment_to_allMenuFragment))
@@ -69,6 +86,11 @@ class PayFragment : Fragment() {
 
         view.findViewById<ConstraintLayout>(R.id.nav_main).setOnClickListener {
             it.findNavController().navigate((R.id.action_payFragment_to_mainFragment))
+        }
+
+        val flashButton = view.findViewById<Button>(R.id.flashButton)
+        flashButton.setOnClickListener {
+            toggleFlash()
         }
 
         startCamera(view)
@@ -87,6 +109,17 @@ class PayFragment : Fragment() {
                     .also {
                         it.setSurfaceProvider(view.findViewById<PreviewView>(R.id.previewView).surfaceProvider)
                     }
+
+                val preview2 = Preview.Builder()
+                    .build()
+                    .also{  it.setSurfaceProvider { request ->
+                        val surface = Surface(textureView.surfaceTexture)
+                        request.provideSurface(surface, ContextCompat.getMainExecutor(requireContext())) {
+                            surface.release()
+                        }
+                    }}
+
+
 
                 val barcodeScanner = BarcodeScanning.getClient()
                 imageAnalyzer = ImageAnalysis.Builder()
@@ -130,13 +163,34 @@ class PayFragment : Fragment() {
 
                 try {
                     cameraProvider.unbindAll()
-                    cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageAnalyzer)
+                   camera= cameraProvider.bindToLifecycle(this, cameraSelector, preview, preview2, imageAnalyzer)
                 } catch (exc: Exception) {
                     Toast.makeText(requireContext(), "카메라 실행에 실패했습니다.", Toast.LENGTH_SHORT).show()
                 }
             }, ContextCompat.getMainExecutor(requireContext()))
         } else {
             ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.CAMERA), 1001)
+        }
+    }
+
+    private fun isFlashAvailable(): Boolean {
+        return camera?.cameraInfo?.hasFlashUnit() ?: false
+    }
+
+    // 플래시 토글 함수 추가
+    private fun toggleFlash() {
+        Log.d("플래시", "toggleFlash called. Current state: $isFlashOn")
+        if (isFlashAvailable()) {
+            camera?.let {
+                val cameraControl = it.cameraControl
+                isFlashOn = !isFlashOn
+                Log.d("플래시", "Enabling torch: $isFlashOn")
+                cameraControl.enableTorch(isFlashOn)
+                view?.findViewById<Button>(R.id.flashButton)?.text = if (isFlashOn) "플래시 끄기" else "플래시 켜기"
+            } ?: Log.e("플래시", "Camera object is null")
+        } else {
+            Log.w("플래시", "Flash is not available on this device")
+            Toast.makeText(requireContext(), "이 기기는 플래시를 지원하지 않습니다.", Toast.LENGTH_SHORT).show()
         }
     }
 
