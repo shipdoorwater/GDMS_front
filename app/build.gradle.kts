@@ -63,7 +63,7 @@ dependencies {
 
     implementation("com.google.android.gms:play-services-location:21.0.1")
     // 네이버 지도 SDK
-    implementation("com.naver.maps:map-sdk:3.18.0")
+    implementation("com.naver.maps:map-sdk:3.19.0")
     
     //레트로핏
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
@@ -112,5 +112,8 @@ dependencies {
 
     //차트 라이브러리 추가
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+
+    // Lottie 추가
+    implementation("com.airbnb.android:lottie:5.2.0")
 }
 
