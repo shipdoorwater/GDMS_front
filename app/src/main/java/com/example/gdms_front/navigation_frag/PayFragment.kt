@@ -32,8 +32,10 @@ import android.util.Log
 import android.view.Surface
 import android.view.TextureView
 import android.widget.Button
+import android.widget.ImageView
 import androidx.camera.core.Camera
 import androidx.camera.view.PreviewView
+import com.bumptech.glide.Glide
 
 /**
  * A simple [Fragment] subclass.
@@ -51,6 +53,8 @@ class PayFragment : Fragment() {
 
     private var camera: Camera? = null // 카메라 객체 추가
     private var isFlashOn = false // 플래시 상태 변수 추가
+
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
