@@ -1,14 +1,27 @@
 package com.example.gdms_front.navigation_frag
 
 import android.Manifest
+import android.animation.Animator
+import android.animation.ValueAnimator
+import android.app.Dialog
 import android.content.Context
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.location.Location
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
@@ -17,6 +30,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.airbnb.lottie.LottieAnimationView
+import com.airbnb.lottie.LottieDrawable
+import com.bumptech.glide.Glide
 import com.example.gdms_front.R
 import com.example.gdms_front.adapter.RecommendedShopAdapter
 import com.example.gdms_front.model.GetPointRequest
@@ -56,7 +72,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     private var marekrList = mutableListOf<Marker>()
     private var currentLocation: Location? = null
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         locationSource = FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE)
@@ -76,7 +91,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         shopAdapter = RecommendedShopAdapter(shopList)
         recyclerView.adapter = shopAdapter
-
 
         // 네비게이션 이동
         view.findViewById<ConstraintLayout>(R.id.nav_allMenu).setOnClickListener {
@@ -132,27 +146,18 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     }
 
-    // 사용자 위치 정보를 사용하기 위해 필요한 위치 권한을 요청하는 기능
-    // arrayOf(Manifest.permission.ACCESS_FINE_LOCATION) : 요청할 권한의 목록이며,
-    // ACCESS_FINE_LOCATIONS는 기기의 정확한 위치에 접근할 수 있도록 허용
     private fun requestLocationPermission() {
         requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_PERMISSION_REQUEST_CODE)
     }
 
-    // 위치 권한 요청 코드는 정수형 상수로 정의 / 권한 요청과 관련된 결과를 식별할 수 있음
     companion object {
         private const val LOCATION_PERMISSION_REQUEST_CODE = 1000
     }
 
-
-
-    // onRequestPermissionsResult는 권한 요청의 결과를 처리하는 콜백함수
-    // requestCode : 권한 요청을 식별하기 위한 코드, permission : 요청한 권한 배열,
-    // grantResults : 요청에 대한 결과 배열이며 각 권한에 대한 PERMISSION_GRANTED 또는 PERMISIION_DENIED 중 하나의 값을 가짐
     @Deprecated("Deprecated in Java")
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         if (locationSource.onRequestPermissionsResult(requestCode, permissions, grantResults)) {
-            if (!locationSource.isActivated) { // 권한이 거부된 경우
+            if (!locationSource.isActivated) {
                 Log.d("locationCheck", "권한거부됨")
                 naverMap?.locationTrackingMode = LocationTrackingMode.None
             } else {
@@ -161,22 +166,24 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             }
             return
         }
-        // locationSource.onRequestPermissionsResult가 true를 반환하지 않으면, 기본 구현을 호출하여 다른 권한 요청의 결과를 처리
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
-    // api req/res 함수
     private fun callApiWithLocation(latitude: Double, longitude: Double) {
         val api = RetrofitClient.mapApiService
         api.getNearbyShops(latitude, longitude).enqueue(object : Callback<List<ShopModel>> {
             override fun onResponse(call: Call<List<ShopModel>>, response: Response<List<ShopModel>>) {
                 if (response.isSuccessful) {
                     val shops = response.body()
-                    if (shops != null){
-                        shopAdapter.updateData(shops)
-                        addMarkers(shops)
+                    if (shops != null && shops.isNotEmpty()) {
+                        activity?.runOnUiThread {
+                            shopAdapter.updateData(shops)
+                            addMarkers(shops)
+                        }
+                        Log.d("MapApiService", "Shops: $shops")
+                    } else {
+                        Log.d("MapApiService", "No shops received or empty list")
                     }
-                    Log.d("MapApiService", "Shops: $shops")
                 } else {
                     Log.e("MapApiService", "Response Error: ${response.code()}")
                 }
@@ -188,40 +195,76 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         })
     }
 
-
-    // 카메라 이동 및 줌 확대 설정
     private fun moveCameraToLocation(latitude: Double, longitude: Double) {
         val cameraUpdate = CameraUpdate.scrollAndZoomTo(LatLng(latitude, longitude), 15.5)
         naverMap.moveCamera(cameraUpdate)
     }
 
-
-    // 받은 데이터 기준으로 맵에 마커 찍기
     private fun addMarkers(shops: List<ShopModel>) {
         shops.forEach { shop ->
             val latitude = shop.storeLatitude
             val longitude = shop.storeLongitude
             if (latitude != null && longitude != null) {
-                Marker().apply {
+
+                val marker = Marker().apply {
                     position = LatLng(latitude, longitude)
                     map = naverMap
-                    width = 70
+                    width = 100
                     height = 100
+                    icon = OverlayImage.fromResource(R.drawable.wired_lineal_290_coin)
                     tag = shop
-                    icon = OverlayImage.fromResource(R.drawable.coin_icon) //아이콘 모양
+
+                    // 클릭 이벤트 리스너 추가
                     setOnClickListener {
-                        Log.d("MarkerAPITest", "Marker clicked: ${shop.bizNo}")
                         handleMarkerClick(this)
-                        true
+                        true  // 이벤트 소비를 나타내기 위해 true 반환
                     }
                 }
-                Log.d("MarkerTest", "Marker added for shop: ${shop.shopName}")
-            } else {
-                Log.d("MarkerTest", "Invalid location for shop: ${shop.shopName}")
+                // 바운스 애니메이션 적용
+                applyBounceAnimation(marker)
             }
         }
     }
 
+    // 무한 여행 모드
+//    private fun applyBounceAnimation(marker: Marker) {
+//        val animator = ValueAnimator.ofFloat(0f, 1f)
+//        animator.duration = 1000 // 1초 동안 애니메이션 실행
+//        animator.repeatCount = ValueAnimator.INFINITE
+//        animator.repeatMode = ValueAnimator.REVERSE
+//
+//        animator.addUpdateListener { animation ->
+//            val value = animation.animatedValue as Float
+//            val newPosition = LatLng(
+//                marker.position.latitude,
+//                marker.position.longitude + (value * 0.0001) // 위도를 약간 변경
+//            )
+//            marker.position = newPosition
+//        }
+//
+//        animator.start()
+//    }
+
+    private fun applyBounceAnimation(marker: Marker) {
+        val animator = ValueAnimator.ofFloat(0f, 1f)
+        animator.duration = 500 // 0.5초 동안 애니메이션 실행
+        animator.repeatCount = ValueAnimator.INFINITE
+        animator.repeatMode = ValueAnimator.REVERSE
+
+        val originalPosition = marker.position
+        val bounceDistance = 0.0001 // 조정 가능한 바운스 거리
+
+        animator.addUpdateListener { animation ->
+            val value = animation.animatedValue as Float
+            val newPosition = LatLng(
+                originalPosition.latitude + (value * bounceDistance),
+                originalPosition.longitude
+            )
+            marker.position = newPosition
+        }
+
+        animator.start()
+    }
 
     private fun handleMarkerClick(marker: Marker) {
         currentLocation?.let {
@@ -230,13 +273,9 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                 longitude = marker.position.longitude
             }
             val distance = it.distanceTo(markerLocation)
-
-            if (distance <= 50) {
-                // 50미터 이내인 경우 모달 창을 띄우고 API 요청
-                Log.d("MarkerTest", "50미터 이내")
+            if (distance <= 100) {
                 showModalAndRequestApi(marker.tag as ShopModel)
             } else {
-                // 50미터 이상인 경우 RecyclerView의 해당 아이템으로 이동
                 moveToShopItem(marker.tag as ShopModel)
             }
         }
@@ -246,20 +285,18 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         val sharedPreference = activity?.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
         val userId = sharedPreference?.getString("token", null)
 
-        // API 요청 보내기 (구현 필요)
         if (userId != null) {
-
-
             val api = RetrofitClient.mapApiService
             lifecycleScope.launch {
                 try {
                     val request = GetPointRequest(userId, shop.bizNo)
                     val response = api.getPointByVisit(request)
                     if (response.isSuccessful) {
-
+                        // 성공 처리
+                        showSuccessModal()
                     } else {
-                        Log.d("MarkerAPITest", "실패: " + response.toString())
-                        Log.e("MarkerAPITest", "Response Error: ${response.code()}, message: ${response.message()}")
+                        val errorBody = response.errorBody()?.string()
+                        showErrorModal(errorBody ?: "이미 방문한 장소입니다")
                     }
                 } catch (e: Exception) {
                     Log.e("MarkerAPITest", "API Call Failed: ${e.message}")
@@ -268,34 +305,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         } else {
             Log.d("MarkerAPITest", "UserId not found")
         }
-
-//            val api = RetrofitClient.mapApiService
-//            api.getPointByVisit(userId, shop.bizNo).enqueue(object : Callback<GetPointResponse> {
-//
-//
-//                override fun onResponse(call: Call<GetPointResponse>, response: Response<GetPointResponse>) {
-//
-//                    Log.d("MarkerAPITest", "userId : $userId")
-//                    Log.d("MarkerAPITest", "bizNo : ${shop.bizNo}")
-//
-//                    if (response.isSuccessful) {
-//                        Log.d("MarkerAPITest", "성공: " + response.toString())
-//                        Log.d("MarkerAPITest", "모달창 구현")
-//                        // 모달 창에 데이터 표시 (구현 필요)
-//                    } else {
-//                        Log.d("MarkerAPITest", "실패: " + response.toString())
-//                        Log.e("MarkerAPITest", "Response Error: ${response.code()}")
-//                    }
-//                }
-//
-//                override fun onFailure(call: Call<GetPointResponse>, t: Throwable) {
-//                    Log.e("MarkerAPITest", "API Call Failed: ${t.message}")
-//                }
-//            })
-//
-//        } else {
-//            Log.d("MarkerAPITest", "UserId not fount")
-//        }
     }
 
     private fun moveToShopItem(shop: ShopModel) {
@@ -305,4 +314,47 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
+    private fun showSuccessModal() {
+        val dialog = Dialog(requireContext())
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(R.layout.modal_point_get_success)
+        // Dialog 배경을 투명하게 설정
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        val gifImageView = dialog.findViewById<ImageView>(R.id.gifImageView)
+        val messageTextView = dialog.findViewById<TextView>(R.id.messageTextView)
+        val confirmButton = dialog.findViewById<Button>(R.id.confirmButton)
+
+        Glide.with(this)
+            .asGif()
+            .load(R.drawable.wired_linea_290_coin_gif) // success_gif.gif 파일을 res/drawable 폴더에 넣어주세요
+            .into(gifImageView)
+
+        messageTextView.text = "방문 포인트가 적립되었습니다"
+
+        confirmButton.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
+    }
+
+    private fun showErrorModal(errorMessage: String) {
+        val dialog = Dialog(requireContext())
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(R.layout.modal_point_get_error)
+        // Dialog 배경을 투명하게 설정
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        val messageTextView = dialog.findViewById<TextView>(R.id.messageTextView)
+        val confirmButton = dialog.findViewById<Button>(R.id.confirmButton)
+
+        messageTextView.text = "오늘 이미 방문한 장소입니다"
+
+        confirmButton.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
+    }
 }
