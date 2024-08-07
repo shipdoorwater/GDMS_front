@@ -21,9 +21,10 @@
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:text="결제할 화면코드를\n 화면 중앙에 맞춰주세요"
         android:textSize="30sp"
-        android:gravity="center"
+        app:layout_constraintBottom_toTopOf="@+id/imageView2"
         app:layout_constraintTop_toTopOf="parent" />
 
 
@@ -32,9 +33,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="플래시 켜기"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.camera.view.PreviewView
         android:id="@+id/previewView"
@@ -58,11 +59,17 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:scaleType="fitXY"
-        android:src="@drawable/pay_sth"
-        app:layout_constraintTop_toBottomOf="@+id/previewView" />
+        android:layout_width="500dp"
+        android:layout_height="700dp"
+        android:src="@drawable/qr_code_frame"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintHorizontal_bias="0.45"/>
+
+
+
 
 
     <LinearLayout
