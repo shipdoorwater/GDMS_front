@@ -1,5 +1,6 @@
 package com.example.gdms_front.auth
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -75,6 +76,10 @@ class JoinActivity2 : AppCompatActivity() {
                     if (response.isSuccessful) {
                         // 회원가입 성공 처리
                         Toast.makeText(this@JoinActivity2, "success", Toast.LENGTH_SHORT).show()
+                        val sharedPreferences = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+                        val editor = sharedPreferences.edit()
+                        editor.putString("token", userId)
+                        editor.apply()
                         val intent = Intent(this@JoinActivity2, JoinSucActivity::class.java)
                         startActivity(intent)
                         finish()
