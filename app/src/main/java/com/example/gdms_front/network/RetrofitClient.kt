@@ -64,4 +64,13 @@ object RetrofitClient {
 
         retrofit.create(NoticeApiService::class.java)
     }
+
+    val tokenApiService: TokenApiService by lazy {
+        val retrofit = Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        retrofit.create(TokenApiService::class.java)
+    }
 }
