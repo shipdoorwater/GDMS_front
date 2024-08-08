@@ -90,11 +90,25 @@ class JoinActivity2 : AppCompatActivity() {
                             // SharedPreferences에 userId 저장
                             getSharedPreferences("user_prefs", Context.MODE_PRIVATE).edit().putString("token", userId).apply()
 
-                            Toast.makeText(this@JoinActivity2, "회원가입 성공", Toast.LENGTH_SHORT).show()
-                            val intent = Intent(this@JoinActivity2, JoinSucActivity::class.java)
-                            startActivity(intent)
-                            finish()
-                        } else {
+            val joinRequest = JoinRequest(userId, userPw, userName, gender, userPhone, userAdrs, userEmail,
+                userBirth, pushYn, marketingYn, true, false, payType) //gpsYn 일단 없음
+
+            //CoroutineScope(Dispatchers.IO).launch {
+            lifecycleScope.launch {
+                try{
+                    val response = RetrofitClient.apiService.join(joinRequest)
+                    if (response.isSuccessful) {
+                        // 회원가입 성공 처리
+                        Toast.makeText(this@JoinActivity2, "success", Toast.LENGTH_SHORT).show()
+                        val sharedPreferences = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+                        val editor = sharedPreferences.edit()
+                        editor.putString("token", userId)
+                        editor.apply()
+                        val intent = Intent(this@JoinActivity2, JoinSucActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                    } else {
+                        //runOnUiThread {                       
                             Log.e("JoinActivity2", "Join failed: ${response.errorBody()?.string()}")
                             Toast.makeText(this@JoinActivity2, "회원가입 실패", Toast.LENGTH_SHORT).show()
                         }
