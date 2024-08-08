@@ -12,9 +12,12 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.gdms_front.MainActivity
 import com.example.gdms_front.R
+import com.example.gdms_front.alarm.FCMTokenManager
 import com.example.gdms_front.databinding.ActivityJoin2Binding
 import com.example.gdms_front.model.JoinRequest
+import com.example.gdms_front.model.TokenUpdate
 import com.example.gdms_front.network.RetrofitClient
+import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -65,6 +68,27 @@ class JoinActivity2 : AppCompatActivity() {
             Log.d("JoinActivity2", "gender: $gender, payType: $payType")
             Log.d("JoinActivity2", "userPhone: $userPhone, userBirth: $userBirth, userEmail: $userEmail, userAdrs: $userAdrs")
 
+            FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    Log.w("FCM", "Fetching FCM registration token failed", task.exception)
+                    Toast.makeText(this@JoinActivity2, "FCM 토큰을 가져오는데 실패했습니다.", Toast.LENGTH_SHORT).show()
+                    return@addOnCompleteListener
+                }
+
+                val fcmToken = task.result
+                Log.d("FCM", "Token: $fcmToken")
+
+                val joinRequest = JoinRequest(
+                    userId, userPw, userName, gender, userPhone, userAdrs, userEmail,
+                    userBirth, pushYn, marketingYn, true, false, payType, fcmToken
+                )
+
+                lifecycleScope.launch {
+                    try {
+                        val response = RetrofitClient.apiService.join(joinRequest)
+                        if (response.isSuccessful) {
+                            // SharedPreferences에 userId 저장
+                            getSharedPreferences("user_prefs", Context.MODE_PRIVATE).edit().putString("token", userId).apply()
 
             val joinRequest = JoinRequest(userId, userPw, userName, gender, userPhone, userAdrs, userEmail,
                 userBirth, pushYn, marketingYn, true, false, payType) //gpsYn 일단 없음
@@ -84,18 +108,17 @@ class JoinActivity2 : AppCompatActivity() {
                         startActivity(intent)
                         finish()
                     } else {
-                        //runOnUiThread {
-                            Toast.makeText(this@JoinActivity2, "failed", Toast.LENGTH_SHORT).show()
+                        //runOnUiThread {                       
                             Log.e("JoinActivity2", "Join failed: ${response.errorBody()?.string()}")
-                        //}
-                    }
-                } catch (e:Exception) {
-                  //  runOnUiThread {
+                            Toast.makeText(this@JoinActivity2, "회원가입 실패", Toast.LENGTH_SHORT).show()
+                        }
+                    } catch (e: Exception) {
                         Toast.makeText(this@JoinActivity2, "네트워크 오류 발생", Toast.LENGTH_SHORT).show()
                         Log.e("JoinActivity2", "Join failed", e)
-                  //  }
+                    }
                 }
             }
         }
     }
+
 }

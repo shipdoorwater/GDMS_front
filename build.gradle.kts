@@ -14,4 +14,10 @@ allprojects {
         maven("https://repository.map.naver.com/archive/maven")
         maven("https://jitpack.io")
     }
+}
+
+buildscript {
+    dependencies {
+        classpath("com.google.gms:google-services:4.3.15")
     }
+}
