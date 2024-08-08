@@ -8,22 +8,27 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import com.example.gdms_front.R
+import com.example.gdms_front.alarm.NotificationViewModel
 import com.example.gdms_front.auth.LoginActivity
 import com.example.gdms_front.news.NewsActivity
-import com.example.gdms_front.qr_pay.QrPayActivity
-import com.google.zxing.integration.android.IntentIntegrator
-import kotlin.let as let1
+import androidx.lifecycle.ViewModelProvider
+
 
 class MainFragment : Fragment() {
+    private lateinit var notificationViewModel: NotificationViewModel
+    private val factory: ViewModelProvider.Factory = object : ViewModelProvider.Factory {
+        override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
+            return NotificationViewModel(requireActivity().application) as T
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        notificationViewModel = ViewModelProvider(this, factory).get(NotificationViewModel::class.java)
 
         val sharedPreference = activity?.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
         val token = sharedPreference?.getString("token", null)
@@ -73,6 +78,10 @@ class MainFragment : Fragment() {
         newsBtn.setOnClickListener {
             val intent = Intent(context, NewsActivity::class.java)
             startActivity(intent)
+        }
+
+        view.findViewById<Button>(R.id.dbInitBtn).setOnClickListener {
+            notificationViewModel.clearAllNotifications()
         }
 
 
