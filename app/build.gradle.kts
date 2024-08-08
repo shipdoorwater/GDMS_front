@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     id("com.google.gms.google-services")
+    kotlin("kapt") // kapt 플러그인 추가
 }
 
 android {
@@ -55,8 +56,9 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
-    implementation(libs.androidx.room.common)
-    implementation(libs.androidx.room.ktx)
+    implementation("androidx.room:room-ktx:2.6.1")
+    implementation("androidx.room:room-runtime:2.6.1")
+    kapt("androidx.room:room-compiler:2.6.1")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -112,8 +114,8 @@ dependencies {
 
     //차트 라이브러리 추가
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
-
-    // Lottie 추가
-    implementation("com.airbnb.android:lottie:5.2.0")
 }
 
+kapt {
+    correctErrorTypes = true
+}

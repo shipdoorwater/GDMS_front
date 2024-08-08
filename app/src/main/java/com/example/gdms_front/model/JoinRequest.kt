@@ -13,6 +13,7 @@ data class JoinRequest (
     val marketingYn: Boolean,
     val userStatus: Boolean,
     val adminYn: Boolean,
-    val payType: Int
+    val payType: Int,
+    val fcmToken: String  // 토큰
 )
 
