@@ -16,6 +16,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
+        android:id="@+id/linearLayout17"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="60dp"
@@ -24,33 +25,33 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="3dp"
-            android:background="#999999"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:background="#999999" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#999999"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:background="#999999" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#999999"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:background="#999999" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#999999"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:background="#999999" />
 
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#999999"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:background="#999999" />
 
     </LinearLayout>
 
@@ -219,5 +220,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/logoutBtn"
         tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/dbInitBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="db초기화"
+        app:layout_constraintTop_toBottomOf="@+id/newsBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

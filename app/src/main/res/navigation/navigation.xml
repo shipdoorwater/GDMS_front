@@ -95,4 +95,12 @@
             android:id="@+id/action_profitFragment_to_payFragment"
             app:destination="@id/payFragment" />
     </fragment>
+
+
+
+    <fragment
+        android:id="@+id/notificationFragment"
+        android:name="com.example.gdms_front.alarm.NotificationFragment"
+        tools:layout="@layout/fragment_notification" />
+
 </navigation>
