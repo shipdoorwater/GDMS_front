@@ -1,6 +1,7 @@
 package com.example.gdms_front.alarm
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,8 +12,11 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.gdms_front.R
+import com.example.gdms_front.board.EventPageActivity
+import com.example.gdms_front.board.NoticePageActivity
 import com.example.gdms_front.databinding.FragmentNotificationBinding
 import com.example.gdms_front.model.Notification
+import com.example.gdms_front.point.PointHistoryActivity
 
 
 class NotificationFragment : Fragment() {
@@ -57,7 +61,9 @@ class NotificationFragment : Fragment() {
         when (notification.title) {
             "공지사항" -> navigateToNoticeDetail(notification)
             "이벤트" -> navigateToEventDetail(notification)
-            "결제" -> navigateToPaymentDetail(notification)
+            "포인트 사용", "방문 포인트 적립", "결제 포인트 적립" -> navigateToPointHistory()
+
+
             else -> {
                 // 기본 동작 또는 에러 처리
             }
@@ -65,21 +71,18 @@ class NotificationFragment : Fragment() {
     }
 
     private fun navigateToNoticeDetail(notification: Notification) {
-        // 공지사항 상세 화면으로 이동
-        // 예: findNavController().navigate(R.id.action_notificationFragment_to_noticeDetailFragment)
-        // 필요한 경우 인자를 전달할 수 있습니다.
-        // val action = NotificationFragmentDirections.actionNotificationFragmentToNoticeDetailFragment(notification.boardId)
-        // findNavController().navigate(action)
+        val intent = Intent(requireContext(), NoticePageActivity::class.java)
+        startActivity(intent)
     }
 
     private fun navigateToEventDetail(notification: Notification) {
-        // 이벤트 상세 화면으로 이동
-        // 예: findNavController().navigate(R.id.action_notificationFragment_to_eventDetailFragment)
+        val intent = Intent(requireContext(), EventPageActivity::class.java)
+        startActivity(intent)
     }
 
-    private fun navigateToPaymentDetail(notification: Notification) {
-        // 결제 상세 화면으로 이동
-        // 예: findNavController().navigate(R.id.action_notificationFragment_to_paymentDetailFragment)
+    private fun navigateToPointHistory() {
+        val intent = Intent(requireContext(), PointHistoryActivity::class.java)
+        startActivity(intent)
     }
 
 
