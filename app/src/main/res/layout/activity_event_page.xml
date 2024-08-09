@@ -11,7 +11,7 @@
     <LinearLayout
         android:id="@+id/linearLayout16"
         android:layout_width="match_parent"
-        android:layout_height="20dp"
+        android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -22,8 +22,10 @@
             android:src="@drawable/img_arrow_left" />
 
         <TextView
+            android:textSize="16sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:text="진행 중인 이벤트" />
 
     </LinearLayout>
@@ -31,7 +33,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/noticeRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="500dp"
+        android:layout_height="wrap_content"
         android:clipToPadding="false"
         android:padding="16dp"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout16"
