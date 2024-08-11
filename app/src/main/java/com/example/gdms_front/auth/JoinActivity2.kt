@@ -2,10 +2,26 @@ package com.example.gdms_front.auth
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.net.http.SslError
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.view.ViewGroup
+import android.webkit.ConsoleMessage
+import android.webkit.JavascriptInterface
+import android.webkit.SslErrorHandler
+import android.webkit.WebChromeClient
+import android.webkit.WebResourceError
+import android.webkit.WebResourceRequest
+import android.webkit.WebResourceResponse
+import android.webkit.WebSettings
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -36,6 +52,13 @@ class JoinActivity2 : AppCompatActivity() {
             val intent = Intent(this, JoinActivity1::class.java)
             startActivity(intent)
         }
+
+        binding.btnSearchAddress.setOnClickListener {
+            val intent = Intent(this@JoinActivity2, SearchLocationActivity::class.java)
+            getSearchResult.launch(intent)
+        }
+
+
 
 
         // 첫 번째 페이지에서 전달된 데이터를 가져옵니다.
@@ -175,6 +198,8 @@ class JoinActivity2 : AppCompatActivity() {
         }
     }
 
+
+
     private fun isValidPhoneNumber(phone: String): Boolean {
         // 정규식: 010, 011, 016, 017, 018, 019로 시작하는 10-11자리 숫자
         val regex = "^01[0-1|6-9][0-9]{7,8}$".toRegex()
@@ -204,4 +229,16 @@ class JoinActivity2 : AppCompatActivity() {
         val regex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$".toRegex()
         return regex.matches(email)
     }
+
+    private val getSearchResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult())
+        { results ->
+
+            if(results.resultCode == RESULT_OK) {
+                if(results.data != null) {
+                    val data = results.data!!.getStringExtra("data")
+                    binding.joinAdrs?.setText(data)
+                }
+            }
+        }
 }
