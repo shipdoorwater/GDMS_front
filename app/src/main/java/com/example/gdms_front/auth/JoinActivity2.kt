@@ -2,10 +2,26 @@ package com.example.gdms_front.auth
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.net.http.SslError
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.view.ViewGroup
+import android.webkit.ConsoleMessage
+import android.webkit.JavascriptInterface
+import android.webkit.SslErrorHandler
+import android.webkit.WebChromeClient
+import android.webkit.WebResourceError
+import android.webkit.WebResourceRequest
+import android.webkit.WebResourceResponse
+import android.webkit.WebSettings
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -21,6 +37,7 @@ import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.Calendar
 
 class JoinActivity2 : AppCompatActivity() {
 
@@ -36,6 +53,13 @@ class JoinActivity2 : AppCompatActivity() {
             startActivity(intent)
         }
 
+        binding.btnSearchAddress.setOnClickListener {
+            val intent = Intent(this@JoinActivity2, SearchLocationActivity::class.java)
+            getSearchResult.launch(intent)
+        }
+
+
+
 
         // 첫 번째 페이지에서 전달된 데이터를 가져옵니다.
         val userName = intent.getStringExtra("userName").toString()
@@ -50,7 +74,7 @@ class JoinActivity2 : AppCompatActivity() {
             val gender = when (binding.genderGroup.checkedRadioButtonId) {
                 R.id.maleRadioButton -> 1
                 R.id.femaleRadioButton -> 2
-                R.id.otherRadioButton -> 3
+//                R.id.otherRadioButton -> 3
                 else -> 0
             }
             val payType = when (binding.paymentMethodGroup.checkedRadioButtonId) {
@@ -62,6 +86,48 @@ class JoinActivity2 : AppCompatActivity() {
             val userBirth = binding.joinBirth.text.toString()
             val userEmail = binding.joinEmail.text.toString()
             val userAdrs = binding.joinAdrs.text.toString()
+
+
+            // 유효성 검사
+
+            // 휴대폰 번호 유효성 검사
+            if (userPhone.isEmpty()) {
+                Toast.makeText(this@JoinActivity2, "휴대폰 번호를 입력해주세요.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            if (!isValidPhoneNumber(userPhone)) {
+                Toast.makeText(this@JoinActivity2, "유효한 휴대폰 번호를 입력해주세요.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            // 생년월일 유효성 검사
+            if (userBirth.isEmpty()) {
+                Toast.makeText(this@JoinActivity2, "생년월일을 입력해주세요.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            if (!isValidBirthDate(userBirth)) {
+                Toast.makeText(this@JoinActivity2, "생년월일을 YYYYMMDD 형식으로 입력해주세요.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            // 이메일 유효성 검사
+            if (userEmail.isEmpty()) {
+                Toast.makeText(this@JoinActivity2, "이메일을 입력해주세요.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            if (!isValidEmail(userEmail)) {
+                Toast.makeText(this@JoinActivity2, "유효한 이메일 주소를 입력해주세요.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            // 주소 유효성 검사
+            if (userAdrs.isEmpty()) {
+                Toast.makeText(this@JoinActivity2, "주소를 입력해주세요.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+
 
             Log.d("JoinActivity2", "userName: $userName, userId: $userId, userPw: $userPw")
             Log.d("JoinActivity2", "marketingYn: $marketingYn, gpsYn: $gpsYn, pushYn: $pushYn")
@@ -131,4 +197,48 @@ class JoinActivity2 : AppCompatActivity() {
             }
         }
     }
+
+
+
+    private fun isValidPhoneNumber(phone: String): Boolean {
+        // 정규식: 010, 011, 016, 017, 018, 019로 시작하는 10-11자리 숫자
+        val regex = "^01[0-1|6-9][0-9]{7,8}$".toRegex()
+        return regex.matches(phone)
+    }
+
+
+    private fun isValidBirthDate(birth: String): Boolean {
+        val regex = "^\\d{8}$".toRegex()
+        if (!regex.matches(birth)) return false
+
+        val year = birth.substring(0, 4).toInt()
+        val month = birth.substring(4, 6).toInt()
+        val day = birth.substring(6, 8).toInt()
+
+        val currentYear = Calendar.getInstance().get(Calendar.YEAR)
+
+        return when {
+            year < 1900 || year > currentYear -> false
+            month < 1 || month > 12 -> false
+            day < 1 || day > 31 -> false
+            else -> true
+        }
+    }
+
+    private fun isValidEmail(email: String): Boolean {
+        val regex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$".toRegex()
+        return regex.matches(email)
+    }
+
+    private val getSearchResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult())
+        { results ->
+
+            if(results.resultCode == RESULT_OK) {
+                if(results.data != null) {
+                    val data = results.data!!.getStringExtra("data")
+                    binding.joinAdrs?.setText(data)
+                }
+            }
+        }
 }
