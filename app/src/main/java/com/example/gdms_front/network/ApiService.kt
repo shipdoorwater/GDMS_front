@@ -2,6 +2,8 @@ package com.example.gdms_front.network
 
 import com.example.gdms_front.model.JoinRequest
 import com.example.gdms_front.model.JoinResponse
+import com.example.gdms_front.model.KakaoPayRequest
+import com.example.gdms_front.model.KakaoPayResponse
 import com.example.gdms_front.model.LoginRequest
 import com.example.gdms_front.model.LoginResponse
 import com.example.gdms_front.model.NewsArticle
@@ -60,5 +62,12 @@ interface ApiService {
         @Query("endDate") endDate: String
     ): Call<PayHistoryResponse>
 
+    @GET("/api/kakaoPaySuccess")
+    fun kakaoPayRequest(@Query("pg_token") pgToken: String,
+                        @Query("tid") tid: String,
+                        @Query("userId") userId: String,
+                        @Query("packId") packId: Int,
+                        @Query("amountPaid") amountPaid: Int)
+    : Call<KakaoPayResponse>
 }
 
