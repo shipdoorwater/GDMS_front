@@ -114,7 +114,11 @@ dependencies {
 
     //차트 라이브러리 추가
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+    
+    //인디케이터
+    implementation("com.tbuonomo:dotsindicator:5.0")
 }
+
 
 kapt {
     correctErrorTypes = true
