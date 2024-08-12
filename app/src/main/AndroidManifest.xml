@@ -28,12 +28,15 @@
         android:theme="@style/Theme.GDMS_FRONT"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+      
+        <activity
+            android:name=".profit.KakaoPayActivity"
+            android:exported="false" />
+       
         <activity
             android:name=".auth.SearchLocationActivity"
             android:exported="false" />
-        <activity
-            android:name=".auth.LocationSearchActivity"
-            android:exported="false" />
+      
         <activity
             android:name=".account.CategoryDetailActivity"
             android:exported="false" />
