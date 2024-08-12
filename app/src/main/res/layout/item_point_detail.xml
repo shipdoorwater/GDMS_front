@@ -7,28 +7,35 @@
     <TextView
         android:id="@+id/pointDate"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
+        android:gravity="center_vertical"
+        android:textSize="16sp"
         android:text="20240102"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/pointCategory"
-        android:layout_marginEnd="8dp"/>
+        android:padding="5dp"/>
 
     <TextView
         android:id="@+id/pointCategory"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
+        android:gravity="center_vertical"
+        android:textSize="16sp"
         android:text="1"
         app:layout_constraintStart_toEndOf="@+id/pointDate"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/pointValue"
-        android:layout_marginEnd="8dp"/>
+        android:padding="5dp"/>
 
     <TextView
         android:id="@+id/pointValue"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
+        android:gravity="center_vertical"
+        android:textSize="16sp"
         android:text="1000"
+        android:padding="5dp"
         app:layout_constraintStart_toEndOf="@+id/pointCategory"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
