@@ -34,7 +34,7 @@ class QrPayActivity : AppCompatActivity() {
 
         val qrCodeValue = intent.getStringExtra("QR_CODE_VALUE")
 
-        
+
         //QR코드는 qr-code-generator.com 에서
         //shopName : 버거킹 강남대로
         //bizNo : 000000000
@@ -53,7 +53,7 @@ class QrPayActivity : AppCompatActivity() {
             binding.textViewBizNo.text = "사업자 번호: $bizNo"
             binding.textViewAdrs.text = "주소: $adrs"
 
-            
+
 
 
             binding.buttonPay.setOnClickListener {
@@ -78,7 +78,7 @@ class QrPayActivity : AppCompatActivity() {
                                 ).show()
 
                                 // 나가서 메인 엑티비티로 가는데 그 다음 프레그먼트 어디로 갈지 정해줌
-                                val intent = Intent(this@QrPayActivity,MainActivity::class.java)
+                                val intent = Intent(this@QrPayActivity, MainActivity::class.java)
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                                 intent.putExtra("FragmentToLoad", "PayFragment")
                                 startActivity(intent)
@@ -132,6 +132,4 @@ class QrPayActivity : AppCompatActivity() {
 
         return qrDataMap
     }
-
-
 }
