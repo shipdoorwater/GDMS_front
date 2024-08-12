@@ -1,5 +1,6 @@
 package com.example.gdms_front.model
 
 data class SubscribeResponse(
-    val message : String
+    val redirectUrl : String,
+    val tid : String
 )
