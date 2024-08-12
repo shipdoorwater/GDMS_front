@@ -178,8 +178,9 @@ class JoinActivity2 : AppCompatActivity() {
                             val editor = sharedPreferences.edit()
                             editor.putString("token", userId)
                             editor.apply()
-                            val intent =
-                                Intent(this@JoinActivity2, JoinSucActivity::class.java)
+                            val intent = Intent(this@JoinActivity2, JoinSucActivity::class.java)
+                            intent.putExtra("pushYn",pushYn.toString())
+                            Log.d("pushYn", pushYn.toString())
                             startActivity(intent)
                             finish()
                         } else {
