@@ -8,6 +8,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.viewpager2.widget.ViewPager2
 import com.example.gdms_front.R
 import com.example.gdms_front.adapter.SubItemsAdapter
+import com.tbuonomo.viewpagerdotsindicator.DotsIndicator
 
 class ServicePackDetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -16,7 +17,11 @@ class ServicePackDetailActivity : AppCompatActivity() {
 
         val viewPager: ViewPager2 = findViewById(R.id.viewPager)
         val adapter = SubItemsAdapter(this)
+        val dotsIndicator: DotsIndicator = findViewById(R.id.dots_indicator)
+
         viewPager.adapter = adapter
+
+        dotsIndicator.setViewPager2(viewPager)
 
         // Intent에서 전달된 데이터 처리
         val fragmentIndex = intent.getIntExtra("FRAGMENT_INDEX", 0)
