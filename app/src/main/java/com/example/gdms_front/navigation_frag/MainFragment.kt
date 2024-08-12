@@ -59,26 +59,9 @@ class MainFragment : Fragment() {
             it.findNavController().navigate((R.id.action_mainFragment_to_mapFragment))
         }
 
-        //로그아웃 버튼 기능 임시로 넣어놨음
-        val logoutBtn = view.findViewById<Button>(R.id.logoutBtn)
-        logoutBtn.setOnClickListener {
-            // SharedPreferences에서 토큰 삭제
-            val sharedPreferences = context?.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
-            val editor = sharedPreferences?.edit()
-            editor?.remove("token")
-            editor?.apply()
 
-            // 로그인 화면으로 이동
-            val intent = Intent(context, LoginActivity::class.java)
-            startActivity(intent)
-            activity?.finish()
-        }
 
-        val newsBtn = view.findViewById<Button>(R.id.newsBtn)
-        newsBtn.setOnClickListener {
-            val intent = Intent(context, NewsActivity::class.java)
-            startActivity(intent)
-        }
+
 
         view.findViewById<Button>(R.id.dbInitBtn).setOnClickListener {
             notificationViewModel.clearAllNotifications()
