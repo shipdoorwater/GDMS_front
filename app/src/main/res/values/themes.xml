@@ -57,6 +57,6 @@
 s
 
     <style name="Theme.GDMS_FRONT" parent="Base.Theme.GDMS_FRONT" >
-        <item name="android:fontFamily">@font/nnsb</item> <!--글자체 일괄적용 부분-->
+        <item name="android:fontFamily">@font/nanumsquareeb</item> <!--글자체 일괄적용 부분-->
     </style>
 </resources>

@@ -81,7 +81,7 @@ class MyPageActivity : AppCompatActivity() {
         }
 
         // 수정화면으로 이동
-        findViewById<TextView>(R.id.modifyBtn).setOnClickListener {
+        findViewById<Button>(R.id.modifyBtn).setOnClickListener {
             val intent = Intent(this, ModifyInfoActivity::class.java)
             startActivity(intent)
         }

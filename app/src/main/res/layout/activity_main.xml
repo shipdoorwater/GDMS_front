@@ -30,8 +30,9 @@
             <ImageView
                 android:id="@+id/myPageBtn"
                 android:layout_marginRight="50dp"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:scaleType="fitXY"
                 android:src="@drawable/img_material_symbol"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -40,8 +41,9 @@
             <ImageView
                 android:layout_marginRight="10dp"
                 android:id="@+id/alarmBtn"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:scaleType="fitXY"
                 android:src="@drawable/img_notification_1"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
