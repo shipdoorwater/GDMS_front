@@ -11,145 +11,171 @@
         android:background="@android:color/white"
         android:padding="16dp">
 
-        <ImageButton
-            android:id="@+id/backButton"
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/linearLayout20"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/img_arrow_left"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:layout_marginTop="16dp"
-            android:layout_marginStart="16dp" />
+            tools:layout_editor_absoluteX="16dp">
 
-        <TextView
-            android:id="@+id/titleTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="회원가입"
-            android:textColor="@android:color/black"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <ImageButton
+                android:id="@+id/backButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/img_arrow_left"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/titleTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="회원가입"
+                android:layout_gravity="center"
+                android:textColor="@android:color/black"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
 
         <TextView
             android:id="@+id/descriptionTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="몇 단계만 거치면\n구독한미식가와 함께할 수 있어요!"
-            android:textSize="16sp"
-            android:textColor="@android:color/black"
             android:gravity="center"
-            app:layout_constraintTop_toBottomOf="@id/titleTextView"
-            app:layout_constraintStart_toStartOf="parent"
+            android:text="몇 단계만 거치면\n구독한미식가와 함께할 수 있어요!"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            android:layout_marginTop="20dp"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="32dp" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout20" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="0dp"
+            android:id="@+id/constraintLayout11"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/descriptionTextView"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:padding="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintVertical_bias="0.0"
-            android:padding="16dp">
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/descriptionTextView"
+            app:layout_constraintVertical_bias="0.0">
 
             <EditText
                 android:id="@+id/joinUserName"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:hint="  이름"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/edit_text_bg"
+                android:padding="5dp"
+                android:textSize="16sp"
+                android:hint="이름"
+                android:imeOptions="actionNext"
                 android:inputType="textPersonName"
                 android:textColor="@android:color/black"
-                android:background="@drawable/edit_text_bg"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintWidth_default="spread" />
 
             <EditText
                 android:id="@+id/joinUserId"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:hint="  아이디"
-                android:inputType="textEmailAddress"
-                android:textColor="@android:color/black"
-                android:background="@drawable/edit_text_bg"
+                android:layout_height="40dp"
                 android:layout_marginTop="16dp"
-                app:layout_constraintTop_toBottomOf="@id/joinUserName"
-                app:layout_constraintStart_toStartOf="parent"
+                android:background="@drawable/edit_text_bg"
+                android:hint="아이디"
+                android:textSize="16sp"
+                android:padding="5dp"
+                android:imeOptions="actionNext"
+                android:inputType="textVisiblePassword"
+                android:textColor="@android:color/black"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/joinUserName"
                 app:layout_constraintWidth_default="spread" />
 
             <TextView
                 android:id="@+id/joinUserIdHint"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="6~12자 영문, 숫자로 입력해주세요."
-                android:textSize="12sp"
-                android:textColor="@android:color/darker_gray"
                 android:layout_marginTop="4dp"
-                app:layout_constraintTop_toBottomOf="@id/joinUserId"
+                android:text="6~12자 영문, 숫자로 입력해주세요."
+                android:textColor="@android:color/darker_gray"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintTop_toBottomOf="@id/joinUserId" />
 
             <EditText
                 android:id="@+id/joinUserPw"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:hint="  비밀번호"
+                android:layout_height="40dp"
+                android:layout_marginTop="16dp"
+                android:padding="5dp"
+                android:textSize="16sp"
+                android:background="@drawable/edit_text_bg"
+                android:hint="비밀번호"
+                android:imeOptions="actionNext"
                 android:inputType="textPassword"
                 android:textColor="@android:color/black"
-                android:background="@drawable/edit_text_bg"
-                android:layout_marginTop="16dp"
-                app:layout_constraintTop_toBottomOf="@id/joinUserIdHint"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/joinUserIdHint"
                 app:layout_constraintWidth_default="spread" />
 
             <EditText
                 android:id="@+id/joinUserPwConfirm"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:hint="  비밀번호 확인"
+                android:layout_height="40dp"
+                android:padding="5dp"
+                android:textSize="16sp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/edit_text_bg"
+                android:hint="비밀번호 확인"
+                android:imeOptions="actionDone"
                 android:inputType="textPassword"
                 android:textColor="@android:color/black"
-                android:background="@drawable/edit_text_bg"
-                android:layout_marginTop="16dp"
-                app:layout_constraintTop_toBottomOf="@id/joinUserPw"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/joinUserPw"
                 app:layout_constraintWidth_default="spread" />
+
 
             <TextView
                 android:id="@+id/joinUserPwHint"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="비밀번호는 영문 대소문자, 숫자, 특수문자를 혼합하여 8~20자로 입력해주세요."
-                android:textSize="12sp"
-                android:textColor="@android:color/darker_gray"
                 android:layout_marginTop="4dp"
-                app:layout_constraintTop_toBottomOf="@id/joinUserPwConfirm"
+                android:text="비밀번호는 영문 대소문자, 숫자, 특수문자를 혼합하여 8~20자로 입력해주세요."
+                android:textColor="@android:color/darker_gray"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintTop_toBottomOf="@id/joinUserPwConfirm" />
 
             <Button
                 android:id="@+id/nextBtn"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="다음"
-                android:background="@drawable/button_bg"
-                android:textColor="@android:color/black"
-                android:textStyle="bold"
-                android:textSize="20sp"
+                android:layout_height="60dp"
                 android:layout_marginTop="32dp"
-                app:layout_constraintTop_toBottomOf="@id/joinUserPwHint"
-                app:layout_constraintStart_toStartOf="parent"
+
+                android:text="계 속"
+                android:backgroundTint="@android:color/black"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/joinUserPwHint"
                 app:layout_constraintWidth_default="spread" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,11 +1,13 @@
 package com.example.gdms_front.alarm
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.gdms_front.R
 import com.example.gdms_front.databinding.NotificationListItemBinding
 import com.example.gdms_front.model.Notification
+import java.util.Date
 
 class NotificationAdapter(private var notifications: List<Notification>, private val onItemClick : (Notification) -> Unit) :
     RecyclerView.Adapter<NotificationAdapter.ViewHolder>() {
@@ -25,11 +27,11 @@ class NotificationAdapter(private var notifications: List<Notification>, private
         fun bind(notification: Notification) {
             binding.notificationTitle.text = notification.title
             binding.notificationMessage.text = notification.content
-            binding.notificationTimestamp.text = android.text.format.DateFormat.format("yyyy-MM-dd hh:mm:ss", notification.timestamp)
+            binding.notificationTimestamp.text = getRelativeTimeSpanString(itemView.context, notification.timestamp)
             if (notification.isRead) {
-                binding.root.setBackgroundResource(R.color.white)
+//                binding.root.setBackgroundResource(R.color.white)
             } else {
-                binding.root.setBackgroundResource(R.color.purple_500)
+                binding.root.setBackgroundResource(R.color.mint)
             }
         }
     }
@@ -49,4 +51,21 @@ class NotificationAdapter(private var notifications: List<Notification>, private
         this.notifications = notifications
         notifyDataSetChanged()
     }
+
+    private fun getRelativeTimeSpanString(context: Context, timeInMillis: Long): String {
+        val now = System.currentTimeMillis()
+        val diff = now - timeInMillis
+
+        return when {
+            diff < 1000 * 60 -> "방금 전"
+            diff < 1000 * 60 * 60 -> "${diff / (1000 * 60)}분 전"
+            diff < 1000 * 60 * 60 * 24 -> "${diff / (1000 * 60 * 60)}시간 전"
+            diff < 1000 * 60 * 60 * 24 * 7 -> "${diff / (1000 * 60 * 60 * 24)}일 전"
+            else -> {
+                val date = Date(timeInMillis)
+                android.text.format.DateFormat.format("yyyy-MM-dd", date).toString()
+            }
+        }
+    }
+
 }

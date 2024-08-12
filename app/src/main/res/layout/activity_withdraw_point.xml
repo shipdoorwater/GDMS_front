@@ -7,41 +7,44 @@
     android:layout_height="match_parent"
     tools:context=".point.WithdrawPointActivity">
 
-    <ImageView
-        android:id="@+id/backBtn"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/linearLayout18"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
-        android:src="@drawable/img_arrow_left"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/textView14"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="10dp"
-        android:text="출금"
-        android:textSize="15sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/backBtn" />
+        <ImageView
+            android:id="@+id/backBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/img_arrow_left" />
+
+        <TextView
+            android:id="@+id/textView14"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="포인트 출금"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
 
     <LinearLayout
         android:id="@+id/linearLayout10"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
         android:gravity="center"
         android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@+id/textView14">
+        app:layout_constraintBottom_toTopOf="@+id/gridLayout"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout18">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="내 포인트 : "
-            android:textSize="15sp"
+            android:textSize="18sp"
             android:textStyle="bold" />
 
         <TextView
@@ -49,14 +52,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="19000"
-            android:textSize="15sp"
+            android:textSize="18sp"
             android:textStyle="bold" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="원"
-            android:textSize="15sp"
+            android:textSize="18sp"
             android:textStyle="bold" />
     </LinearLayout>
 
@@ -65,7 +68,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="입력 금액"
-        android:textSize="20sp"
+        android:textSize="26sp"
         android:textStyle="bold"
         android:layout_marginTop="20dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -77,13 +80,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@+id/button"
-        android:padding="20dp"
+        android:padding="10dp"
         android:rowCount="4"
         android:columnCount="3">
 
         <Button
             android:id="@+id/btn1"
+            android:textSize="16sp"
             android:text="1"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="5dp"
             android:layout_row="0"
             android:layout_column="0"
             android:layout_columnWeight="1"
@@ -91,6 +97,9 @@
         <Button
             android:id="@+id/btn2"
             android:text="2"
+            android:textSize="16sp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:layout_row="0"
             android:layout_column="1"
             android:layout_columnWeight="1"
@@ -98,6 +107,9 @@
         <Button
             android:id="@+id/btn3"
             android:text="3"
+            android:textSize="16sp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="10dp"
             android:layout_row="0"
             android:layout_column="2"
             android:layout_columnWeight="1"
@@ -105,6 +117,9 @@
         <Button
             android:id="@+id/btn4"
             android:text="4"
+            android:textSize="16sp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="5dp"
             android:layout_row="1"
             android:layout_column="0"
             android:layout_columnWeight="1"
@@ -112,6 +127,9 @@
         <Button
             android:id="@+id/btn5"
             android:text="5"
+            android:textSize="16sp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:layout_row="1"
             android:layout_column="1"
             android:layout_columnWeight="1"
@@ -119,6 +137,9 @@
         <Button
             android:id="@+id/btn6"
             android:text="6"
+            android:textSize="16sp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="10dp"
             android:layout_row="1"
             android:layout_column="2"
             android:layout_columnWeight="1"
@@ -126,6 +147,9 @@
         <Button
             android:id="@+id/btn7"
             android:text="7"
+            android:textSize="16sp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="5dp"
             android:layout_row="2"
             android:layout_column="0"
             android:layout_columnWeight="1"
@@ -133,6 +157,9 @@
         <Button
             android:id="@+id/btn8"
             android:text="8"
+            android:textSize="16sp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:layout_row="2"
             android:layout_column="1"
             android:layout_columnWeight="1"
@@ -140,6 +167,9 @@
         <Button
             android:id="@+id/btn9"
             android:text="9"
+            android:textSize="16sp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="10dp"
             android:layout_row="2"
             android:layout_column="2"
             android:layout_columnWeight="1"
@@ -147,6 +177,9 @@
         <Button
             android:id="@+id/btnCancel"
             android:text="취소"
+            android:textSize="16sp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="5dp"
             android:layout_row="3"
             android:layout_column="0"
             android:layout_columnWeight="1"
@@ -154,6 +187,9 @@
         <Button
             android:id="@+id/btn0"
             android:text="0"
+            android:textSize="16sp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:layout_row="3"
             android:layout_column="1"
             android:layout_columnWeight="1"
@@ -161,6 +197,9 @@
         <Button
             android:id="@+id/btnBackSpace"
             android:text="←"
+            android:textSize="16sp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="10dp"
             android:layout_row="3"
             android:layout_column="2"
             android:layout_columnWeight="1"
@@ -170,6 +209,8 @@
 
     <Button
         android:id="@+id/button"
+        android:layout_margin="20dp"
+        android:textSize="16sp"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:text="다음"

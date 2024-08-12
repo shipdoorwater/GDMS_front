@@ -2,6 +2,7 @@ package com.example.gdms_front.board
 
 import android.os.Bundle
 import android.util.Log
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -30,6 +31,10 @@ class NoticePageActivity : AppCompatActivity() {
         noticeRecyclerView.layoutManager = LinearLayoutManager(this)
 
         fetchNotices()
+
+        findViewById<ImageView>(R.id.backBtn).setOnClickListener {
+            finish()
+        }
     }
 
     private fun fetchNotices() {
