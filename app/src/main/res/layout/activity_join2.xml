@@ -121,38 +121,25 @@
                     app:layout_constraintWidth_default="spread" />
 
 
-
                 <EditText
                     android:id="@+id/joinAdrs"
-                    android:layout_width="250dp"
+                    android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_marginTop="16dp"
-                    android:padding="5dp"
-                    android:textSize="16sp"
                     android:background="@drawable/edit_text_bg"
                     android:hint="주소"
                     android:inputType="textPostalAddress"
+                    android:padding="5dp"
                     android:textColor="@android:color/black"
+                    android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/joinEmail"
                     app:layout_constraintWidth_default="spread" />
 
-                <Button
-                    android:id="@+id/btnSearchAddress"
-                    android:layout_width="80dp"
-                    android:layout_height="40dp"
-                    android:layout_marginTop="16dp"
-                    android:background="@drawable/button_bg"
-                    android:padding="0dp"
-                    android:text="주소 검색"
-                    android:textColor="@android:color/black"
-                    app:layout_constraintEnd_toEndOf="parent"
-
-                    app:layout_constraintTop_toBottomOf="@id/joinEmail" />
 
                 <EditText
                     android:id="@+id/etAddressDetail"
-                    android:layout_width="0dp"
+                    android:layout_width="250dp"
                     android:layout_height="40dp"
                     android:layout_marginTop="8dp"
                     android:padding="5dp"
@@ -163,8 +150,19 @@
                     android:textColor="@android:color/black"
                     app:layout_constraintTop_toBottomOf="@id/joinAdrs"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintWidth_default="spread" />
+                <Button
+                    android:id="@+id/btnSearchAddress"
+                    android:layout_width="80dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/button_bg"
+                    android:padding="0dp"
+                    android:text="주소 검색"
+                    android:textColor="@android:color/black"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/joinAdrs" />
+
 
 
                 <LinearLayout
@@ -279,28 +277,20 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/pushCheckBox" />
 
-                <CheckBox
-                    android:id="@+id/gpsCheckBox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="20dp"
-                    android:layout_marginTop="16dp"
-                    android:text="위치정보 사용에 동의합니다"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/marketingCheckBox" />
 
                 <Button
                     android:id="@+id/signupSubmitButton"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:background="@drawable/button_bg"
-                    android:text="가입하기!"
-                    android:textColor="@android:color/black"
-                    android:textSize="20sp"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="20dp"
+                    android:text="가 입"
+                    android:backgroundTint="@android:color/black"
+                    android:textColor="@android:color/white"
+                    android:textSize="18sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/gpsCheckBox" />
+                    app:layout_constraintTop_toBottomOf="@id/marketingCheckBox" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>

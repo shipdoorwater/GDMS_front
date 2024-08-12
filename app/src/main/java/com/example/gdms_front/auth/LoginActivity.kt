@@ -2,6 +2,7 @@ package com.example.gdms_front.auth
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Typeface
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -31,6 +32,8 @@ class LoginActivity : AppCompatActivity() {
         val savedUserId = sharedPreferences.getString("savedUserId", "")
         val savedUserPw = sharedPreferences.getString("savedUserPw", "")
         val isAutoLogin = sharedPreferences.getBoolean("isAutoLogin", false)
+
+        binding.userPw.typeface = Typeface.DEFAULT
 
         binding.userId.setText(savedUserId)
         binding.userPw.setText(savedUserPw)
