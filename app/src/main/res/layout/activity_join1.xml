@@ -165,12 +165,13 @@
             <Button
                 android:id="@+id/nextBtn"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
                 android:layout_marginTop="32dp"
-                android:background="@drawable/button_bg"
-                android:text="다음"
-                android:textColor="@android:color/black"
-                android:textSize="20sp"
+
+                android:text="계 속"
+                android:backgroundTint="@android:color/black"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

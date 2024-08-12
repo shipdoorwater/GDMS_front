@@ -48,9 +48,11 @@ class JoinActivity2 : AppCompatActivity() {
         binding = ActivityJoin2Binding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // 저장된 상태가 있다면 복원
+        savedInstanceState?.let { restoreState(it) }
+
         binding.backButton.setOnClickListener {
-            val intent = Intent(this, JoinActivity1::class.java)
-            startActivity(intent)
+            finish()
         }
 
         binding.btnSearchAddress.setOnClickListener {
@@ -58,8 +60,10 @@ class JoinActivity2 : AppCompatActivity() {
             getSearchResult.launch(intent)
         }
 
-
-
+        // 주소 입력 필드를 읽기 전용으로 설정
+        binding.joinAdrs.isFocusable = false
+        binding.joinAdrs.isClickable = true
+        binding.joinAdrs.isCursorVisible = false
 
         // 첫 번째 페이지에서 전달된 데이터를 가져옵니다.
         val userName = intent.getStringExtra("userName").toString()
@@ -69,7 +73,6 @@ class JoinActivity2 : AppCompatActivity() {
         binding.signupSubmitButton.setOnClickListener {
 
             val marketingYn = binding.marketingCheckBox.isChecked
-            val gpsYn = binding.gpsCheckBox.isChecked
             val pushYn = binding.pushCheckBox.isChecked
             val gender = when (binding.genderGroup.checkedRadioButtonId) {
                 R.id.maleRadioButton -> 1
@@ -85,7 +88,10 @@ class JoinActivity2 : AppCompatActivity() {
             val userPhone = binding.joinPhone.text.toString()
             val userBirth = binding.joinBirth.text.toString()
             val userEmail = binding.joinEmail.text.toString()
-            val userAdrs = binding.joinAdrs.text.toString()
+
+            val mainAddress = binding.joinAdrs.text.toString()
+            val detailAddress = binding.etAddressDetail.text.toString()
+            val userAdrs = combineAddress(mainAddress, detailAddress)
 
 
             // 유효성 검사
@@ -122,20 +128,16 @@ class JoinActivity2 : AppCompatActivity() {
             }
 
             // 주소 유효성 검사
-            if (userAdrs.isEmpty()) {
-                Toast.makeText(this@JoinActivity2, "주소를 입력해주세요.", Toast.LENGTH_SHORT).show()
+            if (mainAddress.isEmpty()) {
+                Toast.makeText(this@JoinActivity2, "주소를 검색해주세요.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            if (detailAddress.isEmpty()) {
+                Toast.makeText(this@JoinActivity2, "상세주소를 입력해주세요.", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
 
-
-            Log.d("JoinActivity2", "userName: $userName, userId: $userId, userPw: $userPw")
-            Log.d("JoinActivity2", "marketingYn: $marketingYn, gpsYn: $gpsYn, pushYn: $pushYn")
-            Log.d("JoinActivity2", "gender: $gender, payType: $payType")
-            Log.d(
-                "JoinActivity2",
-                "userPhone: $userPhone, userBirth: $userBirth, userEmail: $userEmail, userAdrs: $userAdrs"
-            )
 
             FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
                 if (!task.isSuccessful) {
@@ -161,9 +163,16 @@ class JoinActivity2 : AppCompatActivity() {
                             // 회원가입 성공 처리
                             Toast.makeText(
                                 this@JoinActivity2,
-                                "success",
+                                "회원가입이 성공적으로 처리되었습니다",
                                 Toast.LENGTH_SHORT
                             ).show()
+
+                            // 입력 필드 초기화
+                            clearAllInputs()
+
+                            // 저장된 인스턴스 상태 초기화
+                            clearSavedState()
+
                             val sharedPreferences =
                                 getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
                             val editor = sharedPreferences.edit()
@@ -232,13 +241,80 @@ class JoinActivity2 : AppCompatActivity() {
 
     private val getSearchResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult())
-        { results ->
+        { result ->
+            if (result.resultCode == RESULT_OK) {
+                val data = result.data
+                if (data != null) {
+                    val roadAddress = data.getStringExtra("EXTRA_ROAD_ADDR")
+                    val jibunAddress = data.getStringExtra("EXTRA_JIBUN_ADDR")
 
-            if(results.resultCode == RESULT_OK) {
-                if(results.data != null) {
-                    val data = results.data!!.getStringExtra("data")
-                    binding.joinAdrs?.setText(data)
+                    // 주소 정보를 사용하여 UI 업데이트
+                    binding.joinAdrs.setText(roadAddress)
+
+                    // 필요하다면 jibunAddress도 사용할 수 있습니다
+                    Log.d("Address", "Road: $roadAddress, Jibun: $jibunAddress")
                 }
             }
         }
+
+    // 상태 저장
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        with(outState) {
+            putString("userPhone", binding.joinPhone.text.toString())
+            putString("userBirth", binding.joinBirth.text.toString())
+            putString("userEmail", binding.joinEmail.text.toString())
+            putString("userAdrs", binding.joinAdrs.text.toString())
+            putString("userAdrsDetail", binding.etAddressDetail.text.toString())
+            putBoolean("marketingYn", binding.marketingCheckBox.isChecked)
+            putBoolean("pushYn", binding.pushCheckBox.isChecked)
+            putInt("gender", binding.genderGroup.checkedRadioButtonId)
+            putInt("payType", binding.paymentMethodGroup.checkedRadioButtonId)
+        }
+    }
+
+    // 상태 복원
+    private fun restoreState(savedInstanceState: Bundle) {
+        with(savedInstanceState) {
+            binding.joinPhone.setText(getString("userPhone"))
+            binding.joinBirth.setText(getString("userBirth"))
+            binding.joinEmail.setText(getString("userEmail"))
+            binding.joinAdrs.setText(getString("userAdrs"))
+            binding.etAddressDetail.setText(getString("userAdrsDetail", ""))
+            binding.marketingCheckBox.isChecked = getBoolean("marketingYn")
+            binding.pushCheckBox.isChecked = getBoolean("pushYn")
+            binding.genderGroup.check(getInt("gender"))
+            binding.paymentMethodGroup.check(getInt("payType"))
+        }
+    }
+
+
+    // 주소와 상세 주소를 합치는 함수
+    private fun combineAddress(mainAddress: String, detailAddress: String): String {
+        return if (detailAddress.isNotEmpty()) {
+            "$mainAddress, $detailAddress"
+        } else {
+            mainAddress
+        }
+    }
+
+    // 모든 입력 정보를 지우는 함수
+    private fun clearAllInputs() {
+        binding.joinPhone.text.clear()
+        binding.joinBirth.text.clear()
+        binding.joinEmail.text.clear()
+        binding.joinAdrs.text.clear()
+        binding.etAddressDetail.text.clear()
+        binding.marketingCheckBox.isChecked = false
+        binding.pushCheckBox.isChecked = false
+        binding.genderGroup.clearCheck()
+        binding.paymentMethodGroup.clearCheck()
+    }
+
+    // 저장된 인스턴스 상태를 초기화하는 함수
+    private fun clearSavedState() {
+        val emptyBundle = Bundle()
+        onSaveInstanceState(emptyBundle)
+        // 이렇게 하면 다음에 onCreate가 호출될 때 빈 번들이 전달됩니다.
+    }
 }

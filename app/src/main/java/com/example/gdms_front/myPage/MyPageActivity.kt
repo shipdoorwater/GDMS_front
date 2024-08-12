@@ -24,6 +24,7 @@ import androidx.core.content.FileProvider
 import com.bumptech.glide.Glide
 import com.example.gdms_front.BuildConfig
 import com.example.gdms_front.R
+import com.example.gdms_front.auth.LoginActivity
 import com.example.gdms_front.model.MemberInfoResponse
 import com.example.gdms_front.model.UploadResponse
 import com.example.gdms_front.network.MyPageApiService
@@ -100,6 +101,21 @@ class MyPageActivity : AppCompatActivity() {
                     selectedImageFile = uriToFile(it)
                 }
             }
+        }
+
+        findViewById<TextView>(R.id.logoutBtn).setOnClickListener {
+            // SharedPreferences에서 토큰 삭제
+            val sharedPreferences = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+            val editor = sharedPreferences.edit()
+            editor.remove("token")
+            editor.apply()
+
+
+            // 로그인 화면으로 이동
+            val intent = Intent(this, LoginActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+            finish()
         }
 
         // 카메라로 사진 찍기
