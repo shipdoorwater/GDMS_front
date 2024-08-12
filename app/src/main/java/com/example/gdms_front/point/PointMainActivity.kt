@@ -1,7 +1,9 @@
 package com.example.gdms_front.point
 
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.icu.text.DecimalFormat
 import android.net.Uri
 import android.os.Bundle
@@ -71,11 +73,13 @@ class PointMainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        // KB Pay 앱 싫행
+        // KB Pay 앱 실행
         val constraintLayout10 = findViewById<ConstraintLayout>(R.id.constraintLayout10)
         constraintLayout10.setOnClickListener {
-            openAppOrPlayStore("com.kbcard.cxh.appcard") // KB Pay 앱의 실제 패키지 이름으로 교체해야 합니다
+            launchKBPayApp()
         }
+
+        // KB 스타뱅킹 앱 실행
     }
 
     private fun getMyPoint(userId: String) {
@@ -103,27 +107,45 @@ class PointMainActivity : AppCompatActivity() {
         return formatter.format(number)
     }
 
-    fun openAppOrPlayStore(packageName: String) {
-        val intent = packageManager.getLaunchIntentForPackage(packageName)
-        Log.d("AppLaunch", "before Intent found: $intent")
-        if (intent != null) {
-            // 앱이 설치되어 있으면 앱을 실행
-            Log.d("AppLaunch", "Intent found: $intent")
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            startActivity(intent)
-        } else {
-            // 앱이 설치되어 있지 않으면 Play 스토어로 이동
+    private fun launchKBPayApp() {
+        val kbPayPackageName = "com.kbcard.cxh.appcard"
+        val kbPayScheme = "kb-acp://"
+
+        if (isPackageInstalled(kbPayPackageName)) {
+            // KB Pay 앱이 설치되어 있으면 실행
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(kbPayScheme))
+            intent.setPackage(kbPayPackageName)
             try {
-//                val customIntent = Intent()
-//                customIntent.setClassName("com.kbcard.cxh.appcard", "com.kbcard.cxh.appcard.screen.main.KBPayMainActivity") // 실제 Activity 이름으로 변경
-//                customIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-//                startActivity(customIntent)
-                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$packageName")))
-            } catch (e: android.content.ActivityNotFoundException) {
-                Log.d("AppLaunch", "Direct Activity launch failed: ${e.message}")
-                // Play 스토어 앱이 없는 경우 웹 브라우저로 Play 스토어 페이지 열기
-                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$packageName")))
+                startActivity(intent)
+            } catch (e: ActivityNotFoundException) {
+                // 스킴으로 실행 실패 시 일반적인 방법으로 앱 실행
+                val launchIntent = packageManager.getLaunchIntentForPackage(kbPayPackageName)
+                if (launchIntent != null) {
+                    startActivity(launchIntent)
+                } else {
+                    openPlayStore(kbPayPackageName)
+                }
             }
+        } else {
+            // KB Pay 앱이 설치되어 있지 않으면 Play Store로 이동
+            openPlayStore(kbPayPackageName)
+        }
+    }
+
+    private fun isPackageInstalled(packageName: String): Boolean {
+        return try {
+            packageManager.getPackageInfo(packageName, 0)
+            true
+        } catch (e: PackageManager.NameNotFoundException) {
+            false
+        }
+    }
+
+    private fun openPlayStore(packageName: String) {
+        try {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$packageName")))
+        } catch (e: ActivityNotFoundException) {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$packageName")))
         }
     }
 
