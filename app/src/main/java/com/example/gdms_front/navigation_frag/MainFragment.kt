@@ -35,7 +35,7 @@ import android.graphics.drawable.Drawable
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 
-
+//
 class MainFragment : Fragment() {
     private lateinit var notificationViewModel: NotificationViewModel
     private val factory: ViewModelProvider.Factory = object : ViewModelProvider.Factory {
