@@ -1,8 +1,11 @@
 package com.example.gdms_front.point
 
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.icu.text.DecimalFormat
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -10,6 +13,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.gdms_front.R
@@ -52,6 +56,30 @@ class PointMainActivity : AppCompatActivity() {
             val intent = Intent(this, PointHistoryActivity::class.java)
             startActivity(intent)
         }
+
+        // 자동차보험료 결제 웹뷰로 연결
+        val constraintLayout8 = findViewById<ConstraintLayout>(R.id.constraintLayout8)
+        constraintLayout8.setOnClickListener {
+            val intent = Intent(this, PointWebViewActivity::class.java)
+            intent.putExtra("url", "https://m.kbinsure.co.kr:8547/dctapp/main.html#/car/gi/0001M?joinMall=Y&recntCal=N&OfactAuthEcpt=Y&pid=1090049&code=1035&redirectYn=Y")
+            startActivity(intent)
+        }
+
+        // 운전자보험료 결제 웹뷰로 연결
+        val constraintLayout9 = findViewById<ConstraintLayout>(R.id.constraintLayout9)
+        constraintLayout9.setOnClickListener {
+            val intent = Intent(this, PointWebViewActivity::class.java)
+            intent.putExtra("url", "https://m.kbinsure.co.kr:8547/dctapp/main.html#/GLM/DR/LT_CM0101M?pid=5290334&code=0001&redirectYn=Y")
+            startActivity(intent)
+        }
+
+        // KB Pay 앱 실행
+        val constraintLayout10 = findViewById<ConstraintLayout>(R.id.constraintLayout10)
+        constraintLayout10.setOnClickListener {
+            launchKBPayApp()
+        }
+
+        // KB 스타뱅킹 앱 실행
     }
 
     private fun getMyPoint(userId: String) {
@@ -77,6 +105,48 @@ class PointMainActivity : AppCompatActivity() {
     private fun formatNumberWithComma(number: Int): String {
         val formatter = DecimalFormat("#,###")
         return formatter.format(number)
+    }
+
+    private fun launchKBPayApp() {
+        val kbPayPackageName = "com.kbcard.cxh.appcard"
+        val kbPayScheme = "kb-acp://"
+
+        if (isPackageInstalled(kbPayPackageName)) {
+            // KB Pay 앱이 설치되어 있으면 실행
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(kbPayScheme))
+            intent.setPackage(kbPayPackageName)
+            try {
+                startActivity(intent)
+            } catch (e: ActivityNotFoundException) {
+                // 스킴으로 실행 실패 시 일반적인 방법으로 앱 실행
+                val launchIntent = packageManager.getLaunchIntentForPackage(kbPayPackageName)
+                if (launchIntent != null) {
+                    startActivity(launchIntent)
+                } else {
+                    openPlayStore(kbPayPackageName)
+                }
+            }
+        } else {
+            // KB Pay 앱이 설치되어 있지 않으면 Play Store로 이동
+            openPlayStore(kbPayPackageName)
+        }
+    }
+
+    private fun isPackageInstalled(packageName: String): Boolean {
+        return try {
+            packageManager.getPackageInfo(packageName, 0)
+            true
+        } catch (e: PackageManager.NameNotFoundException) {
+            false
+        }
+    }
+
+    private fun openPlayStore(packageName: String) {
+        try {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$packageName")))
+        } catch (e: ActivityNotFoundException) {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$packageName")))
+        }
     }
 
 }
