@@ -7,4 +7,24 @@
     android:layout_height="match_parent"
     tools:context=".lucky.CheckMyLuckyActivity">
 
+    <TextView
+        android:id="@+id/luckyPhraseTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="행운의문구"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/luckyNumberTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="오늘의점수"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/luckyPhraseTextView" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
