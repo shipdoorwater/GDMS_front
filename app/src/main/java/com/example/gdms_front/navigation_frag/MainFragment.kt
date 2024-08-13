@@ -34,6 +34,7 @@ import com.example.gdms_front.point.PointMainActivity
 import android.graphics.drawable.Drawable
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
+import com.example.gdms_front.lucky.LuckyActivity
 
 //
 class MainFragment : Fragment() {
@@ -111,9 +112,9 @@ class MainFragment : Fragment() {
         }
 
         // 오늘의 운세
-//        view.findViewById<CardView>(R.id.cardView1).setOnClickListener {
-//            startActivity(Intent(activity, ::class.java))
-//        }
+        view.findViewById<CardView>(R.id.cardView1).setOnClickListener {
+            startActivity(Intent(activity, LuckyActivity::class.java))
+        }
 
         // 내 포인트
         view.findViewById<CardView>(R.id.cardView2).setOnClickListener {
