@@ -2,6 +2,18 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <queries>
+        <package android:name="com.kbcard.cxh.appcard" />
+        <package android:name="com.kbstar.liivbank" />
+        <package android:name="com.kbstar.reboot" />
+        <package android:name="com.kbstar.kbbank" />
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="market" />
+        </intent>
+    </queries>
+
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -28,15 +40,15 @@
         android:theme="@style/Theme.GDMS_FRONT"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
-      
+        <activity
+            android:name=".point.PointWebViewActivity"
+            android:exported="false" />
         <activity
             android:name=".profit.KakaoPayActivity"
             android:exported="false" />
-       
         <activity
             android:name=".auth.SearchLocationActivity"
             android:exported="false" />
-      
         <activity
             android:name=".account.CategoryDetailActivity"
             android:exported="false" />
@@ -134,13 +146,14 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".MainActivity"
-            android:exported="true" />
+            android:exported="true" >
+
+        </activity>
         <activity
             android:name=".navigation_frag.PayFragment"
             android:configChanges="orientation|screenSize|keyboardHidden"

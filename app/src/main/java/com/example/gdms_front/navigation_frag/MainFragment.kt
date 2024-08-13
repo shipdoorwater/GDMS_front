@@ -23,9 +23,17 @@ import com.example.gdms_front.auth.LoginActivity
 import com.example.gdms_front.news.NewsActivity
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.target.Target
+import com.bumptech.glide.load.resource.gif.GifDrawable
+import com.bumptech.glide.request.RequestListener
 import com.example.gdms_front.account.AccountActivity
 import com.example.gdms_front.point.PointMainActivity
+import android.graphics.drawable.Drawable
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 
 
 class MainFragment : Fragment() {
@@ -157,7 +165,8 @@ class MainFragment : Fragment() {
         Glide.with(this)
             .asGif()
             .load(gifResourceId)
-            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .diskCacheStrategy(DiskCacheStrategy.NONE) // 캐시 비활성화
+            .skipMemoryCache(true) // 메모리 캐시 비활성화
             .into(imageView)
     }
 
