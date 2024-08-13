@@ -1,5 +1,6 @@
 package com.example.gdms_front.navigation_frag
 
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -7,9 +8,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.ScrollView
 import androidx.cardview.widget.CardView
+import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
@@ -59,6 +63,44 @@ class MainFragment : Fragment() {
         loadGif(imageView4, R.drawable.wired_flat_412_gift)
         loadGif(imageView5, R.drawable.wired_flat_177_envelope_send)
         loadGif(imageView6, R.drawable.wired_flat_153_bar_chart)
+
+        val cardView0 = view.findViewById<CardView>(R.id.cardView0)
+        val cardView1 = view.findViewById<CardView>(R.id.cardView1)
+        val cardView2 = view.findViewById<CardView>(R.id.cardView2)
+        val cardView3 = view.findViewById<CardView>(R.id.cardView3)
+        val cardView4 = view.findViewById<CardView>(R.id.cardView4)
+        val cardView5 = view.findViewById<CardView>(R.id.cardView5)
+        val cardView6 = view.findViewById<CardView>(R.id.cardView6)
+
+        // 초기 애니메이션: 0, 1, 2, 3, 4번 카드뷰 슬라이드 애니메이션
+        view.viewTreeObserver.addOnGlobalLayoutListener {
+            animateCardViewInFromLeft(cardView0, 0L)
+            animateCardViewInFromRight(cardView1, 0L)
+            animateCardViewInFromRight(cardView2, 200L)
+            animateCardViewInFromLeft(cardView3, 400L)
+            animateCardViewInFromRight(cardView4, 600L)
+        }
+
+
+        val scrollView = view.findViewById<ScrollView>(R.id.scrollView)
+        // 애니메이션 실행 여부를 추적하는 플래그 변수
+        var cardView5Animated = false
+        var cardView6Animated = false
+
+        scrollView.viewTreeObserver.addOnScrollChangedListener {
+            val scrollY = scrollView.scrollY
+
+            if (scrollY > 80) { // 적절한 스크롤 위치에서 애니메이션 시작
+                if (!cardView5Animated) {
+                    animateCardViewInFromBottom(cardView5, 0L)
+                    cardView5Animated = true
+                }
+                if (!cardView6Animated) {
+                    animateCardViewInFromBottom(cardView6, 200L) // 6번은 지연을 줘서 실행
+                    cardView6Animated = true
+                }
+            }
+        }
 
         // 오늘의 운세
 //        view.findViewById<CardView>(R.id.cardView1).setOnClickListener {
@@ -118,4 +160,35 @@ class MainFragment : Fragment() {
             .diskCacheStrategy(DiskCacheStrategy.ALL)
             .into(imageView)
     }
+
+    private fun animateCardViewInFromLeft(view: View, startDelay: Long) {
+        view.translationX = -view.width.toFloat() // 왼쪽에서 시작
+        val animator = ObjectAnimator.ofFloat(view, "translationX", 0f).apply {
+            duration = 1000
+            this.startDelay = startDelay
+            interpolator = AccelerateDecelerateInterpolator()
+        }
+        animator.start()
+    }
+
+    private fun animateCardViewInFromRight(view: View, startDelay: Long) {
+        view.translationX = view.width.toFloat() // 오른쪽에서 시작
+        val animator = ObjectAnimator.ofFloat(view, "translationX", 0f).apply {
+            duration = 1000
+            this.startDelay = startDelay
+            interpolator = AccelerateDecelerateInterpolator()
+        }
+        animator.start()
+    }
+
+    private fun animateCardViewInFromBottom(view: View, startDelay: Long) {
+        view.translationY = view.height.toFloat() // 아래에서 시작
+        view.animate()
+            .translationY(0f)
+            .setDuration(1000)
+            .setStartDelay(startDelay)
+            .setInterpolator(AccelerateDecelerateInterpolator())
+            .start()
+    }
+
 }
