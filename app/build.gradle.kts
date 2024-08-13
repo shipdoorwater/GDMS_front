@@ -117,6 +117,9 @@ dependencies {
     
     //인디케이터
     implementation("com.tbuonomo:dotsindicator:5.0")
+
+    implementation("androidx.constraintlayout:constraintlayout:2.2.0-alpha14")
+
 }
 
 
