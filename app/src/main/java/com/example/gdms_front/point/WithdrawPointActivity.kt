@@ -6,6 +6,7 @@ import android.icu.text.DecimalFormat
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.GridLayout
@@ -158,8 +159,15 @@ class WithdrawPointActivity : AppCompatActivity() {
         // 금액 입력 레이아웃을 숨기고 계좌번호 입력 레이아웃을 표시
         findViewById<LinearLayout>(R.id.linearLayout10).visibility = View.GONE
         findViewById<GridLayout>(R.id.gridLayout).visibility = View.GONE
+        findViewById<Button>(R.id.button).visibility = View.GONE
         enteredAmount.visibility = View.GONE
         accountInputLayout.visibility = View.VISIBLE
+
+        // accountNumberInput에 포커스 설정
+        accountNumberInput.requestFocus()
+        // 키보드 표시
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.showSoftInput(accountNumberInput, InputMethodManager.SHOW_IMPLICIT)
     }
 
     private fun showConfirmationDialog() {
@@ -167,22 +175,46 @@ class WithdrawPointActivity : AppCompatActivity() {
         val withdrawAmount = amount.toInt()
         val remainingPoints = totalPoints - withdrawAmount
 
-        val sharedPreference = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
-        val userId = sharedPreference.getString("token", null)
+        // 커스텀 레이아웃 인플레이트
+        val inflater = layoutInflater
+        val dialogView = inflater.inflate(R.layout.dialog_withdraw_confirm, null)
+
+        // 뷰 참조
+        val tvAccountNumber = dialogView.findViewById<TextView>(R.id.tvAccountNumber)
+        val tvWithdrawAmount = dialogView.findViewById<TextView>(R.id.tvWithdrawAmount)
+        val tvRemainingPoints = dialogView.findViewById<TextView>(R.id.tvRemainingPoints)
+        val btnYes = dialogView.findViewById<Button>(R.id.btnYes)
+        val btnNo = dialogView.findViewById<Button>(R.id.btnNo)
+
+        // 데이터 설정
+        tvAccountNumber.text = "$accountNumber"
+        tvWithdrawAmount.text = "${formatNumberWithComma(withdrawAmount)}원"
+        tvRemainingPoints.text = "${formatNumberWithComma(remainingPoints)}원"
 
         val builder = AlertDialog.Builder(this)
-        builder.setTitle("확인")
-        builder.setMessage("계좌번호: $accountNumber\n출금 금액: ${formatNumberWithComma(withdrawAmount)}원\n출금 후 잔액: ${formatNumberWithComma(remainingPoints)}원\n출금하시겠습니까?")
-        builder.setPositiveButton("예") { _, _ ->
-            // 확인 버튼 클릭 시 동작
+        builder.setView(dialogView)
+
+        // 커스텀 타이틀 설정
+        val titleView = layoutInflater.inflate(R.layout.dialog_withdraw_confirm_title, null)
+        builder.setCustomTitle(titleView)
+
+        val dialog = builder.create()
+
+        // 버튼 클릭 리스너 설정
+        btnYes.setOnClickListener {
+            val userId = getSharedPreferences("user_prefs", Context.MODE_PRIVATE).getString("token", null)
             if (userId != null) {
                 performWithdraw(userId, accountNumber, withdrawAmount)
             }
-        }
-        builder.setNegativeButton("아니오") { dialog, _ ->
             dialog.dismiss()
         }
-        val dialog = builder.create()
+
+        btnNo.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        // 대화상자 스타일 설정
+        dialog.window?.setBackgroundDrawableResource(R.drawable.rounded_dialog_background)
         dialog.show()
     }
 
