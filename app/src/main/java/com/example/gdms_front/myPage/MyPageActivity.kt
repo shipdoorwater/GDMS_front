@@ -6,7 +6,9 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.icu.text.SimpleDateFormat
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
@@ -40,6 +42,7 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
+import java.util.Locale
 
 class MyPageActivity : AppCompatActivity() {
 
@@ -57,6 +60,8 @@ class MyPageActivity : AppCompatActivity() {
     private lateinit var profileImageView: ShapeableImageView
     private lateinit var selectedImageFile: File
     private var currentProfileUrl: String? = null // 현재 프로필 URL을 저장할 변수
+
+    private lateinit var dialog: AlertDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -97,8 +102,8 @@ class MyPageActivity : AppCompatActivity() {
             if (result.resultCode == RESULT_OK) {
                 val selectedImageUri: Uri? = result.data?.data
                 selectedImageUri?.let {
-                    profileImageView.setImageURI(it)
                     selectedImageFile = uriToFile(it)
+                    updateDialogImage(it)
                 }
             }
         }
@@ -121,8 +126,8 @@ class MyPageActivity : AppCompatActivity() {
         // 카메라로 사진 찍기
         cameraLauncher = registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
             if (success) {
-                profileImageView.setImageURI(photoURI)
-                selectedImageFile = File(photoURI.path)
+                selectedImageFile = File(currentPhotoPath)
+                updateDialogImage(photoURI)
             }
         }
     }
@@ -195,7 +200,7 @@ class MyPageActivity : AppCompatActivity() {
         // AlertDialog를 생성하고 사용자 정의 레이아웃 설정
         val builder = AlertDialog.Builder(this)
         builder.setView(dialogView)
-        val dialog = builder.create()
+        dialog = builder.create()
 
 
         // 사용자 정의 레이아웃 뷰 초기화
@@ -222,8 +227,13 @@ class MyPageActivity : AppCompatActivity() {
 
         // 완료 버튼 클릭 시 이미지 업로드
         buttonComplete.setOnClickListener {
-            uploadFile()
-            dialog.dismiss()
+            uploadFile {
+                // 업로드 성공 시 실행될 코드
+                dialog.findViewById<ShapeableImageView>(R.id.shapeableImageView)?.drawable?.let {
+                    profileImageView.setImageDrawable(it)
+                }
+                dialog.dismiss()
+            }
         }
 
         dialog.show()
@@ -244,39 +254,38 @@ class MyPageActivity : AppCompatActivity() {
 
 
     private fun takePhoto() {
-
-        val cameraPermission = ContextCompat.checkSelfPermission(this@MyPageActivity, Manifest.permission.CAMERA)
-        val writePermission = ContextCompat.checkSelfPermission(this@MyPageActivity, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-        val readPermission = ContextCompat.checkSelfPermission(this@MyPageActivity, Manifest.permission.READ_EXTERNAL_STORAGE)
-
-
-        if (cameraPermission != PackageManager.PERMISSION_GRANTED ||
-                writePermission != PackageManager.PERMISSION_GRANTED ||
-                readPermission != PackageManager.PERMISSION_GRANTED) {
-            Log.d("CameraBtnTest", "권한 없음: 카메라 권한 = $cameraPermission, 저장소 쓰기 권한 = $writePermission, 저장소 읽기 권한 = $readPermission")
-            ActivityCompat.requestPermissions(this, arrayOf(
-                Manifest.permission.CAMERA,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                Manifest.permission.READ_EXTERNAL_STORAGE), 100)
-        } else {
-            Log.d("CameraBtnTest", "권한 있음")
-            val photoFile: File? = try {
-                createImageFile()
-            } catch (ex: IOException) {
-                null
+        try {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                val photoFile: File? = try {
+                    createImageFile()
+                } catch (ex: IOException) {
+                    Log.e("MyPageActivity", "Error creating image file", ex)
+                    Toast.makeText(this, "이미지 파일 생성 중 오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
+                    null
+                }
+                photoFile?.let {
+                    photoURI = FileProvider.getUriForFile(
+                        this,
+                        "${applicationContext.packageName}.provider",
+                        photoFile
+                    )
+                    cameraLauncher.launch(photoURI)
+                } ?: run {
+                    Toast.makeText(this, "이미지 파일을 생성할 수 없습니다.", Toast.LENGTH_SHORT).show()
+                }
+            } else {
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), 100)
             }
-            photoFile?.let {
-                photoURI = FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID + ".provider", it)
-                cameraLauncher.launch(photoURI)
-            }
+        } catch (e: Exception) {
+            Log.e("MyPageActivity", "Error in takePhoto", e)
+            Toast.makeText(this, "카메라를 실행하는 중 오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
         }
-
     }
 
     @Throws(IOException::class)
     private fun createImageFile(): File {
-        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-        val storageDir: File? = getExternalFilesDir(null)
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+        val storageDir: File? = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         return File.createTempFile(
             "JPEG_${timeStamp}_",
             ".jpg",
@@ -298,7 +307,7 @@ class MyPageActivity : AppCompatActivity() {
 
 
     // 파일 이미지 업로드시키기
-    private fun uploadFile() {
+    private fun uploadFile(onSuccess: () -> Unit) {
         if (::selectedImageFile.isInitialized) {
             val file = selectedImageFile
             val requestFile = file.asRequestBody("image/*".toMediaTypeOrNull())
@@ -314,21 +323,22 @@ class MyPageActivity : AppCompatActivity() {
                 override fun onResponse(call: Call<UploadResponse>, response: Response<UploadResponse>) {
                     if (response.isSuccessful) {
                         Log.d("Upload", "Success: ${response.body()?.message}")
-                        Toast.makeText(this@MyPageActivity, "Image uploaded successfully", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@MyPageActivity, "이미지가 성공적으로 업로드되었습니다", Toast.LENGTH_SHORT).show()
+                        onSuccess()
                     } else {
                         Log.d("Upload", "Failed: ${response.errorBody()?.string()}")
-                        Toast.makeText(this@MyPageActivity, "Image upload failed", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@MyPageActivity, "이미지 업로드 실패", Toast.LENGTH_SHORT).show()
                     }
                 }
 
                 override fun onFailure(call: Call<UploadResponse>, t: Throwable) {
                     Log.d("Upload", "Error: ${t.message}")
-                    Toast.makeText(this@MyPageActivity, "Image upload failed", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@MyPageActivity, "이미지 업로드 실패", Toast.LENGTH_SHORT).show()
                 }
             })
         } else {
             Log.d("Upload", "No file selected")
-            Toast.makeText(this, "No file selected", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "선택된 파일이 없습니다", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -336,18 +346,10 @@ class MyPageActivity : AppCompatActivity() {
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == 100) {
-            var allPermissionsGranted = true
-            for (result in grantResults) {
-                if (result != PackageManager.PERMISSION_GRANTED) {
-                    allPermissionsGranted = false
-                    break
-                }
-            }
-
-            if (allPermissionsGranted) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 takePhoto()
             } else {
-                Toast.makeText(this, "Camera and Storage permissions are required", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "카메라 권한이 필요합니다.", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -357,15 +359,18 @@ class MyPageActivity : AppCompatActivity() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             permissionsNeeded.add(Manifest.permission.CAMERA)
         }
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            permissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-        }
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            permissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE)
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                permissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            }
         }
 
         if (permissionsNeeded.isNotEmpty()) {
             ActivityCompat.requestPermissions(this, permissionsNeeded.toTypedArray(), 100)
         }
+    }
+
+    private fun updateDialogImage(uri: Uri) {
+        dialog.findViewById<ShapeableImageView>(R.id.shapeableImageView)?.setImageURI(uri)
     }
 }
