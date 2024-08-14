@@ -72,8 +72,8 @@ class MainFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_main, container, false)
 
-        notificationSwitch = view.findViewById(R.id.notificationSwitch)
 
+        notificationSwitch = view.findViewById(R.id.notificationSwitch)
 
         // GIF 이미지 로드
         val imageView1: ImageView = view.findViewById(R.id.imageView1_lucky)
@@ -178,6 +178,7 @@ class MainFragment : Fragment() {
 
         return view
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -302,5 +303,4 @@ class MainFragment : Fragment() {
         val currentState = checkNotificationPermission()
         updateNotificationSettingInDB(currentState)
     }
-
 }

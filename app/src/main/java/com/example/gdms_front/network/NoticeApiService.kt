@@ -20,4 +20,5 @@ interface NoticeApiService {
 
     @POST("api/updatePushYn")
     fun updatePushYn(@Body request: PushUpdateRequest): Call<PushUpdateResponse>
+
 }

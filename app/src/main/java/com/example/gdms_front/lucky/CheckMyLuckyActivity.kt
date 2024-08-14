@@ -1,10 +1,12 @@
 package com.example.gdms_front.lucky
 
 import android.content.Context
+
 import android.content.Intent
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.LinearLayout
+
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -53,6 +55,7 @@ class CheckMyLuckyActivity : AppCompatActivity() {
         setDailyLuckyPhrase(userId, today)
         setDailyLuckyNumber(userId, today)
 
+
       // GIF 이미지 로드
         val dogGifImageView: ImageView = findViewById(R.id.dogGif)
         val homeGifImageView : ImageView = findViewById(R.id.homeGif)
@@ -79,6 +82,7 @@ class CheckMyLuckyActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
+
     }
 
     private fun getUserIdFromSharedPreferences(): String {

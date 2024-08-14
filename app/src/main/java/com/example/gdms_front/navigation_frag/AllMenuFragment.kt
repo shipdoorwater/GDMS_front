@@ -20,6 +20,7 @@ import com.example.gdms_front.account.AccountActivity
 import com.example.gdms_front.auth.LoginActivity
 import com.example.gdms_front.board.EventPageActivity
 import com.example.gdms_front.board.NoticePageActivity
+
 import com.example.gdms_front.lucky.LuckyActivity
 import com.example.gdms_front.model.MemberInfoResponse
 import com.example.gdms_front.network.RetrofitClient.myPageApiService
@@ -34,6 +35,7 @@ class AllMenuFragment : Fragment() {
 
     private lateinit var view: View
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -44,6 +46,7 @@ class AllMenuFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
 
+
         view = inflater.inflate(R.layout.fragment_all_menu, container, false)
 
         val sharedPreference = requireContext().getSharedPreferences("user_prefs", MODE_PRIVATE)
@@ -52,6 +55,7 @@ class AllMenuFragment : Fragment() {
         if (userId != null) {
             getMemberInfo(userId)
         }
+
 
         view.findViewById<ConstraintLayout>(R.id.nav_main).setOnClickListener {
             it.findNavController().navigate((R.id.action_allMenuFragment_to_mainFragment))
@@ -140,8 +144,4 @@ class AllMenuFragment : Fragment() {
             }
         })
     }
-
-
-
-
 }
