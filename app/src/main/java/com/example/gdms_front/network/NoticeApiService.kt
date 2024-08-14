@@ -2,6 +2,8 @@ package com.example.gdms_front.network
 
 import com.example.gdms_front.model.NoticeRequest
 import com.example.gdms_front.model.NoticeResponse
+import com.example.gdms_front.model.PushUpdateRequest
+import com.example.gdms_front.model.PushUpdateResponse
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -15,4 +17,8 @@ interface NoticeApiService {
 
     @GET("api/board/{subId}/{boardId}")
     fun getNoticeDetail(@Path("subId") subId: String, @Path("boardId") boardId: Int): Call<NoticeResponse>
+
+    @POST("api/updatePushYn")
+    fun updatePushYn(@Body request: PushUpdateRequest): Call<PushUpdateResponse>
+
 }
