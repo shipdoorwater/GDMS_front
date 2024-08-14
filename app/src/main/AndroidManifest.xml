@@ -159,10 +159,10 @@
         <activity
             android:name=".MainActivity"
             android:exported="true" />
-        <activity
+<!--        <activity
             android:name=".navigation_frag.PayFragment"
             android:configChanges="orientation|screenSize|keyboardHidden"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait" />-->
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -173,6 +173,7 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+
 
     </application>
 

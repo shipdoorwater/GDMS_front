@@ -117,22 +117,21 @@ class ProfitFragment : Fragment() {
         val layout3Tier = view.findViewById<LinearLayout>(R.id.layout_3tier)
         val cardView1 = view.findViewById<CardView>(R.id.cardView1)
         val cardView2 = view.findViewById<CardView>(R.id.cardView2)
-        val cardView3 = view.findViewById<CardView>(R.id.cardView3)
-        val cardView4 = view.findViewById<CardView>(R.id.cardView4)
+        val layout1btn=view.findViewById<LinearLayout>(R.id.layout_1tier_btn)
+        val layout2btn=view.findViewById<LinearLayout>(R.id.layout_2tier_btn)
+        val layout3btn=view.findViewById<LinearLayout>(R.id.layout_3tier_btn)
         val cardView8 = view.findViewById<CardView>(R.id.cardView8)
         val cardView12 = view.findViewById<CardView>(R.id.cardView12)
         val cardView5 = view.findViewById<CardView>(R.id.cardView5)
 
         // 클릭 리스너 설정
-        cardView2.setOnClickListener { scrollToView(nestedScrollView, layout3Tier) }
-        cardView3.setOnClickListener { scrollToView(nestedScrollView, layout2Tier) }
-        cardView4.setOnClickListener { scrollToView(nestedScrollView, layout1Tier) }
+        layout3btn.setOnClickListener { scrollToView(nestedScrollView, layout3Tier) }
+        layout2btn.setOnClickListener { scrollToView(nestedScrollView, layout2Tier) }
+        layout1btn.setOnClickListener { scrollToView(nestedScrollView, layout1Tier) }
 
         view.viewTreeObserver.addOnGlobalLayoutListener {
             animateCardViewInFromLeft(cardView1, 0L)
-            animateCardViewInFromRight(cardView2, 200L)
-            animateCardViewInFromLeft(cardView3, 400L)
-            animateCardViewInFromRight(cardView4, 600L)
+            animateCardViewInFromRight(cardView2, 0L)
         }
 
 
@@ -222,7 +221,7 @@ class ProfitFragment : Fragment() {
             val scrollViewRect = Rect()
             scrollView.getGlobalVisibleRect(scrollViewRect)
 
-            val offset = if (targetView.id == R.id.layout_1tier) 0 else scrollViewRect.top - scrollView.paddingTop
+            val offset =  scrollViewRect.top - scrollView.paddingTop
 
             val scrollY = targetRect.top - scrollViewRect.top + scrollView.scrollY + offset
             scrollView.smoothScrollTo(0, scrollY)
