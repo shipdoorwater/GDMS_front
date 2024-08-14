@@ -1,24 +1,32 @@
 package com.example.gdms_front.navigation_frag
 
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.Intent
+import android.graphics.Rect
 import android.icu.text.SimpleDateFormat
 import android.os.Bundle
+import android.text.Layout
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.gdms_front.R
 import com.example.gdms_front.adapter.SubNowAdapter
 import com.example.gdms_front.adapter.SubscriptionAdapter
@@ -38,6 +46,9 @@ import java.util.Locale
 class ProfitFragment : Fragment() {
 
     private var isBenefitAvailable = true
+
+    private lateinit var recyclerViewNosub: RecyclerView
+    private lateinit var subscriptionAdapter: SubscriptionAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,14 +82,59 @@ class ProfitFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
 
-        //API를 통해 구독상태를 확인
-        //userId?.let{checkSubscriptionStatus(it)}
+        //구독 안하고 있을 때의 리사이클러 뷰 보여주려고 만든것
+        recyclerViewNosub = view.findViewById(R.id.recyclerView_nosub)
+        recyclerViewNosub.layoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
+        loadSubscriptionPacks()
 
-//        userId?.let {
-//            checkSubscriptionStatus(it) { subscriptions ->
-//                adapter.updateSubscriptions(subscriptions)
-//            }
-//        }
+
+        // GIF 이미지 로드
+        val imageView1: ImageView = view.findViewById(R.id.heart_img)
+        val imageView2: ImageView = view.findViewById(R.id.devil_wing_img)
+        val imageView3: ImageView = view.findViewById(R.id.no1_book_img)
+        val imageView4: ImageView = view.findViewById(R.id.no2_book_img)
+        val imageView5: ImageView = view.findViewById(R.id.no3_book_img)
+        val imageView6: ImageView = view.findViewById(R.id.no4_book_img)
+        val imageView7: ImageView = view.findViewById(R.id.green_check_icon1)
+        val imageView8: ImageView = view.findViewById(R.id.green_check_icon2)
+        val imageView9: ImageView = view.findViewById(R.id.blue_point_icon)
+        val imageView10: ImageView = view.findViewById(R.id.pink_free_icon)
+
+        loadGif(imageView1, R.drawable.heart_img)
+        loadGif(imageView2, R.drawable.devil_wing_img)
+        loadGif(imageView3, R.drawable.no1_book_img)
+        loadGif(imageView4, R.drawable.no2_book_img)
+        loadGif(imageView5, R.drawable.no1_book_img)
+        loadGif(imageView6, R.drawable.no2_book_img)
+        loadGif(imageView7, R.drawable.green_check_icon)
+        loadGif(imageView8, R.drawable.green_check_icon)
+        loadGif(imageView9, R.drawable.blue_point_icon)
+        loadGif(imageView10, R.drawable.pink_free_icon)
+
+        val nestedScrollView = view.findViewById<NestedScrollView>(R.id.nestedScrollView)
+        val layout1Tier = view.findViewById<LinearLayout>(R.id.layout_1tier)
+        val layout2Tier = view.findViewById<LinearLayout>(R.id.layout_2tier)
+        val layout3Tier = view.findViewById<LinearLayout>(R.id.layout_3tier)
+        val cardView1 = view.findViewById<CardView>(R.id.cardView1)
+        val cardView2 = view.findViewById<CardView>(R.id.cardView2)
+        val cardView3 = view.findViewById<CardView>(R.id.cardView3)
+        val cardView4 = view.findViewById<CardView>(R.id.cardView4)
+        val cardView8 = view.findViewById<CardView>(R.id.cardView8)
+        val cardView12 = view.findViewById<CardView>(R.id.cardView12)
+        val cardView5 = view.findViewById<CardView>(R.id.cardView5)
+
+        // 클릭 리스너 설정
+        cardView2.setOnClickListener { scrollToView(nestedScrollView, layout3Tier) }
+        cardView3.setOnClickListener { scrollToView(nestedScrollView, layout2Tier) }
+        cardView4.setOnClickListener { scrollToView(nestedScrollView, layout1Tier) }
+
+        view.viewTreeObserver.addOnGlobalLayoutListener {
+            animateCardViewInFromLeft(cardView1, 0L)
+            animateCardViewInFromRight(cardView2, 200L)
+            animateCardViewInFromLeft(cardView3, 400L)
+            animateCardViewInFromRight(cardView4, 600L)
+        }
+
 
         userId?.let {
             checkSubscriptionStatus(it) {subscriptions ->
@@ -157,6 +213,22 @@ class ProfitFragment : Fragment() {
 
 
         return view
+    }
+
+    private fun scrollToView(scrollView: NestedScrollView, targetView: View) {
+        scrollView.post {
+            val targetRect = Rect()
+            targetView.getGlobalVisibleRect(targetRect)
+            val scrollViewRect = Rect()
+            scrollView.getGlobalVisibleRect(scrollViewRect)
+
+            val offset = if (targetView.id == R.id.layout_1tier) 0 else scrollViewRect.top - scrollView.paddingTop
+
+            val scrollY = targetRect.top - scrollViewRect.top + scrollView.scrollY + offset
+            scrollView.smoothScrollTo(0, scrollY)
+
+            Log.d("티어이동", "Scrolling to ${targetView.id}, Y: $scrollY")
+        }
     }
 
     private fun checkSubscriptionStatus(userId: String,onResult: (List<Subscription>) -> Unit) {
@@ -256,6 +328,55 @@ class ProfitFragment : Fragment() {
         horizontalRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         horizontalRecyclerView.adapter = horizontalAdapter
     }
+
+    private fun loadSubscriptionPacks() {
+        // Retrofit 호출로 서비스 팩 데이터 가져오기
+        val call = RetrofitClient.apiService.getServicePacks()
+        call.enqueue(object : Callback<List<ServicePack>> {
+            override fun onResponse(call: Call<List<ServicePack>>, response: retrofit2.Response<List<ServicePack>>) {
+                if (response.isSuccessful) {
+                    val servicePacks = response.body() ?: emptyList()
+                    subscriptionAdapter = SubscriptionAdapter(requireContext(), servicePacks)
+                    recyclerViewNosub.adapter = subscriptionAdapter
+                }
+            }
+
+            override fun onFailure(call: Call<List<ServicePack>>, t: Throwable) {
+                // 실패 처리
+            }
+        })
+    }
+
+    private fun loadGif(imageView: ImageView, gifResourceId: Int) {
+        Glide.with(this)
+            .asGif()
+            .load(gifResourceId)
+            .diskCacheStrategy(DiskCacheStrategy.NONE) // 캐시 비활성화
+            .skipMemoryCache(true) // 메모리 캐시 비활성화
+            .into(imageView)
+    }
+
+    private fun animateCardViewInFromLeft(view: View, startDelay: Long) {
+        view.translationX = -view.width.toFloat() // 왼쪽에서 시작
+        val animator = ObjectAnimator.ofFloat(view, "translationX", 0f).apply {
+            duration = 1000
+            this.startDelay = startDelay
+            interpolator = AccelerateDecelerateInterpolator()
+        }
+        animator.start()
+    }
+
+    private fun animateCardViewInFromRight(view: View, startDelay: Long) {
+        view.translationX = view.width.toFloat() // 오른쪽에서 시작
+        val animator = ObjectAnimator.ofFloat(view, "translationX", 0f).apply {
+            duration = 1000
+            this.startDelay = startDelay
+            interpolator = AccelerateDecelerateInterpolator()
+        }
+        animator.start()
+    }
+
+
 
 
 
