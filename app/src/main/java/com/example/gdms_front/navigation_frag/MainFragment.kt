@@ -32,13 +32,28 @@ import com.bumptech.glide.request.RequestListener
 import com.example.gdms_front.account.AccountActivity
 import com.example.gdms_front.point.PointMainActivity
 import android.graphics.drawable.Drawable
+import android.os.Build
+import android.provider.Settings
+import androidx.appcompat.app.AppCompatActivity.MODE_PRIVATE
+import androidx.appcompat.widget.SwitchCompat
+import androidx.core.app.NotificationManagerCompat
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.example.gdms_front.lucky.LuckyActivity
+import com.example.gdms_front.model.PushUpdateRequest
+import com.example.gdms_front.model.PushUpdateResponse
+import com.example.gdms_front.network.RetrofitClient
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 //
 class MainFragment : Fragment() {
+
     private lateinit var notificationViewModel: NotificationViewModel
+    private lateinit var notificationSwitch: SwitchCompat
+    private var lastNotificationState: Boolean = false
+
     private val factory: ViewModelProvider.Factory = object : ViewModelProvider.Factory {
         override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
             return NotificationViewModel(requireActivity().application) as T
@@ -56,6 +71,8 @@ class MainFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_main, container, false)
+
+        notificationSwitch = view.findViewById(R.id.notificationSwitch)
 
 
         // GIF 이미지 로드
@@ -162,6 +179,35 @@ class MainFragment : Fragment() {
         return view
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // 초기 상태 설정 및 저장
+        lastNotificationState = checkNotificationPermission()
+        updateSwitchState()
+
+        notificationSwitch.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked != checkNotificationPermission()) {
+                requestNotificationPermission()
+            } else {
+                updateNotificationSettingInDB(isChecked)
+            }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == NOTIFICATION_PERMISSION_REQUEST_CODE) {
+            // 권한 설정 화면에서 돌아온 후 상태 확인 및 업데이트
+            updateSwitchState()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        checkAndUpdateNotificationState()
+    }
+
     private fun loadGif(imageView: ImageView, gifResourceId: Int) {
         Glide.with(this)
             .asGif()
@@ -199,6 +245,62 @@ class MainFragment : Fragment() {
             .setStartDelay(startDelay)
             .setInterpolator(AccelerateDecelerateInterpolator())
             .start()
+    }
+
+    private fun checkNotificationPermission(): Boolean {
+        return NotificationManagerCompat.from(requireContext()).areNotificationsEnabled()
+    }
+
+    private fun requestNotificationPermission() {
+        val intent = Intent()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            intent.action = Settings.ACTION_APP_NOTIFICATION_SETTINGS
+            intent.putExtra(Settings.EXTRA_APP_PACKAGE, requireContext().packageName)
+        } else {
+            intent.action = "android.settings.APP_NOTIFICATION_SETTINGS"
+            intent.putExtra("app_package", requireContext().packageName)
+            intent.putExtra("app_uid", requireContext().applicationInfo.uid)
+        }
+        startActivityForResult(intent, NOTIFICATION_PERMISSION_REQUEST_CODE)
+    }
+
+    companion object {
+        private const val NOTIFICATION_PERMISSION_REQUEST_CODE = 123
+    }
+
+    private fun updateSwitchState() {
+        val isEnabled = checkNotificationPermission()
+        notificationSwitch.isChecked = isEnabled
+    }
+
+    private fun updateNotificationSettingInDB(isEnabled: Boolean) {
+        val sharedPreference = requireContext().getSharedPreferences("user_prefs", MODE_PRIVATE)
+        val userId = sharedPreference.getString("token", null)
+
+        if (userId != null) {
+            val request = PushUpdateRequest(userId, isEnabled)
+            RetrofitClient.noticeApiService.updatePushYn(request).enqueue(object :
+                Callback<PushUpdateResponse> {
+                override fun onResponse(call: Call<PushUpdateResponse>, response: Response<PushUpdateResponse>) {
+                    if (response.isSuccessful) {
+                        Log.d("MainFragment", "Notification setting updated successfully: ${response.body()?.message}")
+                    } else {
+                        Log.e("MainFragment", "Failed to update notification setting: ${response.errorBody()?.string()}")
+                    }
+                }
+
+                override fun onFailure(call: Call<PushUpdateResponse>, t: Throwable) {
+                    Log.e("MainFragment", "Error updating notification setting", t)
+                }
+            })
+        } else {
+            Log.e("MainFragment", "User ID is null")
+        }
+    }
+
+    private fun checkAndUpdateNotificationState() {
+        val currentState = checkNotificationPermission()
+        updateNotificationSettingInDB(currentState)
     }
 
 }

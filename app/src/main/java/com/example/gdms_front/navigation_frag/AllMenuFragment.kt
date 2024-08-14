@@ -3,6 +3,7 @@ package com.example.gdms_front.navigation_frag
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,8 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity.MODE_PRIVATE
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.navigation.findNavController
 import com.example.gdms_front.R
@@ -17,11 +20,19 @@ import com.example.gdms_front.account.AccountActivity
 import com.example.gdms_front.auth.LoginActivity
 import com.example.gdms_front.board.EventPageActivity
 import com.example.gdms_front.board.NoticePageActivity
+import com.example.gdms_front.lucky.LuckyActivity
+import com.example.gdms_front.model.MemberInfoResponse
+import com.example.gdms_front.network.RetrofitClient.myPageApiService
 import com.example.gdms_front.news.NewsActivity
 import com.example.gdms_front.point.PointMainActivity
 import org.w3c.dom.Text
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class AllMenuFragment : Fragment() {
+
+    private lateinit var view: View
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,7 +44,14 @@ class AllMenuFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
 
-        val view = inflater.inflate(R.layout.fragment_all_menu, container, false)
+        view = inflater.inflate(R.layout.fragment_all_menu, container, false)
+
+        val sharedPreference = requireContext().getSharedPreferences("user_prefs", MODE_PRIVATE)
+        val userId = sharedPreference?.getString("token", null)
+
+        if (userId != null) {
+            getMemberInfo(userId)
+        }
 
         view.findViewById<ConstraintLayout>(R.id.nav_main).setOnClickListener {
             it.findNavController().navigate((R.id.action_allMenuFragment_to_mainFragment))
@@ -86,7 +104,44 @@ class AllMenuFragment : Fragment() {
             startActivity(intent)
         }
 
+        // 오늘의 운세 텍스트 클릭 시
+        view.findViewById<TextView>(R.id.goToLuckyBtn).setOnClickListener {
+            val intent = Intent(activity, LuckyActivity::class.java)
+            startActivity(intent)
+        }
+
+
         return view
     }
+
+    private fun getMemberInfo(userId: String) {
+        myPageApiService.getMemberInfo(userId).enqueue(object : Callback<MemberInfoResponse> {
+            override fun onResponse(
+                call: Call<MemberInfoResponse>,
+                response: Response<MemberInfoResponse>
+            ) {
+                if (response.isSuccessful) {
+                    val memberInfo = response.body()
+                    if (memberInfo != null) {
+                        view.findViewById<TextView>(R.id.userName).text = memberInfo.userName
+                        Log.d("AllMenuFragment", "Member info retrieved successfully: ${memberInfo.userName}")
+                    } else {
+                        Log.e("AllMenuFragment", "Member info is null")
+                    }
+                } else if (response.code() == 404) {
+                    Log.e("AllMenuFragment", "404 Error: User not found")
+                } else {
+                    Log.e("AllMenuFragment", "Error: ${response.code()}, ${response.message()}")
+                }
+            }
+
+            override fun onFailure(call: Call<MemberInfoResponse>, t: Throwable) {
+                Log.e("AllMenuFragment", "Network failure: ${t.message}", t)
+            }
+        })
+    }
+
+
+
 
 }

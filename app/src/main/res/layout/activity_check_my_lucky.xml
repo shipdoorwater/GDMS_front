@@ -5,26 +5,95 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#EFAB1C"
     tools:context=".lucky.CheckMyLuckyActivity">
 
-    <TextView
-        android:id="@+id/luckyPhraseTextView"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/homeBtnLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:text="행운의문구"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        app:layout_constraintTop_toTopOf="parent"
+        android:gravity="right">
 
-    <TextView
-        android:id="@+id/luckyNumberTextView"
-        android:layout_width="wrap_content"
+        <ImageView
+            android:id="@+id/homeGif"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginRight="10dp"/>
+
+
+        <TextView
+            android:id="@+id/homeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="홈으로 돌아가기"
+            android:layout_gravity="center_vertical"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:text="오늘의점수"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/luckyPhraseTextView" />
+        android:layout_marginTop="120dp"
+        app:layout_constraintTop_toBottomOf="@+id/homeBtnLayout">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/fluent_emoji_speech_balloon"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/luckyPhraseTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="140dp"
+            android:text="행운의문구"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/luckyPhraseTextView"
+            android:orientation="horizontal"
+            android:layout_marginTop="5dp"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/cloverGif"
+                android:layout_width="20dp"
+                android:layout_height="20dp"/>
+
+            <TextView
+                android:id="@+id/luckyNumberTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="오늘의점수"
+                android:textSize="14sp"
+                />
+        </LinearLayout>
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+    <ImageView
+        android:id="@+id/dogGif"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+    </ImageView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

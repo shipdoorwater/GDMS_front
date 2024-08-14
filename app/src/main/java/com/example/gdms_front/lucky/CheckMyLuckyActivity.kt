@@ -1,12 +1,19 @@
 package com.example.gdms_front.lucky
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.navigation.findNavController
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.example.gdms_front.MainActivity
 import com.example.gdms_front.R
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -45,6 +52,33 @@ class CheckMyLuckyActivity : AppCompatActivity() {
 
         setDailyLuckyPhrase(userId, today)
         setDailyLuckyNumber(userId, today)
+
+      // GIF 이미지 로드
+        val dogGifImageView: ImageView = findViewById(R.id.dogGif)
+        val homeGifImageView : ImageView = findViewById(R.id.homeGif)
+        val cloverGifImageView : ImageView = findViewById(R.id.cloverGif)
+
+        loadGif(dogGifImageView, R.raw.dog_gif)
+        loadGif(homeGifImageView, R.raw.wired_flat_63_home)
+        loadGif(cloverGifImageView, R.raw.wired_flat_1448_three_leaf_clover)
+
+
+        val homeGif = findViewById<ImageView>(R.id.homeGif)
+        val homeText = findViewById<TextView>(R.id.homeText)
+
+        homeGif.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java) // MainActivity는 MainFragment를 호스팅하는 액티비티입니다
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+            finish()
+        }
+
+        homeText.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java) // MainActivity는 MainFragment를 호스팅하는 액티비티입니다
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+            finish()
+        }
     }
 
     private fun getUserIdFromSharedPreferences(): String {
@@ -67,6 +101,16 @@ class CheckMyLuckyActivity : AppCompatActivity() {
     private fun setDailyLuckyNumber(userId: String, date: String) {
         val combinedString = "$userId$date"
         val luckyNumber = (abs(combinedString.hashCode()) % 100) + 1 // 1부터 100까지의 숫자
-        luckyNumberTextView.text = "오늘의 행운의 숫자: $luckyNumber"
+        luckyNumberTextView.text = "오늘의 행운 점수 : $luckyNumber"
+    }
+
+
+    private fun loadGif(imageView: ImageView, gifResourceId: Int) {
+        Glide.with(this)
+            .asGif()
+            .load(gifResourceId)
+            .diskCacheStrategy(DiskCacheStrategy.NONE) // 캐시 비활성화
+            .skipMemoryCache(true) // 메모리 캐시 비활성화
+            .into(imageView)
     }
 }
