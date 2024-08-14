@@ -95,7 +95,7 @@ class SubActivity2 : AppCompatActivity() {
                     if (response.isSuccessful) {
 
                         Log.d("구독결제", "구독결제 successful: ${response.body()}")
-                        Toast.makeText(this@SubActivity2, "구독신청 성공", Toast.LENGTH_SHORT).show()
+
 
                         val rawRedirectUrl = response.body()
                         Log.d("구독결제", "Redirect URL: $rawRedirectUrl")
