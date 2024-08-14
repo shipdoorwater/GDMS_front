@@ -29,19 +29,12 @@ import java.util.concurrent.Executors
 import android.Manifest
 import android.annotation.SuppressLint
 import android.util.Log
-import android.view.Surface
-import android.view.TextureView
 import android.widget.Button
 import android.widget.ImageView
 import androidx.camera.core.Camera
 import androidx.camera.view.PreviewView
 import com.bumptech.glide.Glide
 
-/**
- * A simple [Fragment] subclass.
- * Use the [PayFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class PayFragment : Fragment() {
 
     private lateinit var cameraExecutor: ExecutorService
@@ -49,12 +42,14 @@ class PayFragment : Fragment() {
     private lateinit var imageAnalyzer: ImageAnalysis
     private var isQrCodeDetected = false
     //배경 뿌옇게 보이기 추가
-    private lateinit var textureView: TextureView
 
     private var camera: Camera? = null // 카메라 객체 추가
     private var isFlashOn = false // 플래시 상태 변수 추가
 
 
+    companion object {
+        private const val CAMERA_PERMISSION_REQUEST_CODE = 100
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,7 +65,6 @@ class PayFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_pay, container, false)
         //배경 뿌옇게 보이기 추가
-        textureView = view.findViewById(R.id.textureView)
 
         view.findViewById<ConstraintLayout>(R.id.nav_allMenu).setOnClickListener {
             it.findNavController().navigate((R.id.action_payFragment_to_allMenuFragment))
@@ -98,6 +92,28 @@ class PayFragment : Fragment() {
         return view
     }
 
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        when (requestCode) {
+            CAMERA_PERMISSION_REQUEST_CODE -> {
+                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    startCamera(requireView())
+                } else {
+                    Toast.makeText(requireContext(), "카메라 권한이 필요합니다.", Toast.LENGTH_SHORT).show()
+                }
+                return
+            }
+        }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(arrayOf(Manifest.permission.CAMERA), CAMERA_PERMISSION_REQUEST_CODE)
+        } else {
+            startCamera(view)
+        }
+    }
+
     @SuppressLint("UnsafeOptInUsageError")
     private fun startCamera(view: View) {
         if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
@@ -109,15 +125,6 @@ class PayFragment : Fragment() {
                     .also {
                         it.setSurfaceProvider(view.findViewById<PreviewView>(R.id.previewView).surfaceProvider)
                     }
-
-                val preview2 = Preview.Builder()
-                    .build()
-                    .also{  it.setSurfaceProvider { request ->
-                        val surface = Surface(textureView.surfaceTexture)
-                        request.provideSurface(surface, ContextCompat.getMainExecutor(requireContext())) {
-                            surface.release()
-                        }
-                    }}
 
 
 
@@ -163,9 +170,12 @@ class PayFragment : Fragment() {
 
                 try {
                     cameraProvider.unbindAll()
-                   camera= cameraProvider.bindToLifecycle(this, cameraSelector, preview, preview2, imageAnalyzer)
+                    camera = cameraProvider.bindToLifecycle(
+                        this, cameraSelector, preview, imageAnalyzer
+                    )
                 } catch (exc: Exception) {
-                    Toast.makeText(requireContext(), "카메라 실행에 실패했습니다.", Toast.LENGTH_SHORT).show()
+                    Log.e("CameraX", "카메라 바인딩 실패", exc)
+                    Toast.makeText(requireContext(), "카메라 실행에 실패했습니다: ${exc.message}", Toast.LENGTH_SHORT).show()
                 }
             }, ContextCompat.getMainExecutor(requireContext()))
         } else {
