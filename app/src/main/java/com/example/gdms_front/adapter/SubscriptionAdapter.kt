@@ -43,9 +43,9 @@ class SubscriptionAdapter (
         //holder.packBrief.text = servicePack.packBrief  // 여기에 아이템별 표시하고 싶은 아이템 추가해
 
         when(packId-1) {
-            0-> holder.cardView.setBackgroundResource(R.drawable.pack_card_3)
-            1-> holder.cardView.setBackgroundResource(R.drawable.pack_card_3)
-            2-> holder.cardView.setBackgroundResource(R.drawable.pack_card_3)
+            0-> holder.cardView.setBackgroundResource(R.drawable.pack_card_9)
+            1-> holder.cardView.setBackgroundResource(R.drawable.pack_card_1)
+            2-> holder.cardView.setBackgroundResource(R.drawable.pack_card_2)
             3-> holder.cardView.setBackgroundResource(R.drawable.pack_card_3)
             4-> holder.cardView.setBackgroundResource(R.drawable.pack_card_4)
             5-> holder.cardView.setBackgroundResource(R.drawable.pack_card_5)
@@ -54,7 +54,6 @@ class SubscriptionAdapter (
             8-> holder.cardView.setBackgroundResource(R.drawable.pack_card_8)
             9-> holder.cardView.setBackgroundResource(R.drawable.pack_card_9)
             else-> holder.cardView.setBackgroundResource(R.drawable.img_gallery)
-
         }
 
         /*when(position) {

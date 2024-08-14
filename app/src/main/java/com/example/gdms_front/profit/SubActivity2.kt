@@ -1,6 +1,7 @@
 package com.example.gdms_front.profit
 
 import android.content.Intent
+import android.icu.text.NumberFormat
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -28,6 +29,7 @@ import kotlinx.coroutines.launch
 import retrofit2.http.Body
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 class SubActivity2 : AppCompatActivity() {
 
@@ -56,21 +58,24 @@ class SubActivity2 : AppCompatActivity() {
         // 한 달 뒤의 다음 날 계산
         val oneMonthAndOneDayLater = oneMonthLater.plusDays(1)
         // 날짜를 문자열로 포맷팅
-        val formatter = DateTimeFormatter.ofPattern("yyyy년MM월dd일")
+        val formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd")
 
         val todayStr = today.format(formatter)
         val oneMonthLaterStr = oneMonthLater.format(formatter)
         val oneMonthAndOneDayLaterStr = oneMonthAndOneDayLater.format(formatter)
+
+        // 금액 포맷팅 (쉼표 추가)
+        val formattedAmount = NumberFormat.getNumberInstance(Locale.US).format(amountPaid)
 
 
 
         binding.userId.text = "$userId 님\n구독 결제정보를 확인해 주세요"
         binding.packName.text = "$packName 팩 월 정기구독"
 
-        binding.packBrief.text = "#구독기간   |  $todayStr ~ $oneMonthLaterStr"
+        binding.packBrief.text =  "#구독기간      |  $todayStr ~ $oneMonthLaterStr"
         binding.packBrief2.text = "#다음결제일  |  $oneMonthAndOneDayLaterStr"
 
-        binding.amountPaid.text = "$amountPaid 원"
+        binding.amountPaid.text = "$formattedAmount 원"
 
         Log.d("SubActivity2", "userId: $userId, packId: $packId, amountPaid: $amountPaid, packName: $packName, packBrief: $packBrief")
 

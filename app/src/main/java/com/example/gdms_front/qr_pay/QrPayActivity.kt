@@ -3,6 +3,8 @@ package com.example.gdms_front.qr_pay
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -18,6 +20,7 @@ import com.example.gdms_front.model.JoinRequest
 import com.example.gdms_front.model.PayRequest
 import com.example.gdms_front.network.RetrofitClient
 import kotlinx.coroutines.launch
+import java.text.DecimalFormat
 
 class QrPayActivity : AppCompatActivity() {
 
@@ -34,6 +37,8 @@ class QrPayActivity : AppCompatActivity() {
 
         val qrCodeValue = intent.getStringExtra("QR_CODE_VALUE")
 
+        val editTextAmount = binding.editTextAmount
+
 
         //QR코드는 qr-code-generator.com 에서
         //shopName : 버거킹 강남대로
@@ -49,16 +54,14 @@ class QrPayActivity : AppCompatActivity() {
 
             Log.d("QrPayActivity123", "shopName: $shopName, bizNo: $bizNo, adrs: $adrs")
 
-            binding.textViewShopName.text = "상호 : $shopName"
-            binding.textViewBizNo.text = "사업자 번호: $bizNo"
-            binding.textViewAdrs.text = "주소: $adrs"
-
-
+            binding.textViewShopName.text = "#업체명        : $shopName"
+            binding.textViewBizNo.text =    "#사업자 번호 : $bizNo"
+            binding.textViewAdrs.text =     "#주소           : $adrs"
 
 
             binding.buttonPay.setOnClickListener {
                 val amountStr = binding.editTextAmount.text.toString()
-                val payment = amountStr.toIntOrNull()
+                val payment = amountStr.replace("[^\\d]".toRegex(), "").toIntOrNull()
 
                 Log.d("QrPayActivity123", "userId: $userId, bizNo: $bizNo, payment: $payment")
 
@@ -115,6 +118,38 @@ class QrPayActivity : AppCompatActivity() {
                 }
             }
         }
+
+
+        editTextAmount.addTextChangedListener(object : TextWatcher {
+            private var current = ""
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+            override fun afterTextChanged(s: Editable?) {
+                if (s.toString() != current) {
+                    editTextAmount.removeTextChangedListener(this)
+
+                    val cleanString = s.toString().replace("[^\\d]".toRegex(), "")
+                    if (cleanString.isNotEmpty()) {
+                        val parsed = cleanString.toLong()
+                        val formatted = DecimalFormat("#,###").format(parsed)
+
+                        current = "$formatted 원"
+                        editTextAmount.setText(current)
+                        editTextAmount.setSelection(current.length - 2) // " 원" 앞에 커서 위치
+                    }
+
+                    editTextAmount.addTextChangedListener(this)
+                }
+            }
+        })
+
+
+
+
+
     }
 
     private fun parseQrCode(qrCodeValue: String): Map<String, String> {
