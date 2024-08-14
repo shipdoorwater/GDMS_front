@@ -8,64 +8,81 @@
     tools:context=".navigation_frag.AllMenuFragment">
 
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout3"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView8"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_marginLeft="20dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:backgroundTint="#e2e2e2"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="4dp"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/userName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:paddingLeft="10dp"
             android:text="사용자"
+            android:textSize="20sp"
             android:textStyle="bold"
-            android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-
+    </androidx.cardview.widget.CardView>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="80dp"
         android:layout_marginRight="10dp"
         android:layout_marginLeft="20dp"
         android:layout_marginBottom="63dp"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout3">
+        app:layout_constraintTop_toBottomOf="@+id/cardView8">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/eventLayout"
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="15dp"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <ImageView
-                android:id="@+id/imageView3"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/twemoji_wrapped_gift"
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardView7"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:backgroundTint="#e2e2e2"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="4dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/imageView3"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/twemoji_wrapped_gift" />
+
+            </androidx.cardview.widget.CardView>
 
             <TextView
                 android:id="@+id/eventBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="진행 중인 이벤트"
-                android:layout_marginLeft="10dp"
-                android:textSize="16sp"
+                android:textSize="18sp"
+                android:layout_marginLeft="15dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/imageView3"
+                app:layout_constraintStart_toEndOf="@+id/cardView7"
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -75,23 +92,36 @@
             android:id="@+id/noticeLayout"
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="20dp"
             android:orientation="horizontal"
             android:gravity="center_vertical"
             app:layout_constraintTop_toBottomOf="@+id/eventLayout">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/icon_park_volume_notice" />
+            <androidx.cardview.widget.CardView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:backgroundTint="#e2e2e2"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="4dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/icon_park_volume_notice" />
+            </androidx.cardview.widget.CardView>
+
 
             <TextView
                 android:id="@+id/noticeBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="15dp"
                 android:text="공지사항"
-                android:textSize="16sp"/>
+                android:textSize="18sp"/>
 
         </LinearLayout>
 
@@ -100,22 +130,36 @@
             android:id="@+id/luckyLayout"
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="20dp"
             android:orientation="horizontal"
             android:gravity="center_vertical"
             app:layout_constraintTop_toBottomOf="@+id/noticeLayout">
 
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/fluent_emoji_four_leaf_clover" />
+            <androidx.cardview.widget.CardView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:backgroundTint="#e2e2e2"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="4dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/fluent_emoji_four_leaf_clover" />
+
+            </androidx.cardview.widget.CardView>
+
 
             <TextView
                 android:id="@+id/goToLuckyBtn"
-                android:textSize="16sp"
+                android:textSize="18sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="15dp"
                 android:text="오늘의 운세" />
 
         </LinearLayout>
@@ -126,22 +170,35 @@
             android:id="@+id/pointLayout"
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="20dp"
             android:orientation="horizontal"
             android:gravity="center_vertical"
             app:layout_constraintTop_toBottomOf="@+id/luckyLayout">
 
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/wired_lineal_290_coin" />
+            <androidx.cardview.widget.CardView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:backgroundTint="#e2e2e2"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="4dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/wired_lineal_290_coin" />
+
+            </androidx.cardview.widget.CardView>
 
             <TextView
                 android:id="@+id/goToPointBtn"
-                android:textSize="16sp"
+                android:textSize="18sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="15dp"
                 android:text="내 포인트" />
 
         </LinearLayout>
@@ -150,22 +207,35 @@
             android:id="@+id/ManageLayout"
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="20dp"
             android:orientation="horizontal"
             android:gravity="center_vertical"
             app:layout_constraintTop_toBottomOf="@+id/pointLayout">
 
+            <androidx.cardview.widget.CardView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:backgroundTint="#e2e2e2"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="4dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/logos_google_tag_manager" />
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/logos_google_tag_manager" />
+
+            </androidx.cardview.widget.CardView>
+
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:textSize="16sp"
+                android:layout_marginLeft="15dp"
+                android:textSize="18sp"
                 android:text="구독 관리" />
 
         </LinearLayout>
@@ -174,23 +244,37 @@
             android:id="@+id/placeLayout"
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="20dp"
             android:orientation="horizontal"
             android:gravity="center_vertical"
             app:layout_constraintTop_toBottomOf="@+id/ManageLayout">
 
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/img_icon" />
+            <androidx.cardview.widget.CardView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:backgroundTint="#e2e2e2"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="4dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/img_icon" />
+
+            </androidx.cardview.widget.CardView>
+
 
             <TextView
                 android:id="@+id/goToMapBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="15dp"
                 android:text="플레이스 추천"
-                android:textSize="16sp"/>
+                android:textSize="18sp"/>
 
         </LinearLayout>
 
@@ -198,24 +282,38 @@
             android:id="@+id/accountBookLayout"
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="20dp"
             android:orientation="horizontal"
             android:gravity="center_vertical"
             app:layout_constraintTop_toBottomOf="@+id/placeLayout">
 
+            <androidx.cardview.widget.CardView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:backgroundTint="#e2e2e2"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="4dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/fluent_emoji_notebook" />
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/fluent_emoji_notebook" />
+
+            </androidx.cardview.widget.CardView>
+
+
 
             <TextView
                 android:id="@+id/accountBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="15dp"
                 android:text="가계부 관리"
-                android:textSize="16sp"/>
+                android:textSize="18sp"/>
 
         </LinearLayout>
 
@@ -223,24 +321,36 @@
             android:id="@+id/newLetterLayout"
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="20dp"
             android:orientation="horizontal"
             android:gravity="center_vertical"
             app:layout_constraintTop_toBottomOf="@+id/accountBookLayout">
 
+            <androidx.cardview.widget.CardView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:backgroundTint="#e2e2e2"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="4dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/twemoji_newspaper" />
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/twemoji_newspaper" />
+
+            </androidx.cardview.widget.CardView>
 
             <TextView
                 android:id="@+id/newsBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="15dp"
                 android:text="뉴스레터"
-                android:textSize="16sp"/>
+                android:textSize="18sp"/>
 
         </LinearLayout>
 

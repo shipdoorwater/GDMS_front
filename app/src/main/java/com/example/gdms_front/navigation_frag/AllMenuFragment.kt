@@ -127,7 +127,7 @@ class AllMenuFragment : Fragment() {
                 if (response.isSuccessful) {
                     val memberInfo = response.body()
                     if (memberInfo != null) {
-                        view.findViewById<TextView>(R.id.userName).text = memberInfo.userName
+                        view.findViewById<TextView>(R.id.userName).text = "${memberInfo.userName}님 안녕하세요"
                         Log.d("AllMenuFragment", "Member info retrieved successfully: ${memberInfo.userName}")
                     } else {
                         Log.e("AllMenuFragment", "Member info is null")
