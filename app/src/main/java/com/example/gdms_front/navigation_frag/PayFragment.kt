@@ -108,15 +108,15 @@ class PayFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(arrayOf(Manifest.permission.CAMERA), CAMERA_PERMISSION_REQUEST_CODE)
-        } else {
             startCamera(view)
+        } else {
+            requestPermissions(arrayOf(Manifest.permission.CAMERA), CAMERA_PERMISSION_REQUEST_CODE)
         }
     }
 
     @SuppressLint("UnsafeOptInUsageError")
     private fun startCamera(view: View) {
-        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+//        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
             val cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext())
             cameraProviderFuture.addListener({
                 cameraProvider = cameraProviderFuture.get()
@@ -178,10 +178,8 @@ class PayFragment : Fragment() {
                     Toast.makeText(requireContext(), "카메라 실행에 실패했습니다: ${exc.message}", Toast.LENGTH_SHORT).show()
                 }
             }, ContextCompat.getMainExecutor(requireContext()))
-        } else {
-            ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.CAMERA), 1001)
         }
-    }
+
 
     private fun isFlashAvailable(): Boolean {
         return camera?.cameraInfo?.hasFlashUnit() ?: false
