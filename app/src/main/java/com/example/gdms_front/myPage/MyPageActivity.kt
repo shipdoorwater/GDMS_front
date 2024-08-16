@@ -88,7 +88,7 @@ class MyPageActivity : AppCompatActivity() {
         }
 
         // 수정화면으로 이동
-        findViewById<Button>(R.id.modifyBtn).setOnClickListener {
+        findViewById<CardView>(R.id.modifyBtn).setOnClickListener {
             val intent = Intent(this, ModifyInfoActivity::class.java)
             startActivity(intent)
         }
@@ -314,7 +314,7 @@ class MyPageActivity : AppCompatActivity() {
 
 
     // 파일 이미지 업로드시키기
-    private fun uploadFile(onSuccess: () -> Unit) {
+    private fun uploadFile(onSuccess: (String) -> Unit) {
         if (::selectedImageFile.isInitialized) {
             val file = selectedImageFile
             val requestFile = file.asRequestBody("image/*".toMediaTypeOrNull())
@@ -329,23 +329,31 @@ class MyPageActivity : AppCompatActivity() {
             call.enqueue(object : Callback<UploadResponse> {
                 override fun onResponse(call: Call<UploadResponse>, response: Response<UploadResponse>) {
                     if (response.isSuccessful) {
-                        Log.d("Upload", "Success: ${response.body()?.message}")
-                        Toast.makeText(this@MyPageActivity, "이미지가 성공적으로 업로드되었습니다", Toast.LENGTH_SHORT).show()
-                        onSuccess()
+                        response.body()?.let { uploadResponse ->
+                            Log.d("Upload", "Success: ${uploadResponse.message}")
+
+                            // 새로운 프로필 URL을 받아옵니다.
+                            val newProfileUrl = uploadResponse.profileUrl
+
+                            // currentProfileUrl을 업데이트합니다.
+                            currentProfileUrl = newProfileUrl
+
+                            // 성공 콜백을 호출하며 새 URL을 전달합니다.
+                            onSuccess(newProfileUrl)
+                        } ?: run {
+                            Log.d("Upload", "Response body is null")
+                        }
                     } else {
                         Log.d("Upload", "Failed: ${response.errorBody()?.string()}")
-                        Toast.makeText(this@MyPageActivity, "이미지 업로드 실패", Toast.LENGTH_SHORT).show()
                     }
                 }
 
                 override fun onFailure(call: Call<UploadResponse>, t: Throwable) {
                     Log.d("Upload", "Error: ${t.message}")
-                    Toast.makeText(this@MyPageActivity, "이미지 업로드 실패", Toast.LENGTH_SHORT).show()
                 }
             })
         } else {
             Log.d("Upload", "No file selected")
-            Toast.makeText(this, "선택된 파일이 없습니다", Toast.LENGTH_SHORT).show()
         }
     }
 
