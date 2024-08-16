@@ -820,7 +820,7 @@
                     android:layout_gravity="center"
                     android:paddingBottom="20dp" />
 
-                <!-- 혜택대상 -->
+                <!-- 현재 구독중 부분 -->
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardView13"
                     android:layout_width="match_parent"
@@ -852,7 +852,7 @@
                                 android:layout_width="150dp"
                                 android:layout_height="40dp"
                                 android:text="현재 구독 중"
-                                android:textSize="17sp"
+                                android:textSize="18sp"
                                 android:textStyle="bold"
                                 android:gravity="left|center" />
                         </LinearLayout>
@@ -863,108 +863,74 @@
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
                             android:background="@android:color/white"
-                            android:padding="16dp">
+                            android:padding="8dp">
 
-                            <!-- 첫 번째 줄 -->
-                            <LinearLayout
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/recyclerView"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:gravity="center_vertical">
+                                android:layout_marginTop="16dp"/>
 
-                                <ImageView
-                                    android:layout_width="30dp"
-                                    android:layout_height="30dp"
-                                    android:layout_gravity="center" />
-
-                                <ImageView
-                                    android:layout_width="140dp"
-                                    android:layout_height="30dp"
-                                    android:layout_marginEnd="4dp"
-                                    android:src="@drawable/kb_logo_remove_back" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="거래 고객중에"
-                                    android:textSize="15sp"
-                                    android:textColor="#333333"/>
-                            </LinearLayout>
-
-                            <!-- 구분선 -->
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="1dp"
-                                android:background="#E0E0E0"
-                                android:layout_marginVertical="12dp"/>
-
-                            <!-- 두 번째 줄 -->
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:gravity="center_vertical">
-
-                                <ImageView
-                                    android:layout_width="30dp"
-                                    android:layout_height="30dp"
-                                    android:layout_gravity="center" />
-
-                                <ImageView
-                                    android:layout_width="80dp"
-                                    android:layout_height="30dp"
-                                    android:layout_marginEnd="4dp"
-                                    android:src="@drawable/gdms_logo_remove_back" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="2티어 구독하신 분"
-                                    android:textSize="15sp"
-                                    android:textColor="#333333"/>
-                            </LinearLayout>
                         </LinearLayout>
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
-                <LinearLayout
+                <!-- 현재 구독중 부분 -->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardView14"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:background="#FFEB3B"
-                    android:padding="16dp"
-                    android:layout_marginTop="16dp">
+                    android:layout_marginStart="30dp"
+                    android:layout_marginEnd="30dp"
+                    android:layout_marginBottom="20dp"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="4dp">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="현재 구독 중"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recyclerView"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"/>
+                        android:orientation="vertical">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="추가 구독 가능"
-                        android:textSize="16sp"
-                        android:layout_marginTop="8dp" />
+                        <!-- 상단 타이틀 배경 -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="#F0F0F0"
+                            android:padding="8dp">
 
-                    <!--구독 가능한 리사이클러 뷰 추가-->
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/availableSubscriptionsRecyclerView"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginTop="8dp"/>
+                            <ImageView
+                                android:src="@drawable/lava_lamp"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp" />
 
-                </LinearLayout>
+                            <TextView
+                                android:layout_width="150dp"
+                                android:layout_height="40dp"
+                                android:text="추가 구독 가능"
+                                android:textSize="18sp"
+                                android:textStyle="bold"
+                                android:gravity="left|center" />
+                        </LinearLayout>
 
+                        <!-- 내용 영역 -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:background="@android:color/white"
+                            android:padding="8dp">
+
+                            <!--구독 가능한 리사이클러 뷰 추가-->
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/availableSubscriptionsRecyclerView"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_marginTop="8dp"/>
+
+                        </LinearLayout>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
 
 
             </LinearLayout>
