@@ -1,6 +1,8 @@
 package com.example.gdms_front.adapter
 
 import android.content.Context
+import android.icu.text.NumberFormat
+import android.icu.text.SimpleDateFormat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +12,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.example.gdms_front.R
 import com.example.gdms_front.model.Subscription
+import java.util.Locale
 
 class SubNowAdapter(
     private val context: Context,
@@ -20,19 +23,36 @@ class SubNowAdapter(
     inner class SubscriptionViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tierTextView: TextView = itemView.findViewById(R.id.tierTextView)
         val descriptionTextView: TextView = itemView.findViewById(R.id.descriptionTextView)
+        val amountPaid: TextView = itemView.findViewById(R.id.amountPaid)
         val cancelButton: Button = itemView.findViewById(R.id.cancelButton)
 
         fun bind(subscription: Subscription) {
-            tierTextView.text = "${subscription.packName}  (${subscription.amountPaid})"
+
+            if(subscription.packName=="공통"){
+                tierTextView.text="2티어 서비스"
+            } else {
+                tierTextView.text = "3티어 ${subscription.packName}팩"
+            }
+
+            val formattedAmount = NumberFormat.getNumberInstance(Locale.getDefault()).format(subscription.amountPaid)
+            amountPaid.text = "${formattedAmount} 원"
+
 
             //subStatus에 따라 취소 버튼의 가시성을 설정
             cancelButton.visibility=if(subscription.subStatus) View.VISIBLE else View.GONE
 
             // 구독 해지 상태에 따라 descriptionTextView의 텍스트를 설정
+            val inputFormat = SimpleDateFormat("yyyyMMdd", Locale.getDefault()) // 기존 날짜 형식이 yyyymmdd인 경우
+            val outputFormat = SimpleDateFormat("yyyy.MM.dd", Locale.getDefault())
+
+// 날짜를 포맷팅하여 문자열로 변환
+            val formattedStartDate = outputFormat.format(inputFormat.parse(subscription.startDate)!!)
+            val formattedEndDate = outputFormat.format(inputFormat.parse(subscription.endDate)!!)
+
             if (subscription.subStatus) {
-                descriptionTextView.text = "${subscription.startDate} ~ ${subscription.endDate}"
+                descriptionTextView.text = "${formattedStartDate} ~ ${formattedEndDate}"
             } else {
-                descriptionTextView.text = "구독 해지 신청 완료\n${subscription.startDate} ~ ${subscription.endDate}"
+                descriptionTextView.text = "구독 해지 신청 완료\n${formattedStartDate} ~ ${formattedEndDate}"
             }
 
 
@@ -43,7 +63,7 @@ class SubNowAdapter(
 
                 AlertDialog.Builder(context)
                     .setTitle("구독 해지")
-                    .setMessage("정말로 구독을 해지하려고???")
+                    .setMessage("정말로 구독을 해지하시겠습니까?")
                     .setPositiveButton("네") { dialog, which ->
                         onCancelClick(subscription.userId, subscription.packId)
                     }

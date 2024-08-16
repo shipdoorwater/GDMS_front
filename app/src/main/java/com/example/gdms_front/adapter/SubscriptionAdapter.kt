@@ -24,8 +24,9 @@ class SubscriptionAdapter (
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val packName: TextView = itemView.findViewById(R.id.packName)
         //val packBrief: TextView = itemView.findViewById(R.id.packBrief)  // 여기에 아이템별 표시하고 싶은 아이템 추가해
-        val addButton: Button = itemView.findViewById(R.id.addButton)
+        //val addButton: Button = itemView.findViewById(R.id.addButton)
         val cardView: View = itemView as CardView // card view를 참조함
+        val cardView2: CardView = itemView.findViewById(R.id.cardView)
         //val packImageView: ImageView = itemView.findViewById(R.id.packImageView)
 
     }
@@ -91,7 +92,7 @@ class SubscriptionAdapter (
 //            2 -> holder.cardView.setBackgroundColor(Color.parseColor("#BBDEFB"))
 //        }
 
-        holder.addButton.setOnClickListener {
+        holder.cardView2.setOnClickListener {
             //onItemClick(servicePack)
             val intent = Intent(context, ServicePackDetailActivity::class.java)
             intent.putExtra("FRAGMENT_INDEX", position) // 인덱스 전달
