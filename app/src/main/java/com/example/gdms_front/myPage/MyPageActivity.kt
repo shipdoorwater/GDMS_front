@@ -20,6 +20,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
@@ -51,6 +52,7 @@ class MyPageActivity : AppCompatActivity() {
         private const val BASE_URL = "http://192.168.0.73:8080/"
         private const val PICK_IMAGE_REQUEST = 1
     }
+    private var userName: String = "사용자" // 기본값 설정
 
     private lateinit var myPageApiService: MyPageApiService
 
@@ -141,6 +143,7 @@ class MyPageActivity : AppCompatActivity() {
                 if (response.isSuccessful) {
                     val memberInfo = response.body()
                     if (memberInfo != null) {
+                        userName = memberInfo.userName
                         findViewById<TextView>(R.id.userName_Header).text = memberInfo.userName
                         findViewById<TextView>(R.id.userName_myPage_main).text = memberInfo.userName
                         findViewById<TextView>(R.id.userBirthday_myPage_main).text = memberInfo.birthDate
@@ -206,8 +209,12 @@ class MyPageActivity : AppCompatActivity() {
         // 사용자 정의 레이아웃 뷰 초기화
         val buttonChooseGallery = dialogView.findViewById<ImageView>(R.id.galleryBtn)
         val buttonTakePhoto = dialogView.findViewById<ImageView>(R.id.cameraBtn)
-        val buttonComplete = dialogView.findViewById<Button>(R.id.changeBtn)
+        val buttonComplete = dialogView.findViewById<CardView>(R.id.changeBtn)
         val shapeableImageView = dialogView.findViewById<ShapeableImageView>(R.id.shapeableImageView)
+
+        // userId를 설정하는 부분 추가
+        val userNameTextView = dialogView.findViewById<TextView>(R.id.userName)
+        userNameTextView.text = userName
 
 
         // 다이얼로그 열 때 현재 프로필 이미지 설정
