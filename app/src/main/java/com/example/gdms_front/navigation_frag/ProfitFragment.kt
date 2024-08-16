@@ -1,17 +1,21 @@
 package com.example.gdms_front.navigation_frag
 
+import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.Intent
 import android.graphics.Rect
 import android.icu.text.SimpleDateFormat
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Layout
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
+import android.view.animation.CycleInterpolator
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -23,6 +27,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
@@ -36,6 +41,8 @@ import com.example.gdms_front.model.cancelSubRequest
 import com.example.gdms_front.network.RetrofitClient
 import com.example.gdms_front.profit.TierExpActivity
 import com.google.android.gms.common.api.Response
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.tbuonomo.viewpagerdotsindicator.DotsIndicator
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
@@ -49,6 +56,11 @@ class ProfitFragment : Fragment() {
 
     private lateinit var recyclerViewNosub: RecyclerView
     private lateinit var subscriptionAdapter: SubscriptionAdapter
+    private lateinit var fabScrollToTop: FloatingActionButton
+    private lateinit var nestedScrollView: NestedScrollView
+
+    private lateinit var dotsIndicator: DotsIndicator
+    private lateinit var snapHelper: LinearSnapHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -111,7 +123,7 @@ class ProfitFragment : Fragment() {
         loadGif(imageView9, R.drawable.blue_point_icon)
         loadGif(imageView10, R.drawable.pink_free_icon)
 
-        val nestedScrollView = view.findViewById<NestedScrollView>(R.id.nestedScrollView)
+        nestedScrollView = view.findViewById<NestedScrollView>(R.id.nestedScrollView)
         val layout1Tier = view.findViewById<LinearLayout>(R.id.layout_1tier)
         val layout2Tier = view.findViewById<LinearLayout>(R.id.layout_2tier)
         val layout3Tier = view.findViewById<LinearLayout>(R.id.layout_3tier)
@@ -121,6 +133,7 @@ class ProfitFragment : Fragment() {
         val layout2btn=view.findViewById<LinearLayout>(R.id.layout_2tier_btn)
         val layout3btn=view.findViewById<LinearLayout>(R.id.layout_3tier_btn)
         val cardView8 = view.findViewById<CardView>(R.id.cardView8)
+        val cardView11 = view.findViewById<CardView>(R.id.cardView11)
         val cardView12 = view.findViewById<CardView>(R.id.cardView12)
         val cardView5 = view.findViewById<CardView>(R.id.cardView5)
 
@@ -132,6 +145,7 @@ class ProfitFragment : Fragment() {
         view.viewTreeObserver.addOnGlobalLayoutListener {
             animateCardViewInFromLeft(cardView1, 0L)
             animateCardViewInFromRight(cardView2, 0L)
+            animateShake(cardView11)
         }
 
 
@@ -142,6 +156,8 @@ class ProfitFragment : Fragment() {
             }
         }
 
+        fabScrollToTop = view.findViewById<FloatingActionButton>(R.id.fabScrollToTop)
+        setupScrollToTopButton()
 
         // 예제 조건
         val isBenefitAvailable = true // true면 구독 안함 / false 면 구독 중
@@ -152,44 +168,44 @@ class ProfitFragment : Fragment() {
 
         // isBenefitAvailable 이 true 인 경우
         // tier1 안내 화면
-        view.findViewById<LinearLayout>(R.id.tier1).setOnClickListener {
-            val intent =
-                Intent(this@ProfitFragment.requireContext(), TierExpActivity::class.java)
-            intent.putExtra("FRAGMENT_INDEX", 0) // 1번 FRAG는 0부터 시작
-            startActivity(intent)
-        }
+//        view.findViewById<LinearLayout>(R.id.tier1).setOnClickListener {
+//            val intent =
+//                Intent(this@ProfitFragment.requireContext(), TierExpActivity::class.java)
+//            intent.putExtra("FRAGMENT_INDEX", 0) // 1번 FRAG는 0부터 시작
+//            startActivity(intent)
+//        }
+//
+//        // tier2 안내 화면
+//        view.findViewById<LinearLayout>(R.id.tier2).setOnClickListener {
+//            val intent =
+//                Intent(this@ProfitFragment.requireContext(), TierExpActivity::class.java)
+//            intent.putExtra("FRAGMENT_INDEX", 1)
+//            startActivity(intent)
+//        }
+//
+//        // tier3 안내 화면
+//        view.findViewById<LinearLayout>(R.id.tier3).setOnClickListener {
+//            val intent =
+//                Intent(this@ProfitFragment.requireContext(), TierExpActivity::class.java)
+//            intent.putExtra("FRAGMENT_INDEX", 2)
+//            startActivity(intent)
+//        }
 
-        // tier2 안내 화면
-        view.findViewById<LinearLayout>(R.id.tier2).setOnClickListener {
-            val intent =
-                Intent(this@ProfitFragment.requireContext(), TierExpActivity::class.java)
-            intent.putExtra("FRAGMENT_INDEX", 1)
-            startActivity(intent)
-        }
-
-        // tier3 안내 화면
-        view.findViewById<LinearLayout>(R.id.tier3).setOnClickListener {
-            val intent =
-                Intent(this@ProfitFragment.requireContext(), TierExpActivity::class.java)
-            intent.putExtra("FRAGMENT_INDEX", 2)
-            startActivity(intent)
-        }
-
-        // tier2 안내 화면(구독중)
-        view.findViewById<LinearLayout>(R.id.letsGoTier2).setOnClickListener {
-            val intent =
-                Intent(this@ProfitFragment.requireContext(), TierExpActivity::class.java)
-            intent.putExtra("FRAGMENT_INDEX", 1)
-            startActivity(intent)
-        }
-
-        // tier1 안내 화면(구독중)
-        view.findViewById<LinearLayout>(R.id.letsGoTier1).setOnClickListener {
-            val intent =
-                Intent(this@ProfitFragment.requireContext(), TierExpActivity::class.java)
-            intent.putExtra("FRAGMENT_INDEX", 0)
-            startActivity(intent)
-        }
+//        // tier2 안내 화면(구독중)
+//        view.findViewById<LinearLayout>(R.id.letsGoTier2).setOnClickListener {
+//            val intent =
+//                Intent(this@ProfitFragment.requireContext(), TierExpActivity::class.java)
+//            intent.putExtra("FRAGMENT_INDEX", 1)
+//            startActivity(intent)
+//        }
+//
+//        // tier1 안내 화면(구독중)
+//        view.findViewById<LinearLayout>(R.id.letsGoTier1).setOnClickListener {
+//            val intent =
+//                Intent(this@ProfitFragment.requireContext(), TierExpActivity::class.java)
+//            intent.putExtra("FRAGMENT_INDEX", 0)
+//            startActivity(intent)
+//        }
 
 
 
@@ -373,6 +389,37 @@ class ProfitFragment : Fragment() {
             interpolator = AccelerateDecelerateInterpolator()
         }
         animator.start()
+    }
+
+    private fun animateShake(view: View) {
+        // 애니메이션 설정: 2초 동안 좌우로 5f씩 4번 흔들림
+        val shakeAnimator = ObjectAnimator.ofFloat(view, "translationX", 0f, 5f, -5f, 5f, -5f, 0f)
+        shakeAnimator.duration = 2000L // 2초 동안 애니메이션 실행
+        shakeAnimator.interpolator = CycleInterpolator(1f) // 2번 반복
+
+        // AnimatorSet을 사용하여 애니메이션 시작
+        val animatorSet = AnimatorSet()
+        animatorSet.play(shakeAnimator)
+        animatorSet.start()
+
+        // 애니메이션이 끝난 후 1초 동안 대기한 후 다시 실행
+        Handler(Looper.getMainLooper()).postDelayed({
+            animateShake(view)
+        }, 3000L) // 2초 애니메이션 + 1초 대기
+    }
+
+    private fun setupScrollToTopButton() {
+        fabScrollToTop.setOnClickListener {
+            nestedScrollView.smoothScrollTo(0, 0)
+        }
+
+        nestedScrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+            if (scrollY > 500) {
+                fabScrollToTop.show()
+            } else {
+                fabScrollToTop.hide()
+            }
+        })
     }
 
 
