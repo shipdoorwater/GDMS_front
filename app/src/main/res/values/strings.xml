@@ -7,4 +7,6 @@
 
     <string name="default_notification_channel_id">default_channel</string>
     <string name="msg_token_fmt">FCM registration token: %s</string>
+    
+    <string name="joinBtn_underLine"><u>회원가입</u></string>
 </resources>
