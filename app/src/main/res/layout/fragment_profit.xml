@@ -27,7 +27,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:visibility="visible"
+                android:visibility="gone"
                 android:layout_marginBottom="80dp">
 
 
@@ -600,6 +600,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="30dp"
                         android:layout_marginEnd="30dp"
+                        android:layout_marginBottom="30dp"
                         app:cardCornerRadius="16dp"
                         app:cardElevation="4dp">
 
@@ -692,7 +693,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="30dp"
-                        android:layout_marginBottom="40dp"
+                        android:layout_marginBottom="60dp"
                         android:layout_marginStart="30dp"
                         android:layout_marginEnd="30dp"
                         app:cardCornerRadius="16dp"
@@ -782,112 +783,19 @@
                         </LinearLayout>
                     </androidx.cardview.widget.CardView>
 
-                    <!-- 리싸이클러 뷰 가져다 넣기 -->
+
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recyclerView_nosub"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="80dp"
+                        android:layout_marginTop="50dp"
+                        android:layout_marginBottom="100dp"
+                        android:layout_marginStart="30dp"
+                        android:layout_marginEnd="30dp"
                         android:nestedScrollingEnabled="false" />
 
                 </LinearLayout>
                 <!--3티어 안내 끝-->
-
-
-
-
-
-
-
-
-
-                <!--여기 위로 작성하세요-->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="여기 위로 작성해세요"
-                    android:layout_marginTop="30dp"
-                    android:textSize="16sp"
-                    android:layout_gravity="center" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@android:color/darker_gray"
-                    android:layout_marginVertical="16dp" />
-
-                <LinearLayout
-                    android:id="@+id/tier3"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:background="@android:color/white"
-                    android:padding="16dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="3티어 맞춤"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="개인 맞춤형 쿠폰팩 / 정기 배송 서비스"
-                        android:layout_marginTop="8dp"
-                        android:textSize="16sp" />
-
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/tier2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:background="@android:color/white"
-                    android:padding="16dp"
-                    android:layout_marginTop="8dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="2티어 구독"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="강력한 맛집 캐시백 / 수수료 무료 혜택"
-                        android:layout_marginTop="8dp"
-                        android:textSize="16sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/tier1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:background="@android:color/white"
-                    android:padding="16dp"
-                    android:layout_marginTop="8dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="1티어 기본"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="뉴스레터 / 구독관리 / 맞춤추천"
-                        android:layout_marginTop="8dp"
-                        android:textSize="16sp" />
-                </LinearLayout>
               </LinearLayout>
 
           <!--  &lt;!&ndash;구독 정보가 없을 때 레이아웃 종료&ndash;&gt;-->
@@ -907,10 +815,117 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="구독 관리"
-                    android:textSize="24sp"
+                    android:textSize="20sp"
                     android:textStyle="bold"
                     android:layout_gravity="center"
-                    android:paddingTop="16dp" />
+                    android:paddingBottom="20dp" />
+
+                <!-- 혜택대상 -->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardView13"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginEnd="30dp"
+                    android:layout_marginBottom="20dp"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="4dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <!-- 상단 타이틀 배경 -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="#F0F0F0"
+                            android:padding="8dp">
+
+                            <ImageView
+                                android:src="@drawable/potted_flower"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp" />
+
+                            <TextView
+                                android:layout_width="150dp"
+                                android:layout_height="40dp"
+                                android:text="현재 구독 중"
+                                android:textSize="17sp"
+                                android:textStyle="bold"
+                                android:gravity="left|center" />
+                        </LinearLayout>
+
+                        <!-- 내용 영역 -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:background="@android:color/white"
+                            android:padding="16dp">
+
+                            <!-- 첫 번째 줄 -->
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:gravity="center_vertical">
+
+                                <ImageView
+                                    android:layout_width="30dp"
+                                    android:layout_height="30dp"
+                                    android:layout_gravity="center" />
+
+                                <ImageView
+                                    android:layout_width="140dp"
+                                    android:layout_height="30dp"
+                                    android:layout_marginEnd="4dp"
+                                    android:src="@drawable/kb_logo_remove_back" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="거래 고객중에"
+                                    android:textSize="15sp"
+                                    android:textColor="#333333"/>
+                            </LinearLayout>
+
+                            <!-- 구분선 -->
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:background="#E0E0E0"
+                                android:layout_marginVertical="12dp"/>
+
+                            <!-- 두 번째 줄 -->
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:gravity="center_vertical">
+
+                                <ImageView
+                                    android:layout_width="30dp"
+                                    android:layout_height="30dp"
+                                    android:layout_gravity="center" />
+
+                                <ImageView
+                                    android:layout_width="80dp"
+                                    android:layout_height="30dp"
+                                    android:layout_marginEnd="4dp"
+                                    android:src="@drawable/gdms_logo_remove_back" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="2티어 구독하신 분"
+                                    android:textSize="15sp"
+                                    android:textColor="#333333"/>
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -948,57 +963,9 @@
                         android:orientation="horizontal"
                         android:layout_marginTop="8dp"/>
 
-
-
                 </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/letsGoTier2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:background="#FF9800"
-                    android:padding="16dp"
-                    android:layout_marginTop="16dp">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="2 Tier"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="추천 맛집 / 카페 방문 / 결제 시 포인트 캐시백\nKB국민은행 수수료 무료\nKB증권 전화 우대 혜택"
-                        android:textSize="16sp"
-                        android:layout_marginTop="8dp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/letsGoTier1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:background="#03A9F4"
-                    android:padding="16dp"
-                    android:layout_marginTop="16dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="1 Tier"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="내 취향에 맞춰 맛집 · 카페 추천\n정기 구독 관리 서비스\n카페추천 관리 서비스\n제테크 뉴스레터 제공"
-                        android:textSize="16sp"
-                        android:layout_marginTop="8dp" />
-                </LinearLayout>
 
             </LinearLayout>
             <!--구독 정보가 있을 때 레이아웃 종료-->
@@ -1007,7 +974,20 @@
     </androidx.core.widget.NestedScrollView>
 
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabScrollToTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:src="@drawable/to_top_arrow_removebg"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/navi_up_line"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:maxImageSize="35dp"
+        />
+
             <LinearLayout
+                android:id="@+id/navi_up_line"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="60dp"
