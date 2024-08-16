@@ -8,92 +8,169 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <ImageButton
-        android:id="@+id/backButton1"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/img_arrow_left"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:layout_marginTop="16dp"
-        android:layout_marginStart="16dp" />
+        android:orientation="horizontal"
+        android:layout_margin="16dp">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="주제별 콘텐츠"
-        android:textStyle="bold"
-        android:layout_margin="16dp"
-        android:textSize="18sp"/>
+        <ImageButton
+            android:id="@+id/backButton1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/img_arrow_left"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:background="?attr/selectableItemBackgroundBorderless" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="뉴스레터"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_marginLeft="20dp"/>
+
+    </LinearLayout>
+
 
     <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scrollbars="none">
+        android:scrollbars="none"
+        android:background="@android:color/white"
+        android:elevation="2dp">
 
-        <LinearLayout
-            android:orientation="horizontal"
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chipGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp">
+            android:padding="8dp"
+            app:singleSelection="true"
+            app:selectionRequired="true">
 
-            <Button
-                android:id="@+id/btn_all"
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_all"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="전체"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp" />
+                android:checked="true"/>
 
-            <Button
-                android:id="@+id/btn_politics"
-                android:text="정치"
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_politics"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="4dp" />
+                android:text="정치"/>
 
-            <Button
-                android:id="@+id/btn_economy"
-                android:text="경제"
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_economy"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="4dp" />
+                android:text="경제"/>
 
-            <Button
-                android:id="@+id/btn_society"
-                android:text="사회"
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_society"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="4dp" />
+                android:text="사회"/>
 
-            <Button
-                android:id="@+id/btn_culture"
-                android:text="문화/생활"
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_culture"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="4dp" />
+                android:text="문화/생활"/>
 
-            <Button
-                android:id="@+id/btn_world"
-                android:text="세계"
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_world"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="4dp" />
+                android:text="세계"/>
 
-            <Button
-                android:id="@+id/btn_it"
-                android:text="IT/과학"
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_it"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="4dp" />
-        </LinearLayout>
+                android:text="IT/과학"/>
+
+        </com.google.android.material.chip.ChipGroup>
     </HorizontalScrollView>
+
+
+
+<!--    <HorizontalScrollView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:scrollbars="none">-->
+
+<!--        <LinearLayout-->
+<!--            android:orientation="horizontal"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:paddingStart="8dp"-->
+<!--            android:paddingEnd="8dp">-->
+
+<!--            <Button-->
+<!--                android:id="@+id/btn_all"-->
+<!--                android:text="전체"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_margin="4dp" />-->
+
+<!--            <Button-->
+<!--                android:id="@+id/btn_politics"-->
+<!--                android:text="정치"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_margin="4dp" />-->
+
+<!--            <Button-->
+<!--                android:id="@+id/btn_economy"-->
+<!--                android:text="경제"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_margin="4dp" />-->
+
+<!--            <Button-->
+<!--                android:id="@+id/btn_society"-->
+<!--                android:text="사회"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_margin="4dp" />-->
+
+<!--            <Button-->
+<!--                android:id="@+id/btn_culture"-->
+<!--                android:text="문화/생활"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_margin="4dp" />-->
+
+<!--            <Button-->
+<!--                android:id="@+id/btn_world"-->
+<!--                android:text="세계"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_margin="4dp" />-->
+
+<!--            <Button-->
+<!--                android:id="@+id/btn_it"-->
+<!--                android:text="IT/과학"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_margin="4dp" />-->
+<!--        </LinearLayout>-->
+<!--    </HorizontalScrollView>-->
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:padding="8dp" />
+        android:padding="16dp" />
 </LinearLayout>
