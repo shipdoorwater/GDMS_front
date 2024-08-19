@@ -16,6 +16,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.CycleInterpolator
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -39,11 +40,14 @@ import com.example.gdms_front.model.ServicePack
 import com.example.gdms_front.model.Subscription
 import com.example.gdms_front.model.cancelSubRequest
 import com.example.gdms_front.network.RetrofitClient
+import com.example.gdms_front.profit.SubActivity2
 import com.example.gdms_front.profit.TierExpActivity
 import com.google.android.gms.common.api.Response
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator
 import kotlinx.coroutines.launch
+import org.w3c.dom.Text
 import retrofit2.Call
 import retrofit2.Callback
 import java.util.Date
@@ -58,6 +62,7 @@ class ProfitFragment : Fragment() {
     private lateinit var subscriptionAdapter: SubscriptionAdapter
     private lateinit var fabScrollToTop: FloatingActionButton
     private lateinit var nestedScrollView: NestedScrollView
+    private lateinit var toMySubpage : FloatingActionButton
 
     private lateinit var dotsIndicator: DotsIndicator
     private lateinit var snapHelper: LinearSnapHelper
@@ -136,6 +141,7 @@ class ProfitFragment : Fragment() {
         val cardView11 = view.findViewById<CardView>(R.id.cardView11)
         val cardView12 = view.findViewById<CardView>(R.id.cardView12)
         val cardView5 = view.findViewById<CardView>(R.id.cardView5)
+        val btnProfitCheck = view.findViewById<ImageButton>(R.id.btnProfitCheck)
 
         // 클릭 리스너 설정
         layout3btn.setOnClickListener { scrollToView(nestedScrollView, layout3Tier) }
@@ -159,6 +165,9 @@ class ProfitFragment : Fragment() {
         fabScrollToTop = view.findViewById<FloatingActionButton>(R.id.fabScrollToTop)
         setupScrollToTopButton()
 
+        toMySubpage = view.findViewById<FloatingActionButton>(R.id.toMySubpage)
+        toMySubpage()
+
         // 예제 조건
         val isBenefitAvailable = true // true면 구독 안함 / false 면 구독 중
 
@@ -166,46 +175,31 @@ class ProfitFragment : Fragment() {
         truePage?.visibility = if (isBenefitAvailable) View.VISIBLE else View.GONE
         falsePage?.visibility = if (isBenefitAvailable) View.GONE else View.VISIBLE
 
-        // isBenefitAvailable 이 true 인 경우
-        // tier1 안내 화면
-//        view.findViewById<LinearLayout>(R.id.tier1).setOnClickListener {
-//            val intent =
-//                Intent(this@ProfitFragment.requireContext(), TierExpActivity::class.java)
-//            intent.putExtra("FRAGMENT_INDEX", 0) // 1번 FRAG는 0부터 시작
-//            startActivity(intent)
-//        }
-//
-//        // tier2 안내 화면
-//        view.findViewById<LinearLayout>(R.id.tier2).setOnClickListener {
-//            val intent =
-//                Intent(this@ProfitFragment.requireContext(), TierExpActivity::class.java)
-//            intent.putExtra("FRAGMENT_INDEX", 1)
-//            startActivity(intent)
-//        }
-//
-//        // tier3 안내 화면
-//        view.findViewById<LinearLayout>(R.id.tier3).setOnClickListener {
-//            val intent =
-//                Intent(this@ProfitFragment.requireContext(), TierExpActivity::class.java)
-//            intent.putExtra("FRAGMENT_INDEX", 2)
-//            startActivity(intent)
-//        }
+        //11번 카드뷰 클릭하면 바로 2티어 가입할 수 있도록 화면 전환
+        cardView11.setOnClickListener {
+            val packId = 1
+            val amountPaid = 4900
+            val packName = "공통"
+            val packBrief = "공통 서비스"
 
-//        // tier2 안내 화면(구독중)
-//        view.findViewById<LinearLayout>(R.id.letsGoTier2).setOnClickListener {
-//            val intent =
-//                Intent(this@ProfitFragment.requireContext(), TierExpActivity::class.java)
-//            intent.putExtra("FRAGMENT_INDEX", 1)
-//            startActivity(intent)
-//        }
-//
-//        // tier1 안내 화면(구독중)
-//        view.findViewById<LinearLayout>(R.id.letsGoTier1).setOnClickListener {
-//            val intent =
-//                Intent(this@ProfitFragment.requireContext(), TierExpActivity::class.java)
-//            intent.putExtra("FRAGMENT_INDEX", 0)
-//            startActivity(intent)
-//        }
+            val intent = Intent(activity, SubActivity2::class.java).apply {
+                putExtra("userId", userId)
+                putExtra("packId", packId)
+                putExtra("amountPaid", amountPaid)
+                putExtra("packName", packName)
+                putExtra("packBrief", packBrief)
+            }
+            startActivity(intent)
+        }
+
+        //구독하고 있는 사람이 구독서비스 관련 안내를 눌렀을 때 설정
+        btnProfitCheck.setOnClickListener{
+            truePage?.visibility =  View.VISIBLE
+            falsePage?.visibility =  View.GONE
+            toMySubpage.show()
+        }
+
+
 
 
 
@@ -422,8 +416,13 @@ class ProfitFragment : Fragment() {
         })
     }
 
-
-
+    private fun toMySubpage() {
+        toMySubpage.setOnClickListener {
+            view?.findViewById<LinearLayout>(R.id.truePage)!!.visibility = View.GONE
+            view?.findViewById<LinearLayout>(R.id.falsePage)!!.visibility = View.VISIBLE
+            toMySubpage.hide()
+        }
+    }
 
 
 }

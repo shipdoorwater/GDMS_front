@@ -1,5 +1,6 @@
 package com.example.gdms_front.network
 
+import com.example.gdms_front.model.Coupon
 import com.example.gdms_front.model.JoinRequest
 import com.example.gdms_front.model.JoinResponse
 import com.example.gdms_front.model.KakaoLoginRequest
@@ -76,5 +77,12 @@ interface ApiService {
                         @Query("packId") packId: Int,
                         @Query("amountPaid") amountPaid: Int)
     : Call<KakaoPayResponse>
+
+    @GET("/api/getCouponStatus/{userId}")
+    fun getCoupons(@Path("userId") userId: String): Call<List<Coupon>>
+
+
 }
+
+
 

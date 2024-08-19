@@ -21,11 +21,11 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.FLASHLIGHT" />
+
     <uses-feature android:name="android.hardware.camera.flash" />
     <uses-feature android:name="android.hardware.camera.any" />
+
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
-
 
     <application
         android:name=".MyApplication"
@@ -40,6 +40,9 @@
         android:theme="@style/Theme.GDMS_FRONT"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <activity
+            android:name=".coupon.CouponActivity"
+            android:exported="false" />
         <activity
             android:name=".lucky.CheckMyLuckyActivity"
             android:exported="false" />
@@ -159,11 +162,12 @@
         <activity
             android:name=".MainActivity"
             android:exported="true" />
-<!--        <activity
+        <!--
+        <activity
             android:name=".navigation_frag.PayFragment"
             android:configChanges="orientation|screenSize|keyboardHidden"
-            android:screenOrientation="portrait" />-->
-
+            android:screenOrientation="portrait" />
+        -->
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"
@@ -186,7 +190,6 @@
                     android:scheme="kakao${KAKAO_APP_KEY}" />
             </intent-filter>
         </activity>
-
 
     </application>
 

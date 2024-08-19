@@ -14,6 +14,10 @@ import com.example.gdms_front.myPage.MyPageActivity
 import androidx.navigation.findNavController
 import com.example.gdms_front.alarm.FCMTokenManager
 import com.example.gdms_front.alarm.NotificationViewModel
+import com.example.gdms_front.model.TokenUpdate
+import com.example.gdms_front.navigation_frag.MainFragment
+import com.example.gdms_front.network.RetrofitClient
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 import java.security.MessageDigest
 
@@ -46,6 +50,10 @@ class MainActivity : AppCompatActivity() {
         // 파이어베이스 토큰 전송
         getFCMToken()
 
+        findViewById<ImageView>(R.id.logo).setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
 
         findViewById<ImageView>(R.id.myPageBtn).setOnClickListener {
             Log.d(TAG, "MyPage button clicked")

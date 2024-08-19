@@ -203,6 +203,48 @@
 
         </LinearLayout>
 
+
+        <LinearLayout
+            android:id="@+id/couponLayout"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            app:layout_constraintTop_toBottomOf="@+id/pointLayout">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:backgroundTint="#e2e2e2"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="4dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/coupon_icon" />
+
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/goToCouponBtn"
+                android:textSize="18sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:text="내 쿠폰" />
+
+        </LinearLayout>
+
+
+
+
+
         <LinearLayout
             android:id="@+id/ManageLayout"
             android:layout_width="match_parent"
@@ -210,7 +252,7 @@
             android:layout_marginTop="20dp"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            app:layout_constraintTop_toBottomOf="@+id/pointLayout">
+            app:layout_constraintTop_toBottomOf="@+id/couponLayout">
 
             <androidx.cardview.widget.CardView
                 android:layout_width="30dp"
