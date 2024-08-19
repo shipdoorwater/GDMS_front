@@ -825,8 +825,8 @@
                     android:id="@+id/cardView13"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="30dp"
-                    android:layout_marginEnd="30dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
                     android:layout_marginBottom="20dp"
                     app:cardCornerRadius="16dp"
                     app:cardElevation="4dp">
@@ -880,8 +880,8 @@
                     android:id="@+id/cardView14"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="30dp"
-                    android:layout_marginEnd="30dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
                     android:layout_marginBottom="20dp"
                     app:cardCornerRadius="16dp"
                     app:cardElevation="4dp">
@@ -932,6 +932,16 @@
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
+                <ImageButton
+                    android:id="@+id/btnProfitCheck"
+                    android:layout_width="match_parent"
+                    android:layout_height="65dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:src="@drawable/profit_check_btn"
+                    android:scaleType="fitXY"
+                    android:background="@android:color/transparent"/>
+
 
             </LinearLayout>
             <!--구독 정보가 있을 때 레이아웃 종료-->
@@ -946,11 +956,22 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:src="@drawable/to_top_arrow_removebg"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@id/navi_up_line"
         app:layout_constraintEnd_toEndOf="parent"
         app:maxImageSize="35dp"
         />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/toMySubpage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@id/navi_up_line"
+        app:layout_constraintEnd_toStartOf="@+id/fabScrollToTop"
+        app:maxImageSize="35dp" />
+
 
             <LinearLayout
                 android:id="@+id/navi_up_line"
