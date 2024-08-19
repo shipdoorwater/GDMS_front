@@ -25,7 +25,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import com.bumptech.glide.Glide
-import com.example.gdms_front.BuildConfig
+//import com.example.gdms_front.BuildConfig
 import com.example.gdms_front.R
 import com.example.gdms_front.auth.LoginActivity
 import com.example.gdms_front.model.MemberInfoResponse
@@ -33,6 +33,8 @@ import com.example.gdms_front.model.UploadResponse
 import com.example.gdms_front.network.MyPageApiService
 import com.example.gdms_front.network.RetrofitClient
 import com.google.android.material.imageview.ShapeableImageView
+import com.kakao.sdk.common.KakaoSdk
+import com.kakao.sdk.user.UserApiClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -49,7 +51,7 @@ class MyPageActivity : AppCompatActivity() {
 
     companion object {
         private lateinit var currentPhotoPath: String
-        private const val BASE_URL = "http://192.168.0.73:8080/"
+        private const val BASE_URL = "http://211.45.162.203:8080/"
         private const val PICK_IMAGE_REQUEST = 1
     }
     private var userName: String = "사용자" // 기본값 설정
@@ -74,7 +76,11 @@ class MyPageActivity : AppCompatActivity() {
         val sharedPreference = getSharedPreferences("user_prefs", MODE_PRIVATE)
         val userId = sharedPreference?.getString("token", null)
 
+        val kakaoAppKey = getString(R.string.kakao_app_key)
+        KakaoSdk.init(this, kakaoAppKey)
+
         if (userId != null) {
+            Log.d("userIdLoading", userId)
             getMemberInfo(userId)
         }
 
@@ -110,19 +116,10 @@ class MyPageActivity : AppCompatActivity() {
             }
         }
 
+
+        // 로그아웃
         findViewById<TextView>(R.id.logoutBtn).setOnClickListener {
-            // SharedPreferences에서 토큰 삭제
-            val sharedPreferences = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
-            val editor = sharedPreferences.edit()
-            editor.remove("token")
-            editor.apply()
-
-
-            // 로그인 화면으로 이동
-            val intent = Intent(this, LoginActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(intent)
-            finish()
+            performLogout()
         }
 
         // 카메라로 사진 찍기
@@ -185,7 +182,7 @@ class MyPageActivity : AppCompatActivity() {
 
     private fun loadProfileImage(profileUrl: String?) {
         if (profileUrl != null) {
-            val fullUrl = "http://192.168.0.73:8080$profileUrl" // 서버 URL을 추가하세요.
+            val fullUrl = "http://211.45.162.203:8080$profileUrl" // 서버 URL을 추가하세요.
             Glide.with(this)
                 .load(fullUrl)
                 .placeholder(R.drawable.person_add_circle)
@@ -248,7 +245,7 @@ class MyPageActivity : AppCompatActivity() {
 
     private fun loadDialogProfileImage(shapeableImageView: ShapeableImageView) {
         if (currentProfileUrl != null) {
-            val fullUrl = "http://192.168.0.73:8080$currentProfileUrl"
+            val fullUrl = "http://211.45.162.203:8080$currentProfileUrl"
             Glide.with(this)
                 .load(fullUrl)
                 .placeholder(R.drawable.person_add_circle)
@@ -387,5 +384,62 @@ class MyPageActivity : AppCompatActivity() {
 
     private fun updateDialogImage(uri: Uri) {
         dialog.findViewById<ShapeableImageView>(R.id.shapeableImageView)?.setImageURI(uri)
+    }
+
+    private fun performLogout() {
+        val sharedPreferences = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+        val isKakaoLoggedIn = sharedPreferences.getBoolean("isKakaoLoggedIn", false)
+
+        if (isKakaoLoggedIn) {
+            performKakaoLogout()
+        } else {
+            performGeneralLogout()
+        }
+    }
+
+    private fun performKakaoLogout() {
+        UserApiClient.instance.logout { error ->
+            if (error != null) {
+                Log.e("KakaoLogout", "카카오 로그아웃 실패", error)
+                Toast.makeText(this, "카카오 로그아웃 실패", Toast.LENGTH_SHORT).show()
+            } else {
+                Log.i("KakaoLogout", "카카오 로그아웃 성공")
+            }
+            // 카카오 로그아웃 후 일반 로그아웃 처리
+            clearUserData()
+            navigateToLoginActivity()
+        }
+    }
+
+    private fun performGeneralLogout() {
+        // 일반 로그아웃 처리
+        clearUserData()
+        navigateToLoginActivity()
+    }
+
+    private fun clearUserData() {
+        val sharedPreferences = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+
+        // 자동 로그인 설정 유지를 위해 savedUserId와 savedUserPw는 삭제하지 않음
+        editor.remove("token")
+        editor.remove("isKakaoLoggedIn")
+
+        // FCM 토큰 관련 데이터 삭제 (필요한 경우)
+        // editor.remove("fcmToken")
+
+        editor.apply()
+
+        // FCM 토큰 초기화 (선택적)
+        // FirebaseMessaging.getInstance().deleteToken()
+    }
+
+    private fun navigateToLoginActivity() {
+        val intent = Intent(this, LoginActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+        finish()
+
+        Toast.makeText(this, "로그아웃되었습니다.", Toast.LENGTH_SHORT).show()
     }
 }

@@ -102,7 +102,7 @@ class AllMenuFragment : Fragment() {
             startActivity(intent)
         }
 
-        // 뉴스 텍스트 클릭 시
+        // 가계부 텍스트 클릭 시
         view.findViewById<TextView>(R.id.accountBtn).setOnClickListener {
             val intent = Intent(activity, AccountActivity::class.java)
             startActivity(intent)
@@ -114,6 +114,10 @@ class AllMenuFragment : Fragment() {
             startActivity(intent)
         }
 
+        // 구독관리 텍스트 클릭 시
+        view.findViewById<TextView>(R.id.subscribeBtn).setOnClickListener {
+            it.findNavController().navigate((R.id.action_allMenuFragment_to_profitFragment))
+        }
 
         return view
     }

@@ -9,4 +9,6 @@
     <string name="msg_token_fmt">FCM registration token: %s</string>
     
     <string name="joinBtn_underLine"><u>회원가입</u></string>
+
+    <string name="kakao_app_key">cfcd24c6174cf203309997fc6684b247</string>
 </resources>
