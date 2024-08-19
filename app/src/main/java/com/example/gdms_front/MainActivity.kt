@@ -1,11 +1,10 @@
 package com.example.gdms_front
 
-import android.app.AlarmManager
-import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.os.Build
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Base64
 import android.util.Log
 import android.widget.ImageView
 import androidx.activity.viewModels
@@ -20,7 +19,8 @@ import com.example.gdms_front.navigation_frag.MainFragment
 import com.example.gdms_front.network.RetrofitClient
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
-import kotlinx.coroutines.launch
+import java.security.MessageDigest
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -31,7 +31,21 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        Log.d(TAG, "onCreate called")
+
+
+
+//        Log.d(TAG, "onCreate called")
+//        try {
+//            val info = packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNATURES)
+//            for (signature in info.signatures) {
+//                val md = MessageDigest.getInstance("SHA")
+//                md.update(signature.toByteArray())
+//                val keyHash = Base64.encodeToString(md.digest(), Base64.DEFAULT)
+//                Log.d("KeyHash", keyHash)
+//            }
+//        } catch (e: Exception) {
+//            Log.e("KeyHash", "Error getting key hash", e)
+//        }
 
         // 파이어베이스 토큰 전송
         getFCMToken()
@@ -39,7 +53,6 @@ class MainActivity : AppCompatActivity() {
         findViewById<ImageView>(R.id.logo).setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
-
         }
 
         findViewById<ImageView>(R.id.myPageBtn).setOnClickListener {
@@ -47,6 +60,12 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, MyPageActivity::class.java)
             startActivity(intent)
         }
+
+        // SharedPreferences에서 userId 가져오기
+        val sharedPreferences = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+        val userId = sharedPreferences.getString("token", "") ?: ""
+        notificationViewModel.setUserId(userId)
+
 
         val alarmBtn = findViewById<ImageView>(R.id.alarmBtn)
         notificationViewModel.unreadCount.observe(this, Observer { count ->
@@ -61,6 +80,12 @@ class MainActivity : AppCompatActivity() {
         alarmBtn.setOnClickListener {
             findNavController(R.id.fragmentContainerView).navigate(R.id.notificationFragment)
         }
+
+        val mainLogo = findViewById<ImageView>(R.id.mainLogo)
+        mainLogo.setOnClickListener {
+            findNavController(R.id.fragmentContainerView).navigate(R.id.mainFragment)
+        }
+
     }
 
     private fun getFCMToken() {
@@ -79,5 +104,4 @@ class MainActivity : AppCompatActivity() {
                 Log.e(TAG, "Failed to get FCM token", e)
             }
     }
-
 }

@@ -17,7 +17,7 @@ class NotificationRepository(context: Context) {
 
     init {
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.0.73:8080/")
+            .baseUrl("http://211.45.162.203:8080/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 

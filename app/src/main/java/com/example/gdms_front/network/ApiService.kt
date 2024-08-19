@@ -3,6 +3,8 @@ package com.example.gdms_front.network
 import com.example.gdms_front.model.Coupon
 import com.example.gdms_front.model.JoinRequest
 import com.example.gdms_front.model.JoinResponse
+import com.example.gdms_front.model.KakaoLoginRequest
+import com.example.gdms_front.model.KakaoLoginResponse
 import com.example.gdms_front.model.KakaoPayRequest
 import com.example.gdms_front.model.KakaoPayResponse
 import com.example.gdms_front.model.LoginRequest
@@ -31,6 +33,11 @@ interface ApiService {
     
     @POST("/api/login") // 로그인
     suspend fun login(@Body loginRequest: LoginRequest): Response<LoginResponse>
+
+    // 카카오 로그인
+    @POST("/api/kakaoLogin")
+    fun kakaoLogin(@Body request: KakaoLoginRequest): Call<KakaoLoginResponse>
+
 
     @POST("/api/join") // 회원가입
     suspend fun join(@Body joinRequest: JoinRequest): Response<JoinResponse>

@@ -17,6 +17,7 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        manifestPlaceholders["KAKAO_APP_KEY"] = "@string/kakao_app_key"
     }
 
     buildTypes {
@@ -119,6 +120,9 @@ dependencies {
     implementation("com.tbuonomo:dotsindicator:5.0")
 
     implementation("androidx.constraintlayout:constraintlayout:2.2.0-alpha14")
+
+    // Kakao SDK
+    implementation("com.kakao.sdk:v2-user:2.20.3") // 카카오 로그인
 
 }
 

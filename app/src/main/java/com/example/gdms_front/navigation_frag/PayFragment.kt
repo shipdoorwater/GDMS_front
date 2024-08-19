@@ -33,6 +33,7 @@ import android.widget.Button
 import android.widget.ImageView
 import androidx.camera.core.Camera
 import androidx.camera.view.PreviewView
+import androidx.cardview.widget.CardView
 import com.bumptech.glide.Glide
 
 class PayFragment : Fragment() {
@@ -82,7 +83,7 @@ class PayFragment : Fragment() {
             it.findNavController().navigate((R.id.action_payFragment_to_mainFragment))
         }
 
-        val flashButton = view.findViewById<Button>(R.id.flashButton)
+        val flashButton = view.findViewById<CardView>(R.id.flashButton)
         flashButton.setOnClickListener {
             toggleFlash()
         }

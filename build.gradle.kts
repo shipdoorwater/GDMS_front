@@ -13,6 +13,9 @@ allprojects {
         mavenCentral()
         maven("https://repository.map.naver.com/archive/maven")
         maven("https://jitpack.io")
+
+        // 카카오 로그인 SDK 추가
+        maven ("https://devrepo.kakao.com/nexus/content/groups/public")
     }
 }
 

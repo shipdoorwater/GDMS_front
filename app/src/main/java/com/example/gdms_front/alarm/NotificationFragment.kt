@@ -51,8 +51,19 @@ class NotificationFragment : Fragment() {
         binding.recyclerView.adapter = adapter
 
         notificationViewModel.allNotifications.observe(viewLifecycleOwner, Observer { notifications ->
-            adapter.updateNotifications(notifications)
+            updateUI(notifications, adapter)
         })
+    }
+
+    private fun updateUI(notifications: List<Notification>, adapter: NotificationAdapter) {
+        if (notifications.isEmpty()) {
+            binding.recyclerView.visibility = View.GONE
+            binding.emptyView.visibility = View.VISIBLE
+        } else {
+            binding.recyclerView.visibility = View.VISIBLE
+            binding.emptyView.visibility = View.GONE
+            adapter.updateNotifications(notifications)
+        }
     }
 
     private fun handleNotificationClick(notification: Notification) {
