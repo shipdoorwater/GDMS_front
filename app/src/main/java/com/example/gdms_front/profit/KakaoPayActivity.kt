@@ -1,16 +1,22 @@
 package com.example.gdms_front.profit
 
+import android.app.Dialog
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import android.widget.ImageView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.gdms_front.MainActivity
 import com.example.gdms_front.R
 import com.example.gdms_front.model.KakaoPayRequest
@@ -19,6 +25,11 @@ import com.example.gdms_front.network.RetrofitClient.apiService
 import retrofit2.Call
 
 class KakaoPayActivity : AppCompatActivity() {
+
+
+    private lateinit var successDialog: Dialog
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_kakao_pay)
@@ -108,9 +119,20 @@ class KakaoPayActivity : AppCompatActivity() {
         // 성공 URL에서 필요한 정보를 추출하고 처리
         Log.d("Payment", "Payment successful: $url")
 
-        val intent = Intent(this, MainActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        startActivity(intent)
+        // 결제 성공 다이얼로그 표시
+        showSuccessDialog()
+
+        // 3초 후에 다음 액티비티로 전환
+        window.decorView.postDelayed({
+            dismissSuccessDialog() // 다이얼로그 닫기
+            val intent = Intent(this, MainActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            startActivity(intent) // 다음 액티비티로 전환
+        }, 5000) // 3초 지연
+
+//        val intent = Intent(this, MainActivity::class.java)
+//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+//        startActivity(intent)
     }
 
     private fun handlePaymentCancel(url: String) {
@@ -119,6 +141,38 @@ class KakaoPayActivity : AppCompatActivity() {
         // 필요한 작업 수행
 
     }
+
+    private fun showSuccessDialog() {
+        successDialog = Dialog(this)
+        successDialog.apply {
+            setContentView(R.layout.dialog_subscription_success) // 커스텀 레이아웃 적용
+            setCancelable(false) // 다이얼로그 수동으로 닫을 수 없도록 설정
+            window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT)) // 배경 투명하게 설정
+
+            val imageView1: ImageView = findViewById(R.id.firecracker)
+            loadGif(imageView1, R.drawable.wired_flat_1103_confetti)
+
+            show() // 다이얼로그 표시
+        }
+    }
+
+    // 다이얼로그 닫기 메소드
+    private fun dismissSuccessDialog() {
+        if (::successDialog.isInitialized && successDialog.isShowing) {
+            successDialog.dismiss() // 다이얼로그 닫기
+        }
+    }
+
+    // GIF 로드 메소드
+    private fun loadGif(imageView: ImageView, gifResourceId: Int) {
+        Glide.with(this)
+            .asGif()
+            .load(gifResourceId)
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
+            .skipMemoryCache(true)
+            .into(imageView)
+    }
+
 }
 
 

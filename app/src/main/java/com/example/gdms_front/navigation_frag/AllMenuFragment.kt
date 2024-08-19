@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity.MODE_PRIVATE
@@ -20,6 +21,7 @@ import com.example.gdms_front.account.AccountActivity
 import com.example.gdms_front.auth.LoginActivity
 import com.example.gdms_front.board.EventPageActivity
 import com.example.gdms_front.board.NoticePageActivity
+import com.example.gdms_front.coupon.CouponActivity
 
 import com.example.gdms_front.lucky.LuckyActivity
 import com.example.gdms_front.model.MemberInfoResponse
@@ -113,6 +115,19 @@ class AllMenuFragment : Fragment() {
             val intent = Intent(activity, LuckyActivity::class.java)
             startActivity(intent)
         }
+
+
+        //구독관리페이지 이동
+        view.findViewById<LinearLayout>(R.id.ManageLayout).setOnClickListener {
+            it.findNavController().navigate((R.id.action_allMenuFragment_to_profitFragment))
+        }
+
+        //쿠폰함으로 이동
+        view.findViewById<LinearLayout>(R.id.couponLayout).setOnClickListener {
+            val intent = Intent(activity, CouponActivity::class.java)
+            startActivity(intent)
+        }
+
 
 
         return view
