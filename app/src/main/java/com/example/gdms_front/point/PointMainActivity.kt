@@ -60,7 +60,7 @@ class PointMainActivity : AppCompatActivity() {
         // 자동차보험료 결제 웹뷰로 연결
         val constraintLayout8 = findViewById<ConstraintLayout>(R.id.constraintLayout8)
         constraintLayout8.setOnClickListener {
-            val intent = Intent(this, PointWebViewActivity::class.java)
+            val intent = Intent(this, PointWebViewActivity2::class.java)
             intent.putExtra("url", "https://m.kbinsure.co.kr:8547/dctapp/main.html#/car/gi/0001M?joinMall=Y&recntCal=N&OfactAuthEcpt=Y&pid=1090049&code=1035&redirectYn=Y")
             startActivity(intent)
         }
@@ -68,7 +68,7 @@ class PointMainActivity : AppCompatActivity() {
         // 운전자보험료 결제 웹뷰로 연결
         val constraintLayout9 = findViewById<ConstraintLayout>(R.id.constraintLayout9)
         constraintLayout9.setOnClickListener {
-            val intent = Intent(this, PointWebViewActivity::class.java)
+            val intent = Intent(this, PointWebViewActivity2::class.java)
             intent.putExtra("url", "https://m.kbinsure.co.kr:8547/dctapp/main.html#/GLM/DR/LT_CM0101M?pid=5290334&code=0001&redirectYn=Y")
             startActivity(intent)
         }
@@ -80,6 +80,12 @@ class PointMainActivity : AppCompatActivity() {
         }
 
         // KB 스타뱅킹 앱 실행
+        val constraintLayout7 = findViewById<ConstraintLayout>(R.id.constraintLayout7)
+        constraintLayout7.setOnClickListener {
+            val intent = Intent(this, PointWebViewActivity::class.java)
+            intent.putExtra("url", "https://obank.kbstar.com/quics?page=C041244&scheme=kbbank&pageid=D004895")
+            startActivity(intent)
+        }
     }
 
     private fun getMyPoint(userId: String) {
