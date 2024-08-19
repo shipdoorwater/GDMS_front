@@ -80,12 +80,6 @@ class MainActivity : AppCompatActivity() {
         alarmBtn.setOnClickListener {
             findNavController(R.id.fragmentContainerView).navigate(R.id.notificationFragment)
         }
-
-        val mainLogo = findViewById<ImageView>(R.id.mainLogo)
-        mainLogo.setOnClickListener {
-            findNavController(R.id.fragmentContainerView).navigate(R.id.mainFragment)
-        }
-
     }
 
     private fun getFCMToken() {
