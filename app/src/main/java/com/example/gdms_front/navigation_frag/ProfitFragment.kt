@@ -16,12 +16,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.CycleInterpolator
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.cardview.widget.CardView
-import androidx.compose.runtime.Composable
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
@@ -62,6 +62,7 @@ class ProfitFragment : Fragment() {
     private lateinit var subscriptionAdapter: SubscriptionAdapter
     private lateinit var fabScrollToTop: FloatingActionButton
     private lateinit var nestedScrollView: NestedScrollView
+    private lateinit var toMySubpage : FloatingActionButton
 
     private lateinit var dotsIndicator: DotsIndicator
     private lateinit var snapHelper: LinearSnapHelper
@@ -140,7 +141,7 @@ class ProfitFragment : Fragment() {
         val cardView11 = view.findViewById<CardView>(R.id.cardView11)
         val cardView12 = view.findViewById<CardView>(R.id.cardView12)
         val cardView5 = view.findViewById<CardView>(R.id.cardView5)
-        val btnProfitCheck = view.findViewById<TextView>(R.id.btnProfitCheck)
+        val btnProfitCheck = view.findViewById<ImageButton>(R.id.btnProfitCheck)
 
         // 클릭 리스너 설정
         layout3btn.setOnClickListener { scrollToView(nestedScrollView, layout3Tier) }
@@ -163,6 +164,9 @@ class ProfitFragment : Fragment() {
 
         fabScrollToTop = view.findViewById<FloatingActionButton>(R.id.fabScrollToTop)
         setupScrollToTopButton()
+
+        toMySubpage = view.findViewById<FloatingActionButton>(R.id.toMySubpage)
+        toMySubpage()
 
         // 예제 조건
         val isBenefitAvailable = true // true면 구독 안함 / false 면 구독 중
@@ -190,8 +194,9 @@ class ProfitFragment : Fragment() {
 
         //구독하고 있는 사람이 구독서비스 관련 안내를 눌렀을 때 설정
         btnProfitCheck.setOnClickListener{
-
-
+            truePage?.visibility =  View.VISIBLE
+            falsePage?.visibility =  View.GONE
+            toMySubpage.show()
         }
 
 
@@ -411,8 +416,13 @@ class ProfitFragment : Fragment() {
         })
     }
 
-
-
+    private fun toMySubpage() {
+        toMySubpage.setOnClickListener {
+            view?.findViewById<LinearLayout>(R.id.truePage)!!.visibility = View.GONE
+            view?.findViewById<LinearLayout>(R.id.falsePage)!!.visibility = View.VISIBLE
+            toMySubpage.hide()
+        }
+    }
 
 
 }
