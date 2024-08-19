@@ -8,37 +8,40 @@
             android:background="@android:color/white"
             tools:context=".navigation_frag.ProfitFragment">
 
+
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/linearLayout"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/linearLayout">
+        app:layout_constraintVertical_bias="1.0"
+        tools:layout_editor_absoluteX="-16dp">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
 
-        <!--구독 정보가 없을 때 레이아웃 시작-->
+            <!--구독 정보가 없을 때 레이아웃 시작-->
             <LinearLayout
                 android:id="@+id/truePage"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginBottom="80dp"
                 android:orientation="vertical"
-                android:visibility="gone"
-                android:layout_marginBottom="80dp">
+                android:visibility="gone">
 
 
                 <!--하트 그림이랑 설명, 각 티어별 이동하는 카드 만들꺼야-->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="100dp"
                     android:orientation="vertical"
                     android:paddingLeft="8dp"
-                    android:paddingRight="8dp"
-                    android:layout_marginBottom="100dp">
+                    android:paddingRight="8dp">
 
                     <!-- 하트 그림있는 부분이랑 설명 -->
                     <androidx.cardview.widget.CardView
@@ -47,43 +50,42 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="8dp"
                         app:cardCornerRadius="16dp"
-                        app:cardElevation="0dp"
-                        >
+                        app:cardElevation="0dp">
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:background="#FFFFFF"
                             android:orientation="vertical"
-                            android:padding="14dp"
-                            android:background="#FFFFFF">
+                            android:padding="14dp">
 
                             <ImageView
                                 android:id="@+id/heart_img"
                                 android:layout_width="100dp"
                                 android:layout_height="100dp"
-                                android:layout_marginTop="16dp"
-                                android:layout_gravity="center"/>
+                                android:layout_gravity="center"
+                                android:layout_marginTop="16dp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="티어 베네핏이란"
+                                android:layout_gravity="center"
                                 android:layout_marginTop="15dp"
-                                android:textSize="20sp"
                                 android:fontFamily="@font/nanumsquareeb"
-                                android:layout_gravity="center"/>
+                                android:text="티어 베네핏이란"
+                                android:textSize="20sp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="위치 기반 서비스에 개인의 취향을 반영한\n보다 진보된 구독 서비스 입니다.\n지금 구독한미식가 앱에서 나를 위한\n맞춤형 혜택을 확인해 보세요."
-                                android:textSize="15sp"
-                                android:textStyle="bold"
+                                android:layout_gravity="center"
                                 android:layout_marginTop="15dp"
                                 android:layout_marginBottom="40dp"
                                 android:fontFamily="@font/nanumsquareeb"
-                                android:layout_gravity="center"
-                                android:gravity="center"/>
+                                android:gravity="center"
+                                android:text="위치 기반 서비스에 개인의 취향을 반영한\n보다 진보된 구독 서비스 입니다.\n지금 구독한미식가 앱에서 나를 위한\n맞춤형 혜택을 확인해 보세요."
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
 
                         </LinearLayout>
                     </androidx.cardview.widget.CardView>
@@ -93,14 +95,15 @@
                         android:id="@+id/cardView2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="3dp"
-                        android:layout_marginBottom="3dp"
                         android:layout_marginStart="16dp"
+                        android:layout_marginTop="3dp"
                         android:layout_marginEnd="16dp"
-                        app:cardCornerRadius="16dp"
-                        app:cardElevation="4dp"
+                        android:layout_marginBottom="3dp"
                         android:clickable="true"
-                        android:focusable="true">
+                        android:focusable="true"
+                        app:cardCornerRadius="16dp"
+                        app:cardElevation="4dp">
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -108,95 +111,98 @@
                             android:orientation="vertical"
                             android:padding="14dp">
 
-                        <LinearLayout
-                            android:id="@+id/layout_1tier_btn"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="#F0F0F0"
-                            android:orientation="vertical"
-                            android:padding="14dp"
-                            android:clickable="true"
-                            android:focusable="true">
+                            <LinearLayout
+                                android:id="@+id/layout_1tier_btn"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="#F0F0F0"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:orientation="vertical"
+                                android:padding="14dp">
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="1티어 기본"
-                                android:layout_marginTop="6dp"
-                                android:textSize="14sp"
-                                android:fontFamily="@font/nanumsquareeb"/>
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="8dp"
-                                android:fontFamily="@font/nanumsquareeb"
-                                android:text="뉴스레터 / 구독관리 / 맛집추천                    >"
-                                android:textSize="15sp" />
-                        </LinearLayout>
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="6dp"
+                                    android:fontFamily="@font/nanumsquareeb"
+                                    android:text="1티어 기본"
+                                    android:textSize="14sp" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="8dp"
+                                    android:fontFamily="@font/nanumsquareeb"
+                                    android:text="뉴스레터 / 구독관리 / 맛집추천                    >"
+                                    android:textSize="15sp" />
+                            </LinearLayout>
 
                             <View
                                 android:layout_width="match_parent"
                                 android:layout_height="1dp"
-                                android:background="#E0E0E0"
-                                android:layout_marginVertical="12dp"/>
+                                android:layout_marginVertical="12dp"
+                                android:background="#E0E0E0" />
 
-                        <LinearLayout
-                            android:id="@+id/layout_2tier_btn"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="#F0F0F0"
-                            android:orientation="vertical"
-                            android:padding="14dp"
-                            android:clickable="true"
-                            android:focusable="true">
+                            <LinearLayout
+                                android:id="@+id/layout_2tier_btn"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="#F0F0F0"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:orientation="vertical"
+                                android:padding="14dp">
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="2티어 구독"
-                                android:layout_marginTop="6dp"
-                                android:textSize="14sp"
-                                android:fontFamily="@font/nanumsquareeb"/>
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="8dp"
-                                android:fontFamily="@font/nanumsquareeb"
-                                android:text="강력한 맛집 캐시백 / 수수료 무료 혜택        >"
-                                android:textSize="15sp" />
-                        </LinearLayout>
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="6dp"
+                                    android:fontFamily="@font/nanumsquareeb"
+                                    android:text="2티어 구독"
+                                    android:textSize="14sp" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="8dp"
+                                    android:fontFamily="@font/nanumsquareeb"
+                                    android:text="강력한 맛집 캐시백 / 수수료 무료 혜택        >"
+                                    android:textSize="15sp" />
+                            </LinearLayout>
 
                             <View
                                 android:layout_width="match_parent"
                                 android:layout_height="1dp"
-                                android:background="#E0E0E0"
-                                android:layout_marginVertical="12dp"/>
+                                android:layout_marginVertical="12dp"
+                                android:background="#E0E0E0" />
 
-                        <LinearLayout
-                            android:id="@+id/layout_3tier_btn"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="#F0F0F0"
-                            android:orientation="vertical"
-                            android:padding="14dp"
-                            android:clickable="true"
-                            android:focusable="true">
+                            <LinearLayout
+                                android:id="@+id/layout_3tier_btn"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="#F0F0F0"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:orientation="vertical"
+                                android:padding="14dp">
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="3티어 맞춤"
-                                android:layout_marginTop="6dp"
-                                android:textSize="14sp"
-                                android:fontFamily="@font/nanumsquareeb"/>
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="8dp"
-                                android:fontFamily="@font/nanumsquareeb"
-                                android:text="개인 맞춤형 쿠폰팩/정기 배송 서비스          >"
-                                android:textSize="15sp" />
-                        </LinearLayout>
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="6dp"
+                                    android:fontFamily="@font/nanumsquareeb"
+                                    android:text="3티어 맞춤"
+                                    android:textSize="14sp" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="8dp"
+                                    android:fontFamily="@font/nanumsquareeb"
+                                    android:text="개인 맞춤형 쿠폰팩/정기 배송 서비스          >"
+                                    android:textSize="15sp" />
+                            </LinearLayout>
                         </LinearLayout>
                     </androidx.cardview.widget.CardView>
                 </LinearLayout>
@@ -207,10 +213,10 @@
                     android:id="@+id/layout_1tier"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="60dp"
                     android:orientation="vertical"
                     android:paddingLeft="8dp"
-                    android:paddingRight="8dp"
-                    android:layout_marginBottom="60dp">
+                    android:paddingRight="8dp">
 
                     <!-- 날개 그림있는 부분이랑 설명 -->
                     <androidx.cardview.widget.CardView
@@ -219,8 +225,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="8dp"
                         app:cardCornerRadius="16dp"
-                        app:cardElevation="0dp"
-                        >
+                        app:cardElevation="0dp">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -238,32 +243,32 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="1티어 기본"
-                                android:textSize="15sp"
-                                android:fontFamily="@font/nanumsquareeb"
-                                android:layout_gravity="center"/>
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="구독한미식가 회원 특화 혜택과\nKB국민은행 공통 혜택"
-                                android:layout_marginTop="15dp"
-                                android:textSize="20sp"
-                                android:fontFamily="@font/nanumsquareeb"
                                 android:layout_gravity="center"
-                                android:gravity="center"/>
+                                android:fontFamily="@font/nanumsquareeb"
+                                android:text="1티어 기본"
+                                android:textSize="15sp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="구독한미식가 회원특전과\nKB국민은행 고객이라면 누려야 할\n공통 혜택도 놓치지 마세요."
-                                android:textSize="15sp"
-                                android:textStyle="bold"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="15dp"
+                                android:fontFamily="@font/nanumsquareeb"
+                                android:gravity="center"
+                                android:text="구독한미식가 회원 특화 혜택과\nKB국민은행 공통 혜택"
+                                android:textSize="20sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
                                 android:layout_marginTop="8dp"
                                 android:layout_marginBottom="30dp"
                                 android:fontFamily="@font/nanumsquareeb"
-                                android:layout_gravity="center"
-                                android:gravity="center"/>
+                                android:gravity="center"
+                                android:text="구독한미식가 회원특전과\nKB국민은행 고객이라면 누려야 할\n공통 혜택도 놓치지 마세요."
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
 
                         </LinearLayout>
                     </androidx.cardview.widget.CardView>
@@ -272,80 +277,85 @@
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
-                    <TextView
-                        android:id="@+id/titleTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="구독한 미식가 회원 특전"
-                        android:layout_marginTop="6dp"
-                        android:textSize="20sp"
-                        android:layout_marginStart="25dp"
-                        android:fontFamily="@font/nanumsquareeb"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        android:elevation="5dp"
-                        android:background="@android:color/transparent"/>
 
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/cardView6"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginEnd="16dp"
-                        android:layout_marginTop="-10dp"
-                        app:cardCornerRadius="16dp"
-                        app:cardElevation="4dp"
-                        app:layout_constraintTop_toBottomOf="@id/titleTextView"
-                        android:layout_marginBottom="-30dp">
+                        <TextView
+                            android:id="@+id/titleTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="25dp"
+                            android:layout_marginTop="6dp"
+                            android:background="@android:color/transparent"
+                            android:elevation="5dp"
+                            android:fontFamily="@font/nanumsquareeb"
+                            android:text="구독한 미식가 회원 특전"
+                            android:textSize="20sp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
-                        <LinearLayout
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/cardView6"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="#F0F0F0"
-                            android:orientation="vertical"
-                            android:padding="14dp">
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="-10dp"
+                            android:layout_marginEnd="16dp"
+                            android:layout_marginBottom="-30dp"
+                            app:cardCornerRadius="16dp"
+                            app:cardElevation="4dp"
+                            app:layout_constraintTop_toBottomOf="@id/titleTextView">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="#F0F0F0"
+                                android:orientation="vertical"
+                                android:padding="14dp">
+
                                 <LinearLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="75dp"
-                                    android:orientation="horizontal"
-                                    android:gravity="center_vertical">
+                                    android:gravity="center_vertical"
+                                    android:orientation="horizontal">
+
                                     <ImageView
                                         android:id="@+id/no1_book_img"
                                         android:layout_width="55dp"
                                         android:layout_height="55dp"
                                         android:layout_gravity="center"
-                                        android:layout_marginLeft="15dp"/>
+                                        android:layout_marginLeft="15dp" />
 
-                                     <TextView
-                                       android:layout_width="wrap_content"
+                                    <TextView
+                                        android:layout_width="wrap_content"
                                         android:layout_height="45dp"
+                                        android:fontFamily="@font/nanumsquareeb"
+                                        android:gravity="center_vertical"
                                         android:text="위치기반 업체 방문포인트 제공"
-                                       android:textSize="15sp"
-                                       android:fontFamily="@font/nanumsquareeb"
-                                         android:gravity="center_vertical"/>
+                                        android:textSize="15sp" />
                                 </LinearLayout>
 
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="75dp"
-                                android:orientation="horizontal"
-                                android:gravity="center_vertical">
-                                <ImageView
-                                    android:id="@+id/no2_book_img"
-                                    android:layout_width="55dp"
-                                    android:layout_height="55dp"
-                                    android:layout_gravity="center"
-                                    android:layout_marginLeft="15dp"/>
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="45dp"
-                                    android:text="내 근처 맛집 추천 서비스"
-                                    android:textSize="15sp"
-                                    android:fontFamily="@font/nanumsquareeb"
-                                    android:gravity="center_vertical"/>
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="75dp"
+                                    android:gravity="center_vertical"
+                                    android:orientation="horizontal">
+
+                                    <ImageView
+                                        android:id="@+id/no2_book_img"
+                                        android:layout_width="55dp"
+                                        android:layout_height="55dp"
+                                        android:layout_gravity="center"
+                                        android:layout_marginLeft="15dp" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="45dp"
+                                        android:fontFamily="@font/nanumsquareeb"
+                                        android:gravity="center_vertical"
+                                        android:text="내 근처 맛집 추천 서비스"
+                                        android:textSize="15sp" />
+                                </LinearLayout>
                             </LinearLayout>
-                        </LinearLayout>
-                    </androidx.cardview.widget.CardView>
+                        </androidx.cardview.widget.CardView>
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <!-- KB국민은행 고객 공통 혜택 -->
@@ -353,80 +363,84 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
-                    <TextView
-                        android:id="@+id/titleTextView2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="KB국민은행 고객 공통 혜택"
-                        android:layout_marginTop="15dp"
-                        android:textSize="20sp"
-                        android:layout_marginStart="25dp"
-                        android:fontFamily="@font/nanumsquareeb"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        android:elevation="5dp"
-                        android:background="@android:color/transparent"/>
+                        <TextView
+                            android:id="@+id/titleTextView2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="25dp"
+                            android:layout_marginTop="15dp"
+                            android:background="@android:color/transparent"
+                            android:elevation="5dp"
+                            android:fontFamily="@font/nanumsquareeb"
+                            android:text="KB국민은행 고객 공통 혜택"
+                            android:textSize="20sp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/cardView7"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginEnd="16dp"
-                        android:layout_marginTop="-10dp"
-                        android:layout_marginBottom="90dp"
-                        app:cardCornerRadius="16dp"
-                        app:cardElevation="4dp"
-                        app:layout_constraintTop_toBottomOf="@id/titleTextView2">
-
-                        <LinearLayout
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/cardView7"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="#F0F0F0"
-                            android:orientation="vertical"
-                            android:padding="14dp">
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="75dp"
-                                android:orientation="horizontal"
-                                android:gravity="center_vertical">
-                                <ImageView
-                                    android:id="@+id/no3_book_img"
-                                    android:layout_width="55dp"
-                                    android:layout_height="55dp"
-                                    android:layout_gravity="center"
-                                    android:layout_marginLeft="15dp"/>
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="35dp"
-                                    android:text="다양한 분야의 뉴스레터 제공"
-                                    android:textSize="15sp"
-                                    android:fontFamily="@font/nanumsquareeb"
-                                    android:gravity="center_vertical"/>
-                            </LinearLayout>
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="-10dp"
+                            android:layout_marginEnd="16dp"
+                            android:layout_marginBottom="90dp"
+                            app:cardCornerRadius="16dp"
+                            app:cardElevation="4dp"
+                            app:layout_constraintTop_toBottomOf="@id/titleTextView2">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="75dp"
-                                android:orientation="horizontal"
-                                android:gravity="center_vertical">
-                                <ImageView
-                                    android:id="@+id/no4_book_img"
-                                    android:layout_width="55dp"
-                                    android:layout_height="55dp"
-                                    android:layout_gravity="center"
-                                    android:layout_marginLeft="15dp"/>
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="35dp"
-                                    android:text="소비생활 관리를 위한 가계부 제공"
-                                    android:textSize="15sp"
-                                    android:fontFamily="@font/nanumsquareeb"
-                                    android:gravity="center_vertical"/>
+                                android:layout_height="wrap_content"
+                                android:background="#F0F0F0"
+                                android:orientation="vertical"
+                                android:padding="14dp">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="75dp"
+                                    android:gravity="center_vertical"
+                                    android:orientation="horizontal">
+
+                                    <ImageView
+                                        android:id="@+id/no3_book_img"
+                                        android:layout_width="55dp"
+                                        android:layout_height="55dp"
+                                        android:layout_gravity="center"
+                                        android:layout_marginLeft="15dp" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="35dp"
+                                        android:fontFamily="@font/nanumsquareeb"
+                                        android:gravity="center_vertical"
+                                        android:text="다양한 분야의 뉴스레터 제공"
+                                        android:textSize="15sp" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="75dp"
+                                    android:gravity="center_vertical"
+                                    android:orientation="horizontal">
+
+                                    <ImageView
+                                        android:id="@+id/no4_book_img"
+                                        android:layout_width="55dp"
+                                        android:layout_height="55dp"
+                                        android:layout_gravity="center"
+                                        android:layout_marginLeft="15dp" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="35dp"
+                                        android:fontFamily="@font/nanumsquareeb"
+                                        android:gravity="center_vertical"
+                                        android:text="소비생활 관리를 위한 가계부 제공"
+                                        android:textSize="15sp" />
+                                </LinearLayout>
                             </LinearLayout>
-                        </LinearLayout>
-                    </androidx.cardview.widget.CardView>
+                        </androidx.cardview.widget.CardView>
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </LinearLayout>
                 <!--1티어 안내 끝-->
@@ -447,8 +461,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="8dp"
                         app:cardCornerRadius="16dp"
-                        app:cardElevation="0dp"
-                        >
+                        app:cardElevation="0dp">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -459,32 +472,32 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="2티어 구독"
-                                android:textSize="15sp"
-                                android:fontFamily="@font/nanumsquareeb"
-                                android:layout_gravity="center"/>
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="가장 가까운 맛집 캐시백\n은행/증권 수수료 면제혜택까지"
-                                android:layout_marginTop="15dp"
-                                android:textSize="20sp"
-                                android:fontFamily="@font/nanumsquareeb"
                                 android:layout_gravity="center"
-                                android:gravity="center"/>
+                                android:fontFamily="@font/nanumsquareeb"
+                                android:text="2티어 구독"
+                                android:textSize="15sp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="2티어 구독하면 제공되는\n맛집 5% 무제한 캐시백"
-                                android:textSize="15sp"
-                                android:textStyle="bold"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="15dp"
+                                android:fontFamily="@font/nanumsquareeb"
+                                android:gravity="center"
+                                android:text="가장 가까운 맛집 캐시백\n은행/증권 수수료 면제혜택까지"
+                                android:textSize="20sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
                                 android:layout_marginTop="8dp"
                                 android:layout_marginBottom="40dp"
                                 android:fontFamily="@font/nanumsquareeb"
-                                android:layout_gravity="center"
-                                android:gravity="center"/>
+                                android:gravity="center"
+                                android:text="2티어 구독하면 제공되는\n맛집 5% 무제한 캐시백"
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
 
                         </LinearLayout>
                     </androidx.cardview.widget.CardView>
@@ -500,99 +513,99 @@
                         app:cardCornerRadius="16dp"
                         app:cardElevation="4dp">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <!-- 상단 타이틀 배경 -->
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="#4B3DC4"
-                            android:padding="8dp"
-                            android:gravity="center">
+                            android:orientation="vertical">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="혜택 대상"
-                            android:textColor="@android:color/white"
-                            android:textSize="17sp"
-                            android:textStyle="bold"/>
-                    </LinearLayout>
-
-                    <!-- 내용 영역 -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:background="@android:color/white"
-                        android:padding="16dp">
-
-                        <!-- 첫 번째 줄 -->
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:gravity="center_vertical">
-
-                            <ImageView
-                                android:id="@+id/green_check_icon1"
-                                android:layout_width="30dp"
-                                android:layout_height="30dp"
-                                android:layout_gravity="center" />
-
-                            <ImageView
-                                android:layout_width="140dp"
-                                android:layout_height="30dp"
-                                android:layout_marginEnd="4dp"
-                                android:src="@drawable/kb_logo_remove_back" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
+                            <!-- 상단 타이틀 배경 -->
+                            <LinearLayout
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="거래 고객중에"
-                                android:textSize="15sp"
-                                android:textColor="#333333"/>
-                        </LinearLayout>
+                                android:background="#4B3DC4"
+                                android:gravity="center"
+                                android:padding="8dp">
 
-                        <!-- 구분선 -->
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:background="#E0E0E0"
-                            android:layout_marginVertical="12dp"/>
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="혜택 대상"
+                                    android:textColor="@android:color/white"
+                                    android:textSize="17sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
 
-                        <!-- 두 번째 줄 -->
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:gravity="center_vertical">
-
-                            <ImageView
-                                android:id="@+id/green_check_icon2"
-                                android:layout_width="30dp"
-                                android:layout_height="30dp"
-                                android:layout_gravity="center" />
-
-                            <ImageView
-                                android:layout_width="80dp"
-                                android:layout_height="30dp"
-                                android:layout_marginEnd="4dp"
-                                android:src="@drawable/gdms_logo_remove_back" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
+                            <!-- 내용 영역 -->
+                            <LinearLayout
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="2티어 구독하신 분"
-                                android:textSize="15sp"
-                                android:textColor="#333333"/>
+                                android:background="@android:color/white"
+                                android:orientation="vertical"
+                                android:padding="16dp">
+
+                                <!-- 첫 번째 줄 -->
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center_vertical"
+                                    android:orientation="horizontal">
+
+                                    <ImageView
+                                        android:id="@+id/green_check_icon1"
+                                        android:layout_width="30dp"
+                                        android:layout_height="30dp"
+                                        android:layout_gravity="center" />
+
+                                    <ImageView
+                                        android:layout_width="140dp"
+                                        android:layout_height="30dp"
+                                        android:layout_marginEnd="4dp"
+                                        android:src="@drawable/kb_logo_remove_back" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="거래 고객중에"
+                                        android:textColor="#333333"
+                                        android:textSize="15sp" />
+                                </LinearLayout>
+
+                                <!-- 구분선 -->
+                                <View
+                                    android:layout_width="match_parent"
+                                    android:layout_height="1dp"
+                                    android:layout_marginVertical="12dp"
+                                    android:background="#E0E0E0" />
+
+                                <!-- 두 번째 줄 -->
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center_vertical"
+                                    android:orientation="horizontal">
+
+                                    <ImageView
+                                        android:id="@+id/green_check_icon2"
+                                        android:layout_width="30dp"
+                                        android:layout_height="30dp"
+                                        android:layout_gravity="center" />
+
+                                    <ImageView
+                                        android:layout_width="80dp"
+                                        android:layout_height="30dp"
+                                        android:layout_marginEnd="4dp"
+                                        android:src="@drawable/gdms_logo_remove_back" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="2티어 구독하신 분"
+                                        android:textColor="#333333"
+                                        android:textSize="15sp" />
+                                </LinearLayout>
+                            </LinearLayout>
                         </LinearLayout>
-                    </LinearLayout>
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
+                    </androidx.cardview.widget.CardView>
 
                     <androidx.cardview.widget.CardView
                         android:id="@+id/cardView10"
@@ -614,8 +627,8 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:background="#4B3DC4"
-                                android:padding="8dp"
-                                android:gravity="center">
+                                android:gravity="center"
+                                android:padding="8dp">
 
                                 <TextView
                                     android:layout_width="wrap_content"
@@ -623,23 +636,23 @@
                                     android:text="혜택 내용"
                                     android:textColor="@android:color/white"
                                     android:textSize="17sp"
-                                    android:textStyle="bold"/>
+                                    android:textStyle="bold" />
                             </LinearLayout>
 
                             <!-- 내용 영역 -->
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:orientation="vertical"
                                 android:background="@android:color/white"
+                                android:orientation="vertical"
                                 android:padding="16dp">
 
                                 <!-- 첫 번째 줄 -->
                                 <LinearLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:orientation="horizontal"
-                                    android:gravity="center_vertical">
+                                    android:gravity="center_vertical"
+                                    android:orientation="horizontal">
 
                                     <ImageView
                                         android:id="@+id/blue_point_icon"
@@ -651,23 +664,23 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="결제금액의 5% 무제한 캐시백"
-                                        android:textSize="15sp"
-                                        android:textColor="#333333"/>
+                                        android:textColor="#333333"
+                                        android:textSize="15sp" />
                                 </LinearLayout>
 
                                 <!-- 구분선 -->
                                 <View
                                     android:layout_width="match_parent"
                                     android:layout_height="1dp"
-                                    android:background="#E0E0E0"
-                                    android:layout_marginVertical="12dp"/>
+                                    android:layout_marginVertical="12dp"
+                                    android:background="#E0E0E0" />
 
                                 <!-- 두 번째 줄 -->
                                 <LinearLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:orientation="horizontal"
-                                    android:gravity="center_vertical">
+                                    android:gravity="center_vertical"
+                                    android:orientation="horizontal">
 
                                     <ImageView
                                         android:id="@+id/pink_free_icon"
@@ -679,8 +692,8 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="KB국민은행/증권 수수료 면제"
-                                        android:textSize="15sp"
-                                        android:textColor="#333333"/>
+                                        android:textColor="#333333"
+                                        android:textSize="15sp" />
                                 </LinearLayout>
                             </LinearLayout>
                         </LinearLayout>
@@ -692,10 +705,10 @@
                         android:id="@+id/cardView11"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="30dp"
-                        android:layout_marginBottom="60dp"
                         android:layout_marginStart="30dp"
+                        android:layout_marginTop="30dp"
                         android:layout_marginEnd="30dp"
+                        android:layout_marginBottom="60dp"
                         app:cardCornerRadius="16dp"
                         app:cardElevation="4dp">
 
@@ -709,8 +722,8 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="50dp"
                                 android:background="#4B3DC4"
-                                android:padding="8dp"
-                                android:gravity="center">
+                                android:gravity="center"
+                                android:padding="8dp">
 
                                 <TextView
                                     android:layout_width="wrap_content"
@@ -718,7 +731,7 @@
                                     android:text="GDMS 2티어 구독 시작하기 >"
                                     android:textColor="@android:color/white"
                                     android:textSize="15sp"
-                                    android:textStyle="bold"/>
+                                    android:textStyle="bold" />
                             </LinearLayout>
                         </LinearLayout>
                     </androidx.cardview.widget.CardView>
@@ -740,10 +753,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="8dp"
-                        app:cardCornerRadius="16dp"
-                        app:cardElevation="0dp"
                         android:clickable="true"
-                        android:focusable="true">
+                        android:focusable="true"
+                        app:cardCornerRadius="16dp"
+                        app:cardElevation="0dp">
 
 
                         <LinearLayout
@@ -755,31 +768,31 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="3티어 맞춤"
-                                android:textSize="15sp"
-                                android:fontFamily="@font/nanumsquareeb"
-                                android:layout_gravity="center"/>
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="취향대로 고르는 혜택\nGDMS 팩 정기 구독"
-                                android:layout_marginTop="15dp"
-                                android:textSize="20sp"
-                                android:fontFamily="@font/nanumsquareeb"
                                 android:layout_gravity="center"
-                                android:gravity="center"/>
+                                android:fontFamily="@font/nanumsquareeb"
+                                android:text="3티어 맞춤"
+                                android:textSize="15sp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="좋아하는 팩을 구독하시고\n매 달 새로운 혜택을 확인해 보세요."
-                                android:textSize="15sp"
-                                android:textStyle="bold"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="15dp"
+                                android:fontFamily="@font/nanumsquareeb"
+                                android:gravity="center"
+                                android:text="취향대로 고르는 혜택\nGDMS 팩 정기 구독"
+                                android:textSize="20sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
                                 android:layout_marginTop="8dp"
                                 android:fontFamily="@font/nanumsquareeb"
-                                android:layout_gravity="center"
-                                android:gravity="center"/>
+                                android:gravity="center"
+                                android:text="좋아하는 팩을 구독하시고\n매 달 새로운 혜택을 확인해 보세요."
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
                         </LinearLayout>
                     </androidx.cardview.widget.CardView>
 
@@ -788,17 +801,17 @@
                         android:id="@+id/recyclerView_nosub"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="50dp"
-                        android:layout_marginBottom="100dp"
                         android:layout_marginStart="30dp"
+                        android:layout_marginTop="50dp"
                         android:layout_marginEnd="30dp"
+                        android:layout_marginBottom="100dp"
                         android:nestedScrollingEnabled="false" />
 
                 </LinearLayout>
                 <!--3티어 안내 끝-->
-              </LinearLayout>
+            </LinearLayout>
 
-          <!--  &lt;!&ndash;구독 정보가 없을 때 레이아웃 종료&ndash;&gt;-->
+            <!--  &lt;!&ndash;구독 정보가 없을 때 레이아웃 종료&ndash;&gt;-->
 
 
             <!--&lt;!&ndash;구독 정보가 있을 때 레이아웃 시작&ndash;&gt;-->
@@ -806,19 +819,19 @@
                 android:id="@+id/falsePage"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginBottom="80dp"
                 android:orientation="vertical"
-                android:visibility="gone"
                 android:padding="16dp"
-                android:layout_marginBottom="80dp">
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:paddingBottom="20dp"
                     android:text="구독 관리"
                     android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:layout_gravity="center"
-                    android:paddingBottom="20dp" />
+                    android:textStyle="bold" />
 
                 <!-- 현재 구독중 부분 -->
                 <androidx.cardview.widget.CardView
@@ -844,32 +857,32 @@
                             android:padding="8dp">
 
                             <ImageView
-                                android:src="@drawable/potted_flower"
                                 android:layout_width="40dp"
-                                android:layout_height="40dp" />
+                                android:layout_height="40dp"
+                                android:src="@drawable/potted_flower" />
 
                             <TextView
                                 android:layout_width="150dp"
                                 android:layout_height="40dp"
+                                android:gravity="left|center"
                                 android:text="현재 구독 중"
                                 android:textSize="18sp"
-                                android:textStyle="bold"
-                                android:gravity="left|center" />
+                                android:textStyle="bold" />
                         </LinearLayout>
 
                         <!-- 내용 영역 -->
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical"
                             android:background="@android:color/white"
+                            android:orientation="vertical"
                             android:padding="8dp">
 
                             <androidx.recyclerview.widget.RecyclerView
                                 android:id="@+id/recyclerView"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="16dp"/>
+                                android:layout_marginTop="16dp" />
 
                         </LinearLayout>
                     </LinearLayout>
@@ -899,25 +912,25 @@
                             android:padding="8dp">
 
                             <ImageView
-                                android:src="@drawable/lava_lamp"
                                 android:layout_width="40dp"
-                                android:layout_height="40dp" />
+                                android:layout_height="40dp"
+                                android:src="@drawable/lava_lamp" />
 
                             <TextView
                                 android:layout_width="150dp"
                                 android:layout_height="40dp"
+                                android:gravity="left|center"
                                 android:text="추가 구독 가능"
                                 android:textSize="18sp"
-                                android:textStyle="bold"
-                                android:gravity="left|center" />
+                                android:textStyle="bold" />
                         </LinearLayout>
 
                         <!-- 내용 영역 -->
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical"
                             android:background="@android:color/white"
+                            android:orientation="vertical"
                             android:padding="8dp">
 
                             <!--구독 가능한 리사이클러 뷰 추가-->
@@ -925,8 +938,8 @@
                                 android:id="@+id/availableSubscriptionsRecyclerView"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:layout_marginTop="8dp"/>
+                                android:layout_marginTop="8dp"
+                                android:orientation="horizontal" />
 
                         </LinearLayout>
                     </LinearLayout>
@@ -938,17 +951,16 @@
                     android:layout_height="65dp"
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
-                    android:src="@drawable/profit_check_btn"
+                    android:background="@android:color/transparent"
                     android:scaleType="fitXY"
-                    android:background="@android:color/transparent"/>
+                    android:src="@drawable/profit_check_btn" />
 
 
             </LinearLayout>
             <!--구독 정보가 있을 때 레이아웃 종료-->
 
-    </LinearLayout>
+        </LinearLayout>
     </androidx.core.widget.NestedScrollView>
-
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabScrollToTop"
@@ -956,7 +968,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:src="@drawable/to_top_arrow_removebg"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/navi_up_line"
         app:layout_constraintEnd_toEndOf="parent"
         app:maxImageSize="35dp"
@@ -967,7 +979,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:visibility="visible"
+        android:src="@drawable/to_my_sub_noback"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/navi_up_line"
         app:layout_constraintEnd_toStartOf="@+id/fabScrollToTop"
         app:maxImageSize="35dp" />
