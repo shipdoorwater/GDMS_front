@@ -2,14 +2,20 @@ package com.example.gdms_front.alarm
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import com.example.gdms_front.MainActivity
 import com.example.gdms_front.R
+import com.example.gdms_front.board.EventPageActivity
+import com.example.gdms_front.board.NoticePageActivity
 import com.example.gdms_front.model.Notification
 import com.example.gdms_front.model.TokenUpdate
 import com.example.gdms_front.network.RetrofitClient
+import com.example.gdms_front.point.PointHistoryActivity
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import kotlinx.coroutines.CoroutineScope
@@ -20,20 +26,15 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
+
         Log.d("FCM", "Message received")
-        Log.d("FCM", "From: ${remoteMessage.from}")
-        Log.d("FCM", "Notification Message Body: ${remoteMessage.notification?.title}")
-        Log.d("FCM", "Notification Message Body: ${remoteMessage.notification?.body}")
         Log.d("FCM", "Data payload: ${remoteMessage.data}")
-        super.onMessageReceived(remoteMessage)
 
-        val title = remoteMessage.notification?.title ?: remoteMessage.data["title"] ?: ""
-        val body = remoteMessage.notification?.body ?: remoteMessage.data["body"] ?: ""
+        val data = remoteMessage.data
+        val title = data["title"] ?: ""
+        val body = data["body"] ?: ""
 
-        // 로컬 데이터베이스에 알림 저장
         saveNotificationToLocalDatabase(title, body)
-
-        // 사용자에게 알림 표시
         showNotification(title, body)
     }
 
@@ -69,11 +70,26 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             notificationManager.createNotificationChannel(channel)
         }
 
+        val intent = when (title) {
+            "공지사항" -> Intent(this, NoticePageActivity::class.java)
+            "이벤트" -> Intent(this, EventPageActivity::class.java)
+            "포인트 사용", "방문 포인트 적립", "결제 포인트 적립" -> Intent(this, PointHistoryActivity::class.java)
+            else -> Intent(this, MainActivity::class.java) // 기본 액티비티
+        }
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+
+        val pendingIntent = PendingIntent.getActivity(
+            this, 0, intent,
+            PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE
+        )
+
+
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
             .setContentTitle(title)
             .setContentText(body)
             .setSmallIcon(R.drawable.img_notification_1)
             .setAutoCancel(true)
+            .setContentIntent(pendingIntent)
 
         notificationManager.notify(System.currentTimeMillis().toInt(), notificationBuilder.build())
         Log.d("FCM", "Showing notification finished - Title: $title, Body: $body")
@@ -84,5 +100,4 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         // 새 토큰을 서버에 전송
         FCMTokenManager.handleFCMToken(this, token)
     }
-
 }
