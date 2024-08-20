@@ -945,15 +945,25 @@
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:id="@+id/smileIcon"
+                        android:layout_width="65dp"
+                        android:layout_height="65dp"/>
+
                 <ImageButton
                     android:id="@+id/btnProfitCheck"
                     android:layout_width="match_parent"
-                    android:layout_height="65dp"
+                    android:layout_height="50dp"
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
+                    android:layout_gravity="center_vertical"
                     android:background="@android:color/transparent"
                     android:scaleType="fitXY"
                     android:src="@drawable/profit_check_btn" />
+                </LinearLayout>
 
 
             </LinearLayout>

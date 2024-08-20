@@ -116,6 +116,7 @@ class ProfitFragment : Fragment() {
         val imageView8: ImageView = view.findViewById(R.id.green_check_icon2)
         val imageView9: ImageView = view.findViewById(R.id.blue_point_icon)
         val imageView10: ImageView = view.findViewById(R.id.pink_free_icon)
+        val smileIcon : ImageView = view.findViewById(R.id.smileIcon)
 
         loadGif(imageView1, R.drawable.heart_img)
         loadGif(imageView2, R.drawable.devil_wing_img)
@@ -127,6 +128,7 @@ class ProfitFragment : Fragment() {
         loadGif(imageView8, R.drawable.green_check_icon)
         loadGif(imageView9, R.drawable.blue_point_icon)
         loadGif(imageView10, R.drawable.pink_free_icon)
+        loadGif(smileIcon, R.drawable.wired_flat_261_emoji_smile)
 
         nestedScrollView = view.findViewById<NestedScrollView>(R.id.nestedScrollView)
         val layout1Tier = view.findViewById<LinearLayout>(R.id.layout_1tier)

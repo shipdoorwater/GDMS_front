@@ -71,7 +71,7 @@ class CategoryAdapter(
         "인강" -> "8"
         "술집" -> "9"
         "꽃집" -> "10"
-        else -> "0"
+        else -> "11"
     }
 
     }

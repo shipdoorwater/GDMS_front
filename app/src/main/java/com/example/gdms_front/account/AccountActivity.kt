@@ -426,7 +426,7 @@ class AccountActivity : AppCompatActivity() {
             "인강" -> "8"
             "술집" -> "9"
             "꽃집" -> "10"
-            else -> "0"
+            else -> "11"
         }
     }
 
@@ -456,10 +456,10 @@ class AccountActivity : AppCompatActivity() {
         // 데이터가 있을 때만 RecyclerView와 TextView를 보이도록 설정
         if (categories.isNotEmpty()) {
             binding.categoryRecyclerView.visibility = View.VISIBLE
-            binding.tvCategoryTitle.visibility = View.VISIBLE
+            //binding.tvCategoryTitle.visibility = View.VISIBLE
         } else {
             binding.categoryRecyclerView.visibility = View.GONE
-            binding.tvCategoryTitle.visibility = View.GONE
+           // binding.tvCategoryTitle.visibility = View.GONE
         }
     }
 }
