@@ -40,7 +40,6 @@ class NotificationFragment : Fragment() {
         val sharedPreference = requireActivity().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
         val userId = sharedPreference?.getString("token", null)
 
-
         // ViewModel에 사용자 ID 설정
         userId?.let { notificationViewModel.setUserId(it) }
 
