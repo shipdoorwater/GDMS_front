@@ -40,7 +40,7 @@ class CouponAdapter (private val coupons: List<Coupon>) : RecyclerView.Adapter<C
             when (coupon.cpnId) {
                 1->{cpnIdTextView.text = "KB Wallet"
                     cpnProfitView.text = "100포인트 지급"}
-                2->{cpnIdTextView.text = "CU"
+                2->{cpnIdTextView.text = "CU편의점"
                     cpnProfitView.text = "3,000원 할인"}
                 3->{cpnIdTextView.text = "GS25"
                     cpnProfitView.text = "3,000원 할인"}
@@ -48,7 +48,7 @@ class CouponAdapter (private val coupons: List<Coupon>) : RecyclerView.Adapter<C
                     cpnProfitView.text = "3,000원 할인"}
                 5->{cpnIdTextView.text = "이마트24"
                     cpnProfitView.text = "3,000원 할인"}
-                6->{cpnIdTextView.text = "HappyPoint"
+                6->{cpnIdTextView.text = "Happy\nPoint"
                     cpnProfitView.text = "5,000원 할인"}
                 7->{cpnIdTextView.text = "밀리의서재"
                     cpnProfitView.text = "1개월 구독권"}
@@ -66,19 +66,27 @@ class CouponAdapter (private val coupons: List<Coupon>) : RecyclerView.Adapter<C
                     cpnProfitView.text = "0.1% 금리우대"}
                 14->{cpnIdTextView.text = "정기적금"
                     cpnProfitView.text = "0.1% 금리우대"}
-                15->{cpnIdTextView.text = "싱뇽대출"
+                15->{cpnIdTextView.text = "신용대출"
                     cpnProfitView.text = "0.1% 금리우대"}
                 16->{cpnIdTextView.text = "환율"
                     cpnProfitView.text = "100%우대"}
                 17->{cpnIdTextView.text = "공항철도"
                     cpnProfitView.text = "50% 할인"}
-                18->{cpnIdTextView.text = "말톡\nusim/esim"
+                18->{cpnIdTextView.text = "말톡\nusim\nesim"
                     cpnProfitView.text = "10,000원"}
             }
 
 
-            sendDateTextView.text = coupon.sendDate
-            expDateTextView.text = coupon.expDate
+            // 날짜 포맷 변경
+            val inputFormat = SimpleDateFormat("yyyyMMdd", Locale.getDefault())
+            val outputFormat = SimpleDateFormat("yyyy.MM.dd", Locale.getDefault())
+
+            val sendDate = inputFormat.parse(coupon.sendDate)
+            val expDate = inputFormat.parse(coupon.expDate)
+
+            sendDateTextView.text = "발급 : " +sendDate?.let { outputFormat.format(it) } ?: coupon.sendDate
+            expDateTextView.text =  "만료 : " +expDate?.let { outputFormat.format(it) } ?: coupon.expDate
+
             usedYnTextView.text = if (coupon.usedYn) "사용완료" else "사용가능"
         }
 
