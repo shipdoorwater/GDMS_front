@@ -13,6 +13,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -41,7 +42,7 @@ class PointMainActivity : AppCompatActivity() {
         }
 
         // 출금 버튼
-        findViewById<Button>(R.id.withDrawBtn).setOnClickListener {
+        findViewById<CardView>(R.id.withDrawBtn).setOnClickListener {
             val intent = Intent(this, WithdrawPointActivity::class.java)
             startActivity(intent)
         }
@@ -84,6 +85,14 @@ class PointMainActivity : AppCompatActivity() {
         constraintLayout7.setOnClickListener {
             val intent = Intent(this, PointWebViewActivity::class.java)
             intent.putExtra("url", "https://obank.kbstar.com/quics?page=C041244&scheme=kbbank&pageid=D004895")
+            startActivity(intent)
+        }
+
+        // 이벤트 페이지 이동
+        val goToEventBtn = findViewById<ImageView>(R.id.goToEventBtn)
+        goToEventBtn.setOnClickListener {
+            val intent = Intent(this, PointWebViewActivity::class.java)
+            intent.putExtra("url", "https://obank.kbstar.com/quics?page=C041244&scheme=kbbank&pageid=C052754&urlparam=%EC[…]EB%B2%A4%ED%8A%B8%EC%9D%BC%EB%A0%A8%EB%B2%88%ED%98%B8:324079")
             startActivity(intent)
         }
     }
