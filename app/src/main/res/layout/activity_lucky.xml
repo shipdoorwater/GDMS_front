@@ -30,6 +30,7 @@
         android:layout_height="50dp"
         android:orientation="horizontal"
         android:background="@drawable/rounded_background"
+        android:backgroundTint="#4D6e96e9"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
