@@ -5,20 +5,20 @@
     android:orientation="horizontal"
     android:padding="16dp">
 
-    <TextView
+    <ImageView
         android:id="@+id/tvStoreCode"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="Store Code"
-        android:textSize="16sp" />
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="16dp"
+        android:scaleType="fitCenter" />
 
     <TextView
         android:id="@+id/tvStoreName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="2"
+        android:layout_weight="1"
         android:text="Store Name"
+        android:layout_gravity="center_vertical"
         android:textSize="16sp" />
 
     <TextView
@@ -26,5 +26,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Amount"
+        android:layout_gravity="center_vertical"
         android:textSize="16sp" />
 </LinearLayout>

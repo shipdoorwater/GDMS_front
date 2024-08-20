@@ -50,6 +50,7 @@ class AccountActivity : AppCompatActivity() {
     private lateinit var selectedMonthDecorator: DayViewDecorator
     private lateinit var sundayDecorator: DayViewDecorator
     private lateinit var saturdayDecorator: DayViewDecorator
+    private lateinit var selectedDateDecorator: DayViewDecorator
 
     // 지출 내역 데이터를 저장할 전역 변수
     private var payHistoryMap: Map<CalendarDay, List<PayHistory>> = emptyMap()
@@ -88,6 +89,7 @@ class AccountActivity : AppCompatActivity() {
     private fun initDecorators() {
         dayDecorator = CalendarDecorators.dayDecorator(this)
         todayDecorator = CalendarDecorators.todayDecorator(this)
+        selectedDateDecorator = CalendarDecorators.selectedDateDecorator(this, CalendarDay.today())
         sundayDecorator = CalendarDecorators.sundayDecorator()
         saturdayDecorator = CalendarDecorators.saturdayDecorator()
         selectedMonthDecorator =
@@ -105,7 +107,8 @@ class AccountActivity : AppCompatActivity() {
                 todayDecorator,
                 sundayDecorator,
                 saturdayDecorator,
-                selectedMonthDecorator
+                selectedMonthDecorator,
+                selectedDateDecorator
             )
 
             // 월 변경 리스너 설정
@@ -119,6 +122,18 @@ class AccountActivity : AppCompatActivity() {
             // 날짜 선택 리스너 설정
             setOnDateChangedListener { widget, date, selected ->
                 if (selected) {
+
+                    // 기존 데코레이터 제거
+                    removeDecorator(selectedDateDecorator)
+
+                    // 새로운 선택된 날짜로 데코레이터 업데이트
+                    selectedDateDecorator = CalendarDecorators.selectedDateDecorator(this@AccountActivity, date)
+
+                    // 새 데코레이터 추가
+                    addDecorator(selectedDateDecorator)
+
+                    // 캘린더 뷰 갱신
+                    widget.invalidateDecorators()
                     displayPayHistoryDetails(date)
                 }
             }
@@ -162,7 +177,8 @@ class AccountActivity : AppCompatActivity() {
             todayDecorator,
             sundayDecorator,
             saturdayDecorator,
-            selectedMonthDecorator
+            selectedMonthDecorator,
+            selectedDateDecorator
         )
 
         // 지출 내역 데코레이터 추가
@@ -410,7 +426,7 @@ class AccountActivity : AppCompatActivity() {
             "인강" -> "8"
             "술집" -> "9"
             "꽃집" -> "10"
-            else -> "0"
+            else -> "11"
         }
     }
 
@@ -440,10 +456,10 @@ class AccountActivity : AppCompatActivity() {
         // 데이터가 있을 때만 RecyclerView와 TextView를 보이도록 설정
         if (categories.isNotEmpty()) {
             binding.categoryRecyclerView.visibility = View.VISIBLE
-            binding.tvCategoryTitle.visibility = View.VISIBLE
+            //binding.tvCategoryTitle.visibility = View.VISIBLE
         } else {
             binding.categoryRecyclerView.visibility = View.GONE
-            binding.tvCategoryTitle.visibility = View.GONE
+           // binding.tvCategoryTitle.visibility = View.GONE
         }
     }
 }

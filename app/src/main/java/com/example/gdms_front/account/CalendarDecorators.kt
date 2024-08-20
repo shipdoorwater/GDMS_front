@@ -36,7 +36,7 @@ object CalendarDecorators {
     fun todayDecorator(context: Context): DayViewDecorator {
         return object : DayViewDecorator {
             private val backgroundDrawable =
-                ContextCompat.getDrawable(context, R.drawable.img_material_symbols_light_search) //R.drawable.calendar_circle_today)
+                ContextCompat.getDrawable(context, R.drawable.calendar_circle_red) //R.drawable.calendar_circle_today)
             private val today = CalendarDay.today()
 
             override fun shouldDecorate(day: CalendarDay?): Boolean = day == today
@@ -121,5 +121,26 @@ object CalendarDecorators {
      * @param scheduleList 이벤트 날짜를 포함하는 스케줄 목록
      * @return DayViewDecorator 객체
      */
+
+    /**
+     * 선택된 날짜를 강조하는 데코레이터를 생성하기 위한 함수
+     * @param context 리소스에 액세스하기 위해 사용되는 컨텍스트
+     * @param selectedDate 선택된 날짜
+     * @return DayViewDecorator 객체
+     */
+    fun selectedDateDecorator(context: Context, selectedDate: CalendarDay): DayViewDecorator {
+        return object : DayViewDecorator {
+            override fun shouldDecorate(day: CalendarDay): Boolean {
+                return day == selectedDate
+            }
+
+            override fun decorate(view: DayViewFacade) {
+               // view.addSpan(ForegroundColorSpan(ContextCompat.getColor(context, R.color.selected_date_color)))
+                view.setSelectionDrawable(ContextCompat.getDrawable(context, R.drawable.calendar_circle)!!)
+            }
+        }
+    }
+
+
 
 }

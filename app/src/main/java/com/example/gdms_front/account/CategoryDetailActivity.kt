@@ -88,8 +88,28 @@ class CategoryDetailActivity : AppCompatActivity() {
         val month = selectedMonth % 100
         val year = selectedMonth / 100
         val formattedAmount = numberFormat.format(totalAmount)
-        val summaryText = "${year}년 ${month}월 ${category}에 쓴 돈은 ${formattedAmount}원 입니다."
+        val summaryText = "${year}년 ${month}월\n${category}에 쓴 돈은\n${formattedAmount}원 입니다."
         binding.summaryTextView.text = summaryText
+
+        val iconResId = getCategoryIcon(category)
+        binding.categoryIcon.setImageResource(iconResId)
+    }
+
+    private fun getCategoryIcon(category: String): Int {
+        return when (category) {
+
+            "음식점" -> R.drawable.payhistory_icon_1_food
+            "금융상품" -> R.drawable.payhistory_icon_2_finance
+            "면세점/해외승인" -> R.drawable.payhistory_icon_3_taxfree
+            "편의점" -> R.drawable.payhistory_icon_4_cv
+            "베이커리" -> R.drawable.payhistory_icon_5_bakery
+            "서점" -> R.drawable.payhistory_icon_6_book
+            "택시,주유" -> R.drawable.payhistory_icon_7_taxi
+            "인강" -> R.drawable.payhistory_icon_8_lecture
+            "술집" -> R.drawable.payhistory_icon_9_alchol
+            "꽃집" -> R.drawable.payhistory_icon_10_flower
+            else -> R.drawable.payhistory_icon_11_etc
+        }
     }
 
     private fun isSelectedMonth(dateString: String): Boolean {

@@ -22,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="결제정보 확인"
-            android:textSize="30sp"
+            android:textSize="20sp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="20dp"/>
 
@@ -88,7 +88,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="결제금액 "
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:layout_marginBottom="15dp"/>
 
             <LinearLayout
@@ -134,7 +134,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="결제수단 "
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:layout_marginBottom="15dp"/>
 
             <LinearLayout
@@ -150,7 +150,7 @@
                     android:layout_height="wrap_content"
                     android:text="카카오페이로 결제"
                     android:textSize="15sp"
-                    android:textColor="@android:color/darker_gray" />
+                    android:textColor="@android:color/black" />
                 <View
                     android:layout_width="0dp"
                     android:layout_height="0dp"

@@ -3,6 +3,7 @@ package com.example.gdms_front.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.gdms_front.R
@@ -63,12 +64,29 @@ class PayHistoryAdapter(private var payHistoryList: List<Any>, private var showD
     }
 
     class PayHistoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val tvStoreCode: TextView = itemView.findViewById(R.id.tvStoreCode)
+        private val tvStoreCode: ImageView = itemView.findViewById(R.id.tvStoreCode)
         private val tvStoreName: TextView = itemView.findViewById(R.id.tvStoreName)
         private val tvAmount: TextView = itemView.findViewById(R.id.tvAmount)
 
         fun bind(payHistory: PayHistory) {
-            tvStoreCode.text = payHistory.storeCode.toString()
+
+            val imageResource = when(payHistory.storeCode) {
+                1->R.drawable.payhistory_icon_1_food
+                2->R.drawable.payhistory_icon_2_finance
+                3->R.drawable.payhistory_icon_3_taxfree
+                4->R.drawable.payhistory_icon_4_cv
+                5->R.drawable.payhistory_icon_5_bakery
+                6->R.drawable.payhistory_icon_6_book
+                7->R.drawable.payhistory_icon_7_taxi
+                8->R.drawable.payhistory_icon_8_lecture
+                9->R.drawable.payhistory_icon_9_alchol
+                10->R.drawable.payhistory_icon_10_flower
+                else -> R.drawable.payhistory_icon_11_etc
+
+
+            }
+            tvStoreCode.setImageResource(imageResource)
+            //tvStoreCode.text = payHistory.storeCode.toString()
             tvStoreName.text = payHistory.storeName
             tvAmount.text = NumberFormat.getCurrencyInstance(Locale.getDefault()).format(payHistory.amount)
         }
@@ -76,9 +94,13 @@ class PayHistoryAdapter(private var payHistoryList: List<Any>, private var showD
 
     class DateHeaderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val tvDate: TextView = itemView.findViewById(R.id.tvDate)
+        private val dateFormatter = SimpleDateFormat("yyyy.MM.dd", Locale.getDefault())
 
         fun bind(dateHeader: DateHeader) {
-            tvDate.text = dateHeader.date
+            val originalDate = SimpleDateFormat("yyyyMMdd", Locale.getDefault()).parse(dateHeader.date)
+            originalDate?.let {
+                tvDate.text = dateFormatter.format(it)
+            }
         }
     }
 

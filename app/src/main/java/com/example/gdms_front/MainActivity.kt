@@ -16,6 +16,7 @@ import com.example.gdms_front.alarm.FCMTokenManager
 import com.example.gdms_front.alarm.NotificationViewModel
 import com.example.gdms_front.model.TokenUpdate
 import com.example.gdms_front.navigation_frag.MainFragment
+import com.example.gdms_front.navigation_frag.ProfitFragment
 import com.example.gdms_front.network.RetrofitClient
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
