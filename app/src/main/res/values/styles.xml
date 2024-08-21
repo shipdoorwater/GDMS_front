@@ -11,4 +11,8 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
     </style>
+
+    <style name="BlueSwitchStyle" parent="Theme.AppCompat.Light">
+        <item name="colorControlActivated">#0019f4</item> <!-- 더 밝은 파란색 -->
+    </style>
 </resources>

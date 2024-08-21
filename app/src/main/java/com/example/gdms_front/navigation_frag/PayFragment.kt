@@ -83,11 +83,6 @@ class PayFragment : Fragment() {
             it.findNavController().navigate((R.id.action_payFragment_to_mainFragment))
         }
 
-        val flashButton = view.findViewById<CardView>(R.id.flashButton)
-        flashButton.setOnClickListener {
-            toggleFlash()
-        }
-
         startCamera(view)
 
         return view
@@ -112,6 +107,11 @@ class PayFragment : Fragment() {
             startCamera(view)
         } else {
             requestPermissions(arrayOf(Manifest.permission.CAMERA), CAMERA_PERMISSION_REQUEST_CODE)
+        }
+
+        val flashButton = view.findViewById<CardView>(R.id.flashButton)
+        flashButton.setOnClickListener {
+            toggleFlash()
         }
     }
 
@@ -195,7 +195,7 @@ class PayFragment : Fragment() {
                 isFlashOn = !isFlashOn
                 Log.d("플래시", "Enabling torch: $isFlashOn")
                 cameraControl.enableTorch(isFlashOn)
-                view?.findViewById<Button>(R.id.flashButton)?.text = if (isFlashOn) "플래시 끄기" else "플래시 켜기"
+//                view?.findViewById<Card>(R.id.flashButton)?.text = if (isFlashOn) "플래시 끄기" else "플래시 켜기"
             } ?: Log.e("플래시", "Camera object is null")
         } else {
             Log.w("플래시", "Flash is not available on this device")

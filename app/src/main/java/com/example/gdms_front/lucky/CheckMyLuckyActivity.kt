@@ -104,7 +104,7 @@ class CheckMyLuckyActivity : AppCompatActivity() {
 
     private fun setDailyLuckyNumber(userId: String, date: String) {
         val combinedString = "$userId$date"
-        val luckyNumber = (abs(combinedString.hashCode()) % 100) + 1 // 1부터 100까지의 숫자
+        val luckyNumber = (abs(combinedString.hashCode()) % 41) + 60 // 60부터 100까지의 숫자
         luckyNumberTextView.text = "오늘의 행운 점수 : $luckyNumber"
     }
 
