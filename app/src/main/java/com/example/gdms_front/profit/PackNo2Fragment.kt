@@ -15,7 +15,7 @@ import com.example.gdms_front.R
 
 class PackNo2Fragment : Fragment() {
 
-    private lateinit var button: ImageButton
+    private lateinit var button: ImageView
     private var userId: String? = null
     private val packId = 3
     private val amountPaid = 19900
