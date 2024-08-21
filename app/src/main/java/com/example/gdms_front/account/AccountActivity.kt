@@ -13,7 +13,6 @@ import android.os.Bundle
 import android.text.style.LineBackgroundSpan
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.ParseException
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -217,13 +216,10 @@ class AccountActivity : AppCompatActivity() {
                     }
                     Log.d("달력", "Response: $payHistoryList")
                 } else {
-                    Toast.makeText(this@AccountActivity, "데이터를 불러오는데 실패했습니다.", Toast.LENGTH_SHORT)
-                        .show()
                 }
             }
 
             override fun onFailure(call: Call<PayHistoryResponse>, t: Throwable) {
-                Toast.makeText(this@AccountActivity, "네트워크 오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
             }
         })
     }

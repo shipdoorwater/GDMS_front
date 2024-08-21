@@ -22,7 +22,6 @@ import android.view.Window
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
@@ -34,7 +33,6 @@ import com.bumptech.glide.Glide
 import com.example.gdms_front.R
 import com.example.gdms_front.adapter.RecommendedShopAdapter
 import com.example.gdms_front.model.GetPointRequest
-import com.example.gdms_front.model.GetPointResponse
 import com.example.gdms_front.model.ShopModel
 import com.example.gdms_front.network.RetrofitClient
 import com.google.android.gms.location.FusedLocationProviderClient

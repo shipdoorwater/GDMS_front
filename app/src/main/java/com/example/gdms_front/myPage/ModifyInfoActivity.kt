@@ -4,12 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.EditText
 import android.widget.ImageView
-import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.example.gdms_front.R
 import com.example.gdms_front.model.MemberInfoResponse
 import com.example.gdms_front.network.MyPageApiService
@@ -68,12 +64,12 @@ class ModifyInfoActivity : AppCompatActivity() {
                             addressEditText.setText(userInfo.userAddress)
                         }
                     } else {
-                        Toast.makeText(this@ModifyInfoActivity, "Failed to load user info", Toast.LENGTH_SHORT).show()
+
                     }
                 }
 
                 override fun onFailure(call: Call<MemberInfoResponse>, t: Throwable) {
-                    Toast.makeText(this@ModifyInfoActivity, "Network error", Toast.LENGTH_SHORT).show()
+
                 }
             })
         }
@@ -94,7 +90,7 @@ class ModifyInfoActivity : AppCompatActivity() {
                 Callback<MemberInfoResponse> {
                 override fun onResponse(call: Call<MemberInfoResponse>, response: Response<MemberInfoResponse>) {
                     if (response.isSuccessful) {
-                        Toast.makeText(this@ModifyInfoActivity, "Information updated successfully", Toast.LENGTH_SHORT).show()
+
 
                         // Create an intent to start MyPageActivity
                         val intent = Intent(this@ModifyInfoActivity, MyPageActivity::class.java)
@@ -106,12 +102,12 @@ class ModifyInfoActivity : AppCompatActivity() {
                         // Finish the current activity
                         finish()
                     } else {
-                        Toast.makeText(this@ModifyInfoActivity, "Failed to update information", Toast.LENGTH_SHORT).show()
+
                     }
                 }
 
                 override fun onFailure(call: Call<MemberInfoResponse>, t: Throwable) {
-                    Toast.makeText(this@ModifyInfoActivity, "Network error", Toast.LENGTH_SHORT).show()
+
                 }
             })
         }

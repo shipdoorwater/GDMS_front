@@ -9,7 +9,6 @@ import android.icu.text.SimpleDateFormat
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.text.Layout
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -19,8 +18,6 @@ import android.view.animation.CycleInterpolator
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.TextView
-import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.widget.NestedScrollView
@@ -30,7 +27,6 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.gdms_front.R
@@ -41,13 +37,9 @@ import com.example.gdms_front.model.Subscription
 import com.example.gdms_front.model.cancelSubRequest
 import com.example.gdms_front.network.RetrofitClient
 import com.example.gdms_front.profit.SubActivity2
-import com.example.gdms_front.profit.TierExpActivity
-import com.google.android.gms.common.api.Response
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator
 import kotlinx.coroutines.launch
-import org.w3c.dom.Text
 import retrofit2.Call
 import retrofit2.Callback
 import java.util.Date
@@ -292,18 +284,18 @@ class ProfitFragment : Fragment() {
                 if (response.isSuccessful) {
                     val cancelSubResponse = response.body()
                     cancelSubResponse?.let {
-                        Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
+
                         // 구독 상태를 다시 확인하여 UI 업데이트
                         checkSubscriptionStatus(userId) { subscriptions ->
                             (view?.findViewById<RecyclerView>(R.id.recyclerView)?.adapter as? SubNowAdapter)?.updateSubscriptions(subscriptions)
                         }
                     }
                 } else {
-                    Toast.makeText(context, "구독 해지에 실패했습니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
+
                 }
             } catch (e: Exception) {
                 Log.e("ProfitFragment", "구독 해지 API 호출 실패", e)
-                Toast.makeText(context, "네트워크 오류가 발생했습니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
+
             }
         }
     }

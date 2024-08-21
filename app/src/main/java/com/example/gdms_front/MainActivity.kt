@@ -2,9 +2,7 @@ package com.example.gdms_front
 
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Base64
 import android.util.Log
 import android.widget.ImageView
 import androidx.activity.viewModels
@@ -14,13 +12,7 @@ import com.example.gdms_front.myPage.MyPageActivity
 import androidx.navigation.findNavController
 import com.example.gdms_front.alarm.FCMTokenManager
 import com.example.gdms_front.alarm.NotificationViewModel
-import com.example.gdms_front.model.TokenUpdate
-import com.example.gdms_front.navigation_frag.MainFragment
-import com.example.gdms_front.navigation_frag.ProfitFragment
-import com.example.gdms_front.network.RetrofitClient
-import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
-import java.security.MessageDigest
 
 
 class MainActivity : AppCompatActivity() {

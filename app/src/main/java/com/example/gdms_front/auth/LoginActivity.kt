@@ -138,7 +138,6 @@ class LoginActivity : AppCompatActivity() {
         editor.putBoolean("isKakaoLoggedIn", false)
         editor.apply()
 
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
         navigateToMainActivity()
     }
 
@@ -212,12 +211,10 @@ class LoginActivity : AppCompatActivity() {
         editor.putBoolean("isAutoLogin", false) // 카카오 로그인은 자동 로그인 사용 안 함
         editor.apply()
 
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
         navigateToMainActivity()
     }
 
     private fun handleFailedLogin(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
         Log.e("LoginActivity", message)
     }
 
