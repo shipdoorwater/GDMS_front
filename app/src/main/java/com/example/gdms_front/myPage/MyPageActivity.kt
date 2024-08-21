@@ -12,7 +12,6 @@ import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -25,7 +24,6 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import com.bumptech.glide.Glide
-//import com.example.gdms_front.BuildConfig
 import com.example.gdms_front.R
 import com.example.gdms_front.auth.LoginActivity
 import com.example.gdms_front.model.MemberInfoResponse
@@ -152,30 +150,17 @@ class MyPageActivity : AppCompatActivity() {
                         Log.d("MyPageAPITest", "profileUrl response 확인 :  ${memberInfo.profileUrl}")
 
                     } else {
-                        Toast.makeText(
-                            this@MyPageActivity,
-                            "회원 정보를 가져올 수 없습니다.",
-                            Toast.LENGTH_SHORT
-                        ).show()
+
                     }
                 } else if (response.code() == 404) {
-                    Toast.makeText(this@MyPageActivity, "사용자를 찾을 수 없습니다.", Toast.LENGTH_SHORT)
-                        .show()
+
                 } else {
-                    Toast.makeText(
-                        this@MyPageActivity,
-                        "회원 정보를 가져오는 중 오류가 발생했습니다.",
-                        Toast.LENGTH_SHORT
-                    ).show()
+
                 }
             }
 
             override fun onFailure(call: Call<MemberInfoResponse>, t: Throwable) {
-                Toast.makeText(
-                    this@MyPageActivity,
-                    "네트워크 오류가 발생했습니다: ${t.message}",
-                    Toast.LENGTH_SHORT
-                ).show()
+
             }
         })
     }
@@ -264,7 +249,7 @@ class MyPageActivity : AppCompatActivity() {
                     createImageFile()
                 } catch (ex: IOException) {
                     Log.e("MyPageActivity", "Error creating image file", ex)
-                    Toast.makeText(this, "이미지 파일 생성 중 오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
+
                     null
                 }
                 photoFile?.let {
@@ -275,14 +260,14 @@ class MyPageActivity : AppCompatActivity() {
                     )
                     cameraLauncher.launch(photoURI)
                 } ?: run {
-                    Toast.makeText(this, "이미지 파일을 생성할 수 없습니다.", Toast.LENGTH_SHORT).show()
+
                 }
             } else {
                 ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), 100)
             }
         } catch (e: Exception) {
             Log.e("MyPageActivity", "Error in takePhoto", e)
-            Toast.makeText(this, "카메라를 실행하는 중 오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
+
         }
     }
 
@@ -401,7 +386,7 @@ class MyPageActivity : AppCompatActivity() {
         UserApiClient.instance.logout { error ->
             if (error != null) {
                 Log.e("KakaoLogout", "카카오 로그아웃 실패", error)
-                Toast.makeText(this, "카카오 로그아웃 실패", Toast.LENGTH_SHORT).show()
+
             } else {
                 Log.i("KakaoLogout", "카카오 로그아웃 성공")
             }
@@ -440,6 +425,6 @@ class MyPageActivity : AppCompatActivity() {
         startActivity(intent)
         finish()
 
-        Toast.makeText(this, "로그아웃되었습니다.", Toast.LENGTH_SHORT).show()
+
     }
 }

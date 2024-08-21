@@ -1,13 +1,11 @@
 package com.example.gdms_front.adapter
 
 import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.gdms_front.R
 import com.example.gdms_front.account.CategoryDetailActivity
@@ -53,7 +51,7 @@ class CategoryAdapter(
                 intent.putExtra("storeCode", storeCode.toString())
                 context.startActivity(intent)
             } else {
-                Toast.makeText(context, "유효하지 않은 storeCode입니다.", Toast.LENGTH_SHORT).show()
+
             }
         }
 

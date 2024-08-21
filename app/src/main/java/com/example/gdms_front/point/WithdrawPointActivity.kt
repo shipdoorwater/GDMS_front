@@ -14,12 +14,8 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.fragment.app.FragmentManager
 import com.example.gdms_front.R
 import com.example.gdms_front.model.MyPointResponse
 import com.example.gdms_front.model.WithdrawRequest

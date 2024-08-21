@@ -8,27 +8,21 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity.MODE_PRIVATE
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.navigation.findNavController
 import com.example.gdms_front.R
 import com.example.gdms_front.account.AccountActivity
-import com.example.gdms_front.auth.LoginActivity
 import com.example.gdms_front.board.EventPageActivity
 import com.example.gdms_front.board.NoticePageActivity
 import com.example.gdms_front.coupon.CouponActivity
-
 import com.example.gdms_front.lucky.LuckyActivity
 import com.example.gdms_front.model.MemberInfoResponse
 import com.example.gdms_front.network.RetrofitClient.myPageApiService
 import com.example.gdms_front.news.NewsActivity
 import com.example.gdms_front.point.PointMainActivity
-import org.w3c.dom.Text
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

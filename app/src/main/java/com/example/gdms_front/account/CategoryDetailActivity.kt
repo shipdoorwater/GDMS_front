@@ -14,7 +14,6 @@ import com.example.gdms_front.network.RetrofitClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import android.widget.Toast
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -45,7 +44,7 @@ class CategoryDetailActivity : AppCompatActivity() {
         if (storeCode != null) {
             fetchPayHistory(storeCode)
         } else {
-            Toast.makeText(this, "storeCode를 찾을 수 없습니다.", Toast.LENGTH_SHORT).show()
+
         }
     }
 
@@ -72,13 +71,12 @@ class CategoryDetailActivity : AppCompatActivity() {
                         updateSummary(filteredList)
                     }
                 } else {
-                    Toast.makeText(this@CategoryDetailActivity, "데이터를 불러오는데 실패했습니다.", Toast.LENGTH_SHORT)
-                        .show()
+
                 }
             }
 
             override fun onFailure(call: Call<PayHistoryResponse>, t: Throwable) {
-                Toast.makeText(this@CategoryDetailActivity, "네트워크 오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
+
             }
         })
     }

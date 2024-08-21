@@ -142,8 +142,6 @@ class JoinActivity2 : AppCompatActivity() {
             FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
                 if (!task.isSuccessful) {
                     Log.w("FCM", "Fetching FCM registration token failed", task.exception)
-                    Toast.makeText(this@JoinActivity2, "FCM 토큰을 가져오는데 실패했습니다.", Toast.LENGTH_SHORT)
-                        .show()
                     return@addOnCompleteListener
                 }
 
@@ -196,11 +194,7 @@ class JoinActivity2 : AppCompatActivity() {
                             ).show()
                         }
                     } catch (e: Exception) {
-                        Toast.makeText(
-                            this@JoinActivity2,
-                            "네트워크 오류 발생",
-                            Toast.LENGTH_SHORT
-                        ).show()
+
                         Log.e("JoinActivity2", "Join failed", e)
                     }
                 }

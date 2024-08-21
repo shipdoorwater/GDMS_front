@@ -3,16 +3,11 @@ package com.example.gdms_front.board
 import android.os.Bundle
 import android.util.Log
 import android.widget.ImageView
-import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.gdms_front.R
 import com.example.gdms_front.adapter.NoticeAdapter
-import com.example.gdms_front.model.NoticeRequest
 import com.example.gdms_front.model.NoticeResponse
 import com.example.gdms_front.network.RetrofitClient
 import retrofit2.Call
@@ -46,13 +41,13 @@ class NoticePageActivity : AppCompatActivity() {
                     noticeRecyclerView.adapter = NoticeAdapter(notices)
                 } else {
                     Log.e("EventPageActivity", "Failed to fetch notices: ${response.code()} - ${response.message()}")
-                    Toast.makeText(this@NoticePageActivity, "Failed to fetch notices", Toast.LENGTH_SHORT).show()
+
                 }
             }
 
             override fun onFailure(call: Call<List<NoticeResponse>>, t: Throwable) {
                 Log.e("EventPageActivity", "Network error", t)
-                Toast.makeText(this@NoticePageActivity, "Network error: ${t.message}", Toast.LENGTH_SHORT).show()
+
             }
         })
     }

@@ -5,28 +5,13 @@ import android.icu.text.NumberFormat
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.view.View
-import android.webkit.WebView
-import android.webkit.WebViewClient
-import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.findNavController
-import com.example.gdms_front.MainActivity
-import com.example.gdms_front.R
-import com.example.gdms_front.databinding.ActivityQrPayBinding
 import com.example.gdms_front.databinding.ActivitySub2Binding
 import com.example.gdms_front.model.SubscribeRequest
-import com.example.gdms_front.model.SubscribeResponse
-import com.example.gdms_front.navigation_frag.ProfitFragment
-import com.example.gdms_front.network.ApiService
 import com.example.gdms_front.network.RetrofitClient
 import kotlinx.coroutines.launch
-import retrofit2.http.Body
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Locale
@@ -117,7 +102,7 @@ class SubActivity2 : AppCompatActivity() {
                             startActivity(intent)
 
                         } else {
-                            Toast.makeText(this@SubActivity2, "Redirect URL not found", Toast.LENGTH_SHORT).show()
+
                         }
                         
                         
@@ -130,14 +115,14 @@ class SubActivity2 : AppCompatActivity() {
 
                     } else {
                         // 로그인 실패 처리 (오류 메시지 표시 등)
-                        Toast.makeText(this@SubActivity2, "구독신청 실패", Toast.LENGTH_SHORT).show()
+
                         Log.d("구독결제", "구독결제 failed: ${response.errorBody()?.string()}")
                     }
 
 
                 } catch (e: Exception) {
                     // 네트워크 오류 처리
-                    Toast.makeText(this@SubActivity2, "네트워크 오류 발생", Toast.LENGTH_SHORT).show()
+
                     Log.e("구독결제", "구독결제 네트워크 failed", e)
                 }
             }

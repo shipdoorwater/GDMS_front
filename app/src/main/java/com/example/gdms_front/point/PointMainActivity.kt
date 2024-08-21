@@ -8,15 +8,11 @@ import android.icu.text.DecimalFormat
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.example.gdms_front.R
 import com.example.gdms_front.model.MyPointResponse
 import com.example.gdms_front.network.RetrofitClient
