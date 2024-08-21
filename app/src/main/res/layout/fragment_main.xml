@@ -95,7 +95,8 @@
                         android:layout_height="wrap_content"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:theme="@style/BlueSwitchStyle"/>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -111,9 +112,10 @@
                 <!-- 오늘의 문제 카드 -->
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardView1"
-                    android:layout_width="175dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
+                    android:layout_weight="1"
                     app:cardCornerRadius="16dp"
                     app:cardElevation="4dp">
 
@@ -155,8 +157,9 @@
                 <!-- 내 포인트 카드 -->
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardView2"
-                    android:layout_width="175dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:layout_margin="8dp"
                     app:cardCornerRadius="16dp"
                     app:cardElevation="4dp">

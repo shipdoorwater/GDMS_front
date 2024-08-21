@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Typeface
 import android.os.Bundle
 import android.util.Log
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -38,6 +39,12 @@ class LoginActivity : AppCompatActivity() {
         KakaoSdk.init(this, kakaoAppKey)
         setupViews()
         checkAutoLogin()
+
+        val joinBtn = findViewById<TextView>(R.id.joinBtn)
+        joinBtn.setOnClickListener {
+            val intent = Intent(this, JoinActivity1::class.java)
+            startActivity(intent)
+        }
     }
 
 
