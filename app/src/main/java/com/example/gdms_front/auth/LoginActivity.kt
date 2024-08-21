@@ -9,6 +9,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.android.volley.ServerError
 import com.example.gdms_front.MainActivity
 import com.example.gdms_front.R
 import com.example.gdms_front.databinding.ActivityLoginBinding
@@ -19,6 +20,8 @@ import com.example.gdms_front.network.RetrofitClient
 import com.google.firebase.messaging.FirebaseMessaging
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.KakaoSdk
+import com.kakao.sdk.common.model.AuthError
+import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.user.UserApiClient
 import kotlinx.coroutines.launch
 import retrofit2.Call
@@ -149,7 +152,17 @@ class LoginActivity : AppCompatActivity() {
 
     private val kakaoLoginCallback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
         if (error != null) {
-            handleFailedLogin("카카오 로그인 실패")
+            Log.e("KakaoLogin", "로그인 실패", error)
+            Log.e("KakaoLogin", "에러 메시지: ${error.message}")
+
+            when (error) {
+                is ClientError -> Log.e("KakaoLogin", "클라이언트 에러, 에러코드: ${error.reason}")
+                is AuthError -> Log.e("KakaoLogin", "인증 에러, 에러코드: ${error.reason}")
+                is ServerError -> Log.e("KakaoLogin", "서버 에러, 에러코드: ${error.message}")
+                else -> Log.e("KakaoLogin", "기타 에러")
+            }
+
+            handleFailedLogin("카카오 로그인 실패: ${error.message}")
         } else if (token != null) {
             Log.i("KakaoLogin", "로그인 성공: ${token.accessToken}")
             sendKakaoTokenToServer(token.accessToken)
