@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.graphics.Typeface
 import android.icu.text.NumberFormat
 import android.icu.text.SimpleDateFormat
 import android.icu.util.Calendar
@@ -23,6 +24,7 @@ import com.example.gdms_front.databinding.ActivityAccountBinding
 import com.example.gdms_front.model.PayHistory
 import com.example.gdms_front.model.PayHistoryResponse
 import com.example.gdms_front.network.RetrofitClient
+import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
@@ -334,6 +336,11 @@ class AccountActivity : AppCompatActivity() {
     }
 
     private fun setupPieChart() {
+
+        val typo = Typeface.createFromAsset(assets, "nanumsquareeb.ttf")
+
+        Log.d("파이차트", typo.toString())
+
         pieChart.apply {
             description.isEnabled = false
             isRotationEnabled = false
@@ -342,18 +349,26 @@ class AccountActivity : AppCompatActivity() {
             setHoleColor(Color.WHITE)
             setTransparentCircleColor(Color.WHITE)
             setTransparentCircleAlpha(110)
-            holeRadius = 58f
-            transparentCircleRadius = 61f
+            holeRadius = 40f                    //가운데구멍 크기
+            transparentCircleRadius = 40f       //가운데구멍 크기
             setDrawCenterText(true)
-            centerText = "지출 카테고리"
-            setCenterTextSize(18f)
-            legend.isEnabled = true
+            centerText = "나의\n소비 분석"        //가운데글자내용
+            setCenterTextSize(20f)              //가운데 글자크기
+            setCenterTextTypeface(typo)         //가운데 글자 폰트
+
+            legend.isEnabled = true     //범례보여지게
+            legend.textSize = 15f       // 범례글자 크기
+            legend.typeface = typo      // 범례 글자 폰트
+
+            animateY(5000, Easing.EaseInOutCubic)    //애니메이션
+
         }
     }
 
     private fun updatePieChart(date: CalendarDay) {
         val selectedMonth = date.month
         val selectedYear = date.year
+        val typo = Typeface.createFromAsset(assets, "nanumsquareeb.ttf")
 
         val categoryTotals = mutableMapOf<String, Int>()
         var totalAmount = 0
@@ -377,11 +392,27 @@ class AccountActivity : AppCompatActivity() {
             PieEntry(total.toFloat(), "$categoryName: ${String.format("%.1f", percentage)}%")
         }
 
-        val dataSet = PieDataSet(entries, "카테고리별 지출")
+        val dataSet = PieDataSet(entries, " ") //아래쪽에 글씨들
+        val colors = listOf(
+            Color.rgb(255, 209, 220),
+            Color.rgb(174, 198, 207),
+            Color.rgb(255, 218, 185),
+            Color.rgb(178, 244, 230),
+            Color.rgb(203, 170, 203),
+            Color.rgb(253, 253, 150),
+            Color.rgb(230, 230, 250),
+            Color.rgb(119, 221, 119),
+            Color.rgb(255, 179, 179),
+            Color.rgb(129, 216, 208),
+        )
 
-        dataSet.colors = ColorTemplate.MATERIAL_COLORS.toList()
-        dataSet.valueTextSize = 25f // 텍스트 크기를 조정했습니다.
-        dataSet.valueTextColor = Color.BLACK
+        dataSet.colors = colors
+        dataSet.valueTextSize = 20f // 그래프 위에 값 글자크기.
+        dataSet.valueTextColor = Color.BLACK //그래프 위에 값 글자색
+        dataSet.valueTypeface = typo // 폰트모양
+        dataSet.formSize = 15f // 구분색 박스 크기
+
+
 
         // ValueFormatter를 사용하여 Total 값을 표시합니다.
         val formatter = NumberFormat.getCurrencyInstance(Locale.getDefault())
@@ -394,7 +425,10 @@ class AccountActivity : AppCompatActivity() {
         val data = PieData(dataSet)
         pieChart.data = data
         pieChart.setUsePercentValues(false) // 퍼센트 값 대신 실제 값을 사용합니다.
-        pieChart.setDrawEntryLabels(true) // 엔트리 레이블을 표시합니다.
+        pieChart.setDrawEntryLabels(true) // 그래프 위에 있는 엔트리 레이블을 표시합니다.
+        pieChart.setEntryLabelTextSize(15f) // 그래프 위의 엔트리 레이블 글자 크기
+        pieChart.setEntryLabelColor(Color.BLACK) // 그래프 위의 엔트리 레이블 텍스트 색상
+        pieChart.setEntryLabelTypeface(typo) // 그래프 위의 엔트리 레이블 폰트
         pieChart.invalidate() // Refresh the chart
     }
 
