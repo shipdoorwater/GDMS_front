@@ -20,7 +20,7 @@ import android.os.Handler
 
 class PackNo3Fragment : Fragment() {
 
-    private lateinit var button: ImageButton
+    private lateinit var button: ImageView
     private var userId: String? = null
     private val packId = 4
     private val amountPaid = 4900
