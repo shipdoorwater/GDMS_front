@@ -48,7 +48,7 @@ class CouponAdapter (private val coupons: List<Coupon>) : RecyclerView.Adapter<C
                     cpnProfitView.text = "3,000원 할인"}
                 5->{cpnIdTextView.text = "이마트24"
                     cpnProfitView.text = "3,000원 할인"}
-                6->{cpnIdTextView.text = "Happy\nPoint"
+                6->{cpnIdTextView.text = "Happy Point"
                     cpnProfitView.text = "5,000원 할인"}
                 7->{cpnIdTextView.text = "밀리의서재"
                     cpnProfitView.text = "1개월 구독권"}
@@ -72,7 +72,7 @@ class CouponAdapter (private val coupons: List<Coupon>) : RecyclerView.Adapter<C
                     cpnProfitView.text = "100%우대"}
                 17->{cpnIdTextView.text = "공항철도"
                     cpnProfitView.text = "50% 할인"}
-                18->{cpnIdTextView.text = "말톡\nusim\nesim"
+                18->{cpnIdTextView.text = "말톡(USIM/ESIM)"
                     cpnProfitView.text = "10,000원"}
             }
 
