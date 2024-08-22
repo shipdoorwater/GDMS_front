@@ -375,6 +375,9 @@ class MyPageActivity : AppCompatActivity() {
         val sharedPreferences = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
         val isKakaoLoggedIn = sharedPreferences.getBoolean("isKakaoLoggedIn", false)
 
+        // isAutoLogin을 false로 설정
+        sharedPreferences.edit().putBoolean("isAutoLogin", false).apply()
+
         if (isKakaoLoggedIn) {
             performKakaoLogout()
         } else {

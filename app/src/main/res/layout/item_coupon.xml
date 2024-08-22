@@ -3,11 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="150dp"
+    android:layout_height="180dp"
     android:layout_marginTop="8dp"
     android:layout_marginBottom="8dp"
+
     android:orientation="vertical"
-    android:padding="15dp"
+    android:padding="20dp"
     android:background="@drawable/coupon_background">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -19,40 +20,44 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
             android:text="Coupon ID"
+            android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
+
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.193" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/cpnProfit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="100dp"
-            android:layout_marginTop="19dp"
+            android:layout_marginStart="16dp"
             android:text="cpnProfit"
+            android:textSize="16sp"
+            android:layout_marginTop="3dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/cpnId" />
 
         <TextView
             android:id="@+id/sendDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="100dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
             android:text="Send Date"
+            android:textSize="12sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cpnProfit" />
+            app:layout_constraintTop_toBottomOf="@+id/usedYn" />
 
         <TextView
             android:id="@+id/expDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="100dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="2dp"
             android:text="Expiry Date"
+            android:textSize="12sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/sendDate" />
 
@@ -60,11 +65,11 @@
             android:id="@+id/usedYn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="100dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
             android:text="Used Status"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/expDate" />
+            app:layout_constraintTop_toBottomOf="@+id/cpnProfit" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
