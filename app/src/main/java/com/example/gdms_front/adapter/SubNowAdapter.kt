@@ -1,14 +1,19 @@
 package com.example.gdms_front.adapter
 
 import android.content.Context
+import android.graphics.Color
 import android.icu.text.NumberFormat
 import android.icu.text.SimpleDateFormat
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.gdms_front.R
 import com.example.gdms_front.model.Subscription
@@ -24,7 +29,7 @@ class SubNowAdapter(
         val tierTextView: TextView = itemView.findViewById(R.id.tierTextView)
         val descriptionTextView: TextView = itemView.findViewById(R.id.descriptionTextView)
         val amountPaid: TextView = itemView.findViewById(R.id.amountPaid)
-        val cancelButton: Button = itemView.findViewById(R.id.cancelButton)
+        val cancelButton: CardView = itemView.findViewById(R.id.cancelButton)
 
         fun bind(subscription: Subscription) {
 
@@ -43,7 +48,7 @@ class SubNowAdapter(
 
             // 구독 해지 상태에 따라 descriptionTextView의 텍스트를 설정
             val inputFormat = SimpleDateFormat("yyyyMMdd", Locale.getDefault()) // 기존 날짜 형식이 yyyymmdd인 경우
-            val outputFormat = SimpleDateFormat("yyyy.MM.dd", Locale.getDefault())
+            val outputFormat = SimpleDateFormat("yy.M.d", Locale.getDefault())
 
 // 날짜를 포맷팅하여 문자열로 변환
             val formattedStartDate = outputFormat.format(inputFormat.parse(subscription.startDate)!!)
@@ -52,7 +57,18 @@ class SubNowAdapter(
             if (subscription.subStatus) {
                 descriptionTextView.text = "${formattedStartDate} ~ ${formattedEndDate}"
             } else {
-                descriptionTextView.text = "구독 해지 신청 완료\n${formattedStartDate} ~ ${formattedEndDate}"
+                val fullText = "${formattedStartDate} ~ ${formattedEndDate}\n해지 신청 완료"
+                val spannableString = SpannableString(fullText)
+                val redColor = ForegroundColorSpan(Color.RED) // 원하는 색상으로 변경 가능
+
+                // "해지 신청 완료" 텍스트의 시작 인덱스 찾기
+                val startIndex = fullText.indexOf("해지 신청 완료")
+
+                if (startIndex != -1) {
+                    spannableString.setSpan(redColor, startIndex, startIndex + "해지 신청 완료".length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                }
+
+                descriptionTextView.text = spannableString
             }
 
 
