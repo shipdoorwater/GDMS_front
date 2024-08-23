@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.drawable.Drawable
 import android.icu.text.SimpleDateFormat
 import android.net.Uri
 import android.os.Build
@@ -24,6 +25,8 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import com.example.gdms_front.R
 import com.example.gdms_front.auth.LoginActivity
 import com.example.gdms_front.model.MemberInfoResponse
@@ -166,15 +169,27 @@ class MyPageActivity : AppCompatActivity() {
     }
 
     private fun loadProfileImage(profileUrl: String?) {
-        if (profileUrl != null) {
-            val fullUrl = "http://211.45.162.203:8080$profileUrl" // 서버 URL을 추가하세요.
-            Glide.with(this)
-                .load(fullUrl)
-                .placeholder(R.drawable.person_add_circle)
-                .error(R.drawable.person_add_circle)
-                .into(profileImageView)
-        } else {
-            profileImageView.setImageResource(R.drawable.person_add_circle)
+        when {
+            profileUrl == null -> {
+                profileImageView.setImageResource(R.drawable.img_empty_profile)
+            }
+            profileUrl.startsWith("http") -> {
+                // 카카오 로그인이나 다른 외부 URL의 경우
+                Glide.with(this)
+                    .load(profileUrl)
+                    .placeholder(R.drawable.person_add_circle)
+                    .error(R.drawable.person_add_circle)
+                    .into(profileImageView)
+            }
+            else -> {
+                // 일반 로그인의 경우
+                val fullUrl = "http://211.45.162.203:8080$profileUrl"
+                Glide.with(this)
+                    .load(fullUrl)
+                    .placeholder(R.drawable.person_add_circle)
+                    .error(R.drawable.person_add_circle)
+                    .into(profileImageView)
+            }
         }
     }
 
@@ -192,6 +207,7 @@ class MyPageActivity : AppCompatActivity() {
         val buttonChooseGallery = dialogView.findViewById<ImageView>(R.id.galleryBtn)
         val buttonTakePhoto = dialogView.findViewById<ImageView>(R.id.cameraBtn)
         val buttonComplete = dialogView.findViewById<CardView>(R.id.changeBtn)
+        val buttonCancel = dialogView.findViewById<CardView>(R.id.cancelBtn)
         val shapeableImageView = dialogView.findViewById<ShapeableImageView>(R.id.shapeableImageView)
 
         // userId를 설정하는 부분 추가
@@ -225,19 +241,51 @@ class MyPageActivity : AppCompatActivity() {
             }
         }
 
+        buttonCancel.setOnClickListener {
+            dialog.dismiss()
+        }
+
         dialog.show()
     }
 
     private fun loadDialogProfileImage(shapeableImageView: ShapeableImageView) {
-        if (currentProfileUrl != null) {
-            val fullUrl = "http://211.45.162.203:8080$currentProfileUrl"
-            Glide.with(this)
-                .load(fullUrl)
-                .placeholder(R.drawable.person_add_circle)
-                .error(R.drawable.person_add_circle)
-                .into(shapeableImageView)
-        } else {
-            shapeableImageView.setImageResource(R.drawable.person_add_circle)
+        when {
+            currentProfileUrl == null -> {
+                shapeableImageView.setImageResource(R.drawable.img_empty_profile)
+            }
+            currentProfileUrl?.startsWith("http") == true -> {
+                // 카카오 로그인이나 다른 외부 URL의 경우
+                Glide.with(this)
+                    .load(currentProfileUrl)
+                    .placeholder(R.drawable.person_add_circle)
+                    .error(R.drawable.person_add_circle)
+                    .centerCrop() // 이미지를 중앙에 위치시키고 크롭
+                    .into(object : CustomTarget<Drawable>() {
+                        override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
+                            shapeableImageView.setImageDrawable(resource)
+                        }
+                        override fun onLoadCleared(placeholder: Drawable?) {
+                            shapeableImageView.setImageDrawable(placeholder)
+                        }
+                    })
+            }
+            else -> {
+                // 일반 로그인의 경우
+                val fullUrl = "http://211.45.162.203:8080$currentProfileUrl"
+                Glide.with(this)
+                    .load(fullUrl)
+                    .placeholder(R.drawable.person_add_circle)
+                    .error(R.drawable.person_add_circle)
+                    .centerCrop()
+                    .into(object : CustomTarget<Drawable>() {
+                        override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
+                            shapeableImageView.setImageDrawable(resource)
+                        }
+                        override fun onLoadCleared(placeholder: Drawable?) {
+                            shapeableImageView.setImageDrawable(placeholder)
+                        }
+                    })
+            }
         }
     }
 
