@@ -120,27 +120,38 @@ class PointMainActivity : AppCompatActivity() {
 
     private fun launchKBPayApp() {
         val kbPayPackageName = "com.kbcard.cxh.appcard"
-        val kbPayScheme = "kb-acp://"
 
         if (isPackageInstalled(kbPayPackageName)) {
-            // KB Pay 앱이 설치되어 있으면 실행
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(kbPayScheme))
-            intent.setPackage(kbPayPackageName)
-            try {
-                startActivity(intent)
-            } catch (e: ActivityNotFoundException) {
-                // 스킴으로 실행 실패 시 일반적인 방법으로 앱 실행
-                val launchIntent = packageManager.getLaunchIntentForPackage(kbPayPackageName)
-                if (launchIntent != null) {
-                    startActivity(launchIntent)
-                } else {
-                    openPlayStore(kbPayPackageName)
-                }
+            val launchIntent = packageManager.getLaunchIntentForPackage(kbPayPackageName)
+            if (launchIntent != null) {
+                startActivity(launchIntent)
+            } else {
+                openPlayStore(kbPayPackageName)
             }
         } else {
             // KB Pay 앱이 설치되어 있지 않으면 Play Store로 이동
             openPlayStore(kbPayPackageName)
         }
+
+//        if (isPackageInstalled(kbPayPackageName)) {
+//            // KB Pay 앱이 설치되어 있으면 실행
+//            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(kbPayScheme))
+//            intent.setPackage(kbPayPackageName)
+//            try {
+//                startActivity(intent)
+//            } catch (e: ActivityNotFoundException) {
+//                // 스킴으로 실행 실패 시 일반적인 방법으로 앱 실행
+//                val launchIntent = packageManager.getLaunchIntentForPackage(kbPayPackageName)
+//                if (launchIntent != null) {
+//                    startActivity(launchIntent)
+//                } else {
+//                    openPlayStore(kbPayPackageName)
+//                }
+//            }
+//        } else {
+//            // KB Pay 앱이 설치되어 있지 않으면 Play Store로 이동
+//            openPlayStore(kbPayPackageName)
+//        }
     }
 
     private fun isPackageInstalled(packageName: String): Boolean {
