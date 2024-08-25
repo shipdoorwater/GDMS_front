@@ -48,14 +48,14 @@ class CouponActivity : AppCompatActivity() {
             fetchCoupons(userId)
         }
 
-        val smileIcon: ImageView = findViewById(R.id.smileIcon)
-        loadGif(smileIcon, R.drawable.wired_flat_261_emoji_smile)
+//        val smileIcon: ImageView = findViewById(R.id.smileIcon)
+//        loadGif(smileIcon, R.drawable.wired_flat_261_emoji_smile)
 
-        btnProfit = findViewById(R.id.btnProfitCheck)
-        btnProfit.setOnClickListener {
-            Log.d("쿠폰확인", "Profit button clicked")
-            navigateToMainActivity()
-        }
+//        btnProfit = findViewById(R.id.btnProfitCheck)
+//        btnProfit.setOnClickListener {
+//            Log.d("쿠폰확인", "Profit button clicked")
+//            navigateToMainActivity()
+//        }
 
 
     }
