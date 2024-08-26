@@ -41,6 +41,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".game.GameActivity"
+            android:exported="false" />
+        <activity
             android:name=".point.PointWebViewActivity2"
             android:exported="false" />
         <activity

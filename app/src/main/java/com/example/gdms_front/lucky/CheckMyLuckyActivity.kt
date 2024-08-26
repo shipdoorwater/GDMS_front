@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.gdms_front.MainActivity
 import com.example.gdms_front.R
+import com.example.gdms_front.game.GameActivity
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -82,6 +83,13 @@ class CheckMyLuckyActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
+
+        luckyNumberTextView.setOnClickListener {
+            val intent = Intent(this, GameActivity::class.java)
+            startActivity(intent)
+        }
+
+
 
     }
 

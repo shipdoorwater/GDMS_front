@@ -5,13 +5,20 @@ import android.icu.text.NumberFormat
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.example.gdms_front.R
 import com.example.gdms_front.databinding.ActivitySub2Binding
+import com.example.gdms_front.model.MemberInfoResponse
 import com.example.gdms_front.model.SubscribeRequest
 import com.example.gdms_front.network.RetrofitClient
+import com.example.gdms_front.network.RetrofitClient.myPageApiService
 import kotlinx.coroutines.launch
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Locale
@@ -52,9 +59,9 @@ class SubActivity2 : AppCompatActivity() {
         // 금액 포맷팅 (쉼표 추가)
         val formattedAmount = NumberFormat.getNumberInstance(Locale.US).format(amountPaid)
 
+        getMemberInfo(userId.toString())
 
-
-        binding.userId.text = "$userId 님\n구독 결제정보를 확인해 주세요"
+        //binding.userId.text = "$userId 님\n구독 결제정보를 확인해 주세요"
         binding.packName.text = "$packName 팩 월 정기구독"
 
         binding.packBrief.text =  "#구독기간      |  $todayStr ~ $oneMonthLaterStr"
@@ -128,8 +135,37 @@ class SubActivity2 : AppCompatActivity() {
             }
         }
 
-
-
-
     }
+
+
+    private fun getMemberInfo(userId: String) {
+        myPageApiService.getMemberInfo(userId).enqueue(object : Callback<MemberInfoResponse> {
+            override fun onResponse(
+                call: Call<MemberInfoResponse>,
+                response: Response<MemberInfoResponse>
+            ) {
+                if (response.isSuccessful) {
+                    val memberInfo = response.body()
+                    if (memberInfo != null) {
+
+                        binding.userId.text = "${memberInfo.userName} 님\n구독 결제정보를 확인해 주세요"
+                        //view.findViewById<TextView>(R.id.userName).text = "${memberInfo.userName}님 안녕하세요"
+                        Log.d("AllMenuFragment", "Member info retrieved successfully: ${memberInfo.userName}")
+                    } else {
+                        Log.e("AllMenuFragment", "Member info is null")
+                    }
+                } else if (response.code() == 404) {
+                    Log.e("AllMenuFragment", "404 Error: User not found")
+                } else {
+                    Log.e("AllMenuFragment", "Error: ${response.code()}, ${response.message()}")
+                }
+            }
+
+            override fun onFailure(call: Call<MemberInfoResponse>, t: Throwable) {
+                Log.e("AllMenuFragment", "Network failure: ${t.message}", t)
+            }
+        })
+    }
+
+
 }
