@@ -16,6 +16,7 @@ roomKtx = "2.6.1"
 runtimeAndroid = "1.6.8"
 cardview = "1.0.0"
 volley = "1.2.1"
+gamesActivity = "3.0.5"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -33,6 +34,7 @@ androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = 
 androidx-runtime-android = { group = "androidx.compose.runtime", name = "runtime-android", version.ref = "runtimeAndroid" }
 androidx-cardview = { group = "androidx.cardview", name = "cardview", version.ref = "cardview" }
 volley = { group = "com.android.volley", name = "volley", version.ref = "volley" }
+androidx-games-activity = { group = "androidx.games", name = "games-activity", version.ref = "gamesActivity" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
