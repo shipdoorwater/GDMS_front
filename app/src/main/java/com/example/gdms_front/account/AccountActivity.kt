@@ -57,7 +57,7 @@ class AccountActivity : AppCompatActivity() {
     private var payHistoryMap: Map<CalendarDay, List<PayHistory>> = emptyMap()
     private lateinit var payHistoryAdapter: PayHistoryAdapter
     private lateinit var categoryAdapter: CategoryAdapter
-
+//
     // PieChart 객체
     private lateinit var pieChart: PieChart
 
@@ -400,6 +400,7 @@ class AccountActivity : AppCompatActivity() {
             Color.rgb(119, 221, 119),
             Color.rgb(255, 179, 179),
             Color.rgb(129, 216, 208),
+            Color.rgb(203, 170, 203),
         )
 
         dataSet.colors = colors
