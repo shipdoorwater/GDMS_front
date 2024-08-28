@@ -57,7 +57,7 @@ class AccountActivity : AppCompatActivity() {
     private var payHistoryMap: Map<CalendarDay, List<PayHistory>> = emptyMap()
     private lateinit var payHistoryAdapter: PayHistoryAdapter
     private lateinit var categoryAdapter: CategoryAdapter
-
+//
     // PieChart 객체
     private lateinit var pieChart: PieChart
 
